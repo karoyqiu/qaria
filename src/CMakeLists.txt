@@ -15,6 +15,8 @@ configure_file("resource.rc.in" "resource.rc" @ONLY)
 set(SOURCES
     "common.h"
     "main.cpp"
+    "mainwindow.h" "mainwindow.cpp" "mainwindow.ui"
+    "optionsdialog.h" "optionsdialog.cpp" "optionsdialog.ui"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"
 )
 

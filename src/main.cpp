@@ -14,7 +14,7 @@
 #include <QLocale>
 #include <QTranslator>
 
- //#include "maindialog.h"
+#include "mainwindow.h"
 
 
 int main(int argc, char *argv[])
@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
 
     QApplication::setApplicationDisplayName(QApplication::translate("main", "qaria"));
 
-    //MainDialog w;
-    //w.show();
+    MainWindow w;
+    w.show();
 
     return QApplication::exec();
 }
