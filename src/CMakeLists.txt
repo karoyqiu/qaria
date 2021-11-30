@@ -4,7 +4,7 @@ check_warning_flags(CXX PROJECT_WARNING_FLAGS)
 
 # 依赖的 Qt 组件
 set(QT_LIBS
-    Widgets
+    WebSockets Widgets
 )
 
 set(TS_FILES "qaria_zh_CN.ts")

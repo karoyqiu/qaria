@@ -51,7 +51,12 @@ inline QString QSS(const std::wstring &s)
     return QString::fromStdWString(s);
 }
 
-inline QString QSS(int number)
+inline QString QSS(const QByteArray &s)
+{
+    return QString::fromUtf8(s);
+}
+
+inline QString QSS(qint64 number)
 {
     return QString::number(number, 10);
 }

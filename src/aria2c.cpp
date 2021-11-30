@@ -16,24 +16,21 @@
 Aria2c::Aria2c(QObject *parent /*= nullptr*/)
     : QObject(parent)
     , aria2c_(nullptr)
+    , ws_(nullptr)
 {
 }
 
 
 void Aria2c::start()
 {
-    Q_ASSERT(aria2c_ == nullptr);
+    Q_ASSERT(aria2c_ == nullptr && ws_ == nullptr);
 
     QSettings settings;
     auto aria2c = settings.value(QS("aria2c")).toString();
 
-    aria2c_ = new QProcess(this);
-    aria2c_->setStandardOutputFile(QProcess::nullDevice());
-    aria2c_->setStandardErrorFile(QProcess::nullDevice());
-
-    //QDir appDataDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-    //appDataDir.mkpath(QS("."));
-    //auto sessionFile = appDataDir.absoluteFilePath(QS("aria2.session"));
+    QDir appDataDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    appDataDir.mkpath(QS("."));
+    auto sessionFile = appDataDir.absoluteFilePath(QS("aria2.session"));
 
     secret_ = generateToken();
 
@@ -42,15 +39,47 @@ void Aria2c::start()
         QS("--pause"),
         QS("--pause-metadata"),
         QS("--rpc-secret"), secret_,
-        //QS("--input-file"), sessionFile,
-        //QS("--save-session"), sessionFile,
+        QS("--save-session"), sessionFile,
+        QS("--save-session-interval"), QS("60"),
+        QS("--stop-with-process"), QSS(qApp->applicationPid()),
     };
 
-    aria2c_->start(aria2c, args);
+    if (QFileInfo::exists(sessionFile))
+    {
+        args.append({ QS("--input-file"), sessionFile });
+    }
+
+    QProcess::startDetached(aria2c, args);
+
+
+    ws_ = new QWebSocket(qApp->applicationName(), QWebSocketProtocol::VersionLatest, this);
+    connect(ws_, &QWebSocket::connected, this, &Aria2c::onConnected);
+    connect(ws_, &QWebSocket::textMessageReceived, this, &Aria2c::handleMessage);
+
+    ws_->open(QS("ws://127.0.0.1:6800/jsonrpc"));
 }
 
 
 QString Aria2c::generateToken()
 {
     return QUuid::createUuid().toString(QUuid::Id128);
+}
+
+
+void Aria2c::onConnected()
+{
+    callAsync(QS("aria2.getGlobalOption"));
+}
+
+
+void Aria2c::handleMessage(const QString &msg)
+{
+    qDebug() << qUtf8Printable(msg);
+}
+
+
+void Aria2c::send(const QJsonDocument &doc)
+{
+    auto json = doc.toJson(QJsonDocument::Compact);
+    ws_->sendTextMessage(QSS(json));
 }
