@@ -17,6 +17,7 @@ set(SOURCES
     "main.cpp"
     "mainwindow.h" "mainwindow.cpp" "mainwindow.ui"
     "optionsdialog.h" "optionsdialog.cpp" "optionsdialog.ui"
+    "aria2c.h" "aria2c.cpp"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"
 )
 

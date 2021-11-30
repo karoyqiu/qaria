@@ -13,15 +13,20 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include "aria2c.h"
 #include "optionsdialog.h"
 
 
 MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , aria2c_(nullptr)
 {
     ui->setupUi(this);
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
+
+    aria2c_ = new Aria2c(this);
+    aria2c_->start();
 }
 
 

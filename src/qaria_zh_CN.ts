@@ -51,11 +51,6 @@
         <source>Browse...</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="optionsdialog.cpp" line="62"/>
-        <source>Aria2c (aria2c.exe)</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>main</name>

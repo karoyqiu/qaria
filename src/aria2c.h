@@ -1,7 +1,7 @@
 ﻿/*! ***********************************************************************************************
  *
- * \file        mainwindow.h
- * \brief       MainWindow 类头文件。
+ * \file        aria2c.h
+ * \brief       Aria2c 类头文件。
  *
  * \version     1.0
  * \date        2021-11-30
@@ -11,30 +11,24 @@
  *
  **************************************************************************************************/
 #pragma once
-#include <QWidget>
+#include <QObject>
 
-namespace Ui {
-class MainWindow;
-}
-
-class Aria2c;
+class QProcess;
 
 
-class MainWindow : public QMainWindow
+class Aria2c : public QObject
 {
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
-    virtual ~MainWindow();
+    explicit Aria2c(QObject *parent = nullptr);
 
-protected:
-    virtual void changeEvent(QEvent *e) override;
+    void start();
 
 private:
-    void showOptions();
+    static QString generateToken();
 
 private:
-    Ui::MainWindow *ui;
-    Aria2c *aria2c_;
+    QProcess *aria2c_;
+    QString secret_;
 };

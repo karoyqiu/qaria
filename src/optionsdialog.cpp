@@ -59,7 +59,13 @@ void OptionsDialog::changeEvent(QEvent *e)
 
 void OptionsDialog::browseAria2c()
 {
-    auto aria2c = QFileDialog::getOpenFileName(this, {}, ui->editAria2c->text(), tr("Aria2c (aria2c.exe)"));
+    auto aria2c = QFileDialog::getOpenFileName(this, {}, ui->editAria2c->text(),
+#ifdef Q_OS_WIN
+                                               QS("Aria2c (aria2c.exe)")
+#else
+                                               QS("Aria2c (aria2c)")
+#endif
+    );
 
     if (!aria2c.isEmpty())
     {
