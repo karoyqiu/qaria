@@ -15,7 +15,6 @@
 
 Aria2c::Aria2c(QObject *parent /*= nullptr*/)
     : QObject(parent)
-    , aria2c_(nullptr)
     , ws_(nullptr)
 {
 }
@@ -23,7 +22,7 @@ Aria2c::Aria2c(QObject *parent /*= nullptr*/)
 
 void Aria2c::start()
 {
-    Q_ASSERT(aria2c_ == nullptr && ws_ == nullptr);
+    Q_ASSERT(ws_ == nullptr);
 
     QSettings settings;
     auto aria2c = settings.value(QS("aria2c")).toString();

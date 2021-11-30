@@ -13,7 +13,6 @@
 #pragma once
 #include <QObject>
 
-class QProcess;
 class QWebSocket;
 
 
@@ -25,6 +24,14 @@ public:
     explicit Aria2c(QObject *parent = nullptr);
 
     void start();
+
+signals:
+    void onDownloadStart(const QString &gid);
+    void onDownloadPause(const QString &gid);
+    void onDownloadStop(const QString &gid);
+    void onDownloadComplete(const QString &gid);
+    void onDownloadError(const QString &gid);
+    void onBtDownloadComplete(const QString &gid);
 
 private:
     static QString generateToken();
@@ -46,7 +53,6 @@ private:
     void toQVariantList(QVariantList &result, T &&head, Ts&&... tail);
 
 private:
-    QProcess *aria2c_;
     QWebSocket *ws_;
     QString secret_;
 };
