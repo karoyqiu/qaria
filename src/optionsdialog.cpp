@@ -22,8 +22,10 @@ OptionsDialog::OptionsDialog(QWidget *parent /*= nullptr*/)
 
     QSettings settings;
     ui->editAria2c->setText(settings.value(QS("aria2c")).toString());
+    ui->editDir->setText(settings.value(QS("dir")).toString());
 
     connect(ui->buttonAria2c, &QPushButton::clicked, this, &OptionsDialog::browseAria2c);
+    connect(ui->buttonDir, &QPushButton::clicked, this, &OptionsDialog::browseDir);
 }
 
 
@@ -37,6 +39,7 @@ void OptionsDialog::accept()
 {
     QSettings settings;
     settings.setValue(QS("aria2c"), ui->editAria2c->text());
+    settings.setValue(QS("dir"), ui->editDir->text());
 
     QDialog::accept();
 }
@@ -70,5 +73,16 @@ void OptionsDialog::browseAria2c()
     if (!aria2c.isEmpty())
     {
         ui->editAria2c->setText(QDir::toNativeSeparators(aria2c));
+    }
+}
+
+
+void OptionsDialog::browseDir()
+{
+    auto dir = QFileDialog::getExistingDirectory(this, {}, ui->editDir->text());
+
+    if (!dir.isEmpty())
+    {
+        ui->editDir->setText(QDir::toNativeSeparators(dir));
     }
 }

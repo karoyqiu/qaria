@@ -33,6 +33,7 @@ protected:
 
 private:
     void browseAria2c();
+    void browseDir();
 
 private:
     Ui::OptionsDialog *ui;

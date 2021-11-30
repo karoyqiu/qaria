@@ -59,6 +59,12 @@ void Aria2c::start()
 }
 
 
+void Aria2c::addUri(const QStringList &uris, const QVariantHash &options /*= {}*/)
+{
+    callAsync(QS("aria2.addUri"), uris, options);
+}
+
+
 QString Aria2c::generateToken()
 {
     return QUuid::createUuid().toString(QUuid::Id128);

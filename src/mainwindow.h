@@ -32,6 +32,7 @@ protected:
     virtual void changeEvent(QEvent *e) override;
 
 private:
+    void addUri();
     void showOptions();
 
 private:

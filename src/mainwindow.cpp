@@ -55,6 +55,18 @@ void MainWindow::changeEvent(QEvent *e)
 }
 
 
+void MainWindow::addUri()
+{
+    bool ok = false;
+    auto uri = QInputDialog::getMultiLineText(this, {}, tr(""), {}, &ok);
+
+    if (ok && !uri.isEmpty())
+    {
+        aria2c_->addUri(uri.split(QL('\n'), Qt::SkipEmptyParts));
+    }
+}
+
+
 void MainWindow::showOptions()
 {
     OptionsDialog dialog(this);
