@@ -14,6 +14,7 @@
 #include "ui_mainwindow.h"
 
 #include "aria2c.h"
+#include "downloadtablemodel.h"
 #include "optionsdialog.h"
 
 
@@ -21,6 +22,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
     , aria2c_(nullptr)
+    , model_(nullptr)
 {
     ui->setupUi(this);
     ui->treeFilter->expandAll();
@@ -30,7 +32,12 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::addUri);
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
 
+    model_ = new DownloadTableModel(this);
+    ui->tableMain->setModel(model_);
+
     aria2c_ = new Aria2c(this);
+    connect(aria2c_, &Aria2c::downloadTold, model_, &DownloadTableModel::append);
+
     aria2c_->start();
 }
 

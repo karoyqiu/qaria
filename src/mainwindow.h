@@ -18,6 +18,7 @@ class MainWindow;
 }
 
 class Aria2c;
+class DownloadTableModel;
 
 
 class MainWindow : public QMainWindow
@@ -38,4 +39,5 @@ private:
 private:
     Ui::MainWindow *ui;
     Aria2c *aria2c_;
+    DownloadTableModel *model_;
 };

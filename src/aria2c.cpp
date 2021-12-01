@@ -120,9 +120,12 @@ void Aria2c::addUri(const QStringList &uris, const QVariantHash &options /*= {}*
 }
 
 
-void Aria2c::tellActive()
+void Aria2c::tellAll()
 {
-    callAsync(std::bind(&Aria2c::handleTellDownload, this, _1, _2), QS("aria2.tellActive"));
+    auto handler = std::bind(&Aria2c::handleTellDownload, this, _1, _2);
+    callAsync(handler, QS("aria2.tellActive"));
+    callAsync(handler, QS("aria2.tellWaiting"), 0, 1024);
+    callAsync(handler, QS("aria2.tellStopped"), 0, 1024);
 }
 
 
@@ -134,14 +137,14 @@ QString Aria2c::generateToken()
 
 void Aria2c::onConnected()
 {
-    tellActive();
+    tellAll();
 }
 
 
 void Aria2c::handleMessage(const QString &msg)
 {
 #ifdef QT_DEBUG
-    qDebug() << qUtf8Printable(msg);
+    qDebug() << ">>>" << qUtf8Printable(msg);
 #endif
 
     auto json = QJsonDocument::fromJson(msg.toUtf8());
@@ -157,7 +160,13 @@ void Aria2c::handleMessage(const QString &msg)
 void Aria2c::send(const QJsonDocument &doc)
 {
     auto json = doc.toJson(QJsonDocument::Compact);
-    ws_->sendTextMessage(QSS(json));
+    auto s = QSS(json);
+
+#ifdef QT_DEBUG
+    qDebug() << "<<<" << qUtf8Printable(s);
+#endif
+
+    ws_->sendTextMessage(s);
 }
 
 

@@ -118,7 +118,7 @@ public:
         addUri(QStringList{ uri }, options);
     }
 
-    void tellActive();
+    void tellAll();
 
 signals:
     void onDownloadStart(const QString &gid);

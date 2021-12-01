@@ -23,7 +23,6 @@ class DownloadTableModel : public QAbstractTableModel
 public:
     enum Column
     {
-        NumberColumn,
         NameColumn,
         SizeColumn,
         ProgressColumn,
@@ -53,6 +52,11 @@ public:
     }
 
     virtual QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const override;
+
+    void append(const DownloadItems &items);
+
+private:
+    static QString fileSizeToString(qint64 bytes);
 
 private:
     DownloadItems items_;
