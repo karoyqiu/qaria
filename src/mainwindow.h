@@ -31,8 +31,12 @@ public:
 
 protected:
     virtual void changeEvent(QEvent *e) override;
+    virtual void closeEvent(QCloseEvent *e) override;
 
 private:
+    void loadSettings();
+    void saveSettings() const;
+
     void addUri();
     void showOptions();
 

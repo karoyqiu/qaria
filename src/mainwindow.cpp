@@ -35,6 +35,8 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     model_ = new DownloadTableModel(this);
     ui->tableMain->setModel(model_);
 
+    loadSettings();
+
     aria2c_ = new Aria2c(this);
     connect(aria2c_, &Aria2c::downloadTold, model_, &DownloadTableModel::append);
 
@@ -60,6 +62,33 @@ void MainWindow::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    saveSettings();
+    QMainWindow::closeEvent(e);
+}
+
+
+void MainWindow::loadSettings()
+{
+    QSettings settings;
+    restoreGeometry(settings.value(QS("geo")).toByteArray());
+    restoreState(settings.value(QS("sta")).toByteArray());
+    ui->tableMain->horizontalHeader()->restoreState(settings.value(QS("hdr")).toByteArray());
+    ui->centralWidget->restoreState(settings.value(QS("spl")).toByteArray());
+}
+
+
+void MainWindow::saveSettings() const
+{
+    QSettings settings;
+    settings.setValue(QS("geo"), saveGeometry());
+    settings.setValue(QS("sta"), saveState());
+    settings.setValue(QS("hdr"), ui->tableMain->horizontalHeader()->saveState());
+    settings.setValue(QS("spl"), ui->centralWidget->saveState());
 }
 
 
