@@ -189,7 +189,7 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="main.cpp" line="38"/>
+        <location filename="main.cpp" line="76"/>
         <source>qaria</source>
         <translation type="unfinished"></translation>
     </message>

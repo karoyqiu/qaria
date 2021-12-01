@@ -100,6 +100,7 @@ struct DownloadItem
 };
 
 using DownloadItems = QList<DownloadItem>;
+Q_DECLARE_METATYPE(DownloadItem)
 
 
 class Aria2c : public QObject
@@ -117,6 +118,8 @@ public:
         addUri(QStringList{ uri }, options);
     }
 
+    void tellActive();
+
 signals:
     void onDownloadStart(const QString &gid);
     void onDownloadPause(const QString &gid);
@@ -125,7 +128,11 @@ signals:
     void onDownloadError(const QString &gid);
     void onBtDownloadComplete(const QString &gid);
 
+    void downloadTold(const DownloadItems &items);
+
 private:
+    using MessageHandler = std::function<void(const QString &, const QVariant &result)>;
+
     static QString generateToken();
 
     void onConnected();
@@ -134,7 +141,7 @@ private:
     void send(const QJsonDocument &doc);
 
     template<typename... T>
-    void callAsync(const QString &method, T&&... args);
+    QString callAsync(MessageHandler handler, const QString &method, T&&... args);
 
     void toQVariantList(QVariantList & /*result*/) {}
 
@@ -144,27 +151,34 @@ private:
     template<typename T, typename... Ts>
     void toQVariantList(QVariantList &result, T &&head, Ts&&... tail);
 
+    void handleTellDownload(const QString &id, const QVariant &result);
+
 private:
     QWebSocket *ws_;
     QString secret_;
+    QHash<QString, MessageHandler> calls_;
 };
 
 
 template<typename... T>
-void Aria2c::callAsync(const QString &method, T&&... args)
+QString Aria2c::callAsync(MessageHandler handler, const QString &method, T&&... args)
 {
     QVariantList params;
     toQVariantList(params, std::forward<T>(args)...);
     params.prepend(QString(QL("token:") % secret_));
 
+    auto id = generateToken();
+    calls_.insert(id, handler);
+
     QJsonObject obj{
         { QS("jsonrpc"), QS("2.0") },
-        { QS("id"), generateToken() },
+        { QS("id"), id },
         { QS("method"), method },
         { QS("params"), QJsonArray::fromVariantList(params) },
     };
 
     send(QJsonDocument(obj));
+    return id;
 }
 
 

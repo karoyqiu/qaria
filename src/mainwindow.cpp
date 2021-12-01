@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     ui->centralWidget->setStretchFactor(0, 1);
     ui->centralWidget->setStretchFactor(1, 5);
 
+    connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::addUri);
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
 
     aria2c_ = new Aria2c(this);
