@@ -38,6 +38,7 @@ private:
     void saveSettings() const;
 
     void addUri();
+    void remove();
     void showOptions();
 
 private:

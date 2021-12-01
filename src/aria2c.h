@@ -118,15 +118,18 @@ public:
         addUri(QStringList{ uri }, options);
     }
 
+    void remove(const QString &gid);
+
     void tellAll();
 
 signals:
-    void onDownloadStart(const QString &gid);
-    void onDownloadPause(const QString &gid);
-    void onDownloadStop(const QString &gid);
-    void onDownloadComplete(const QString &gid);
-    void onDownloadError(const QString &gid);
-    void onBtDownloadComplete(const QString &gid);
+    void started(const QString &gid);
+    void paused(const QString &gid);
+    void stopped(const QString &gid);
+    void completed(const QString &gid);
+    void failed(const QString &gid);
+    void btCompleted(const QString &gid);
+    void removed(const QString &gid);
 
     void downloadTold(const DownloadItems &items);
 
@@ -137,6 +140,7 @@ private:
 
     void onConnected();
     void handleMessage(const QString &msg);
+    void handleNotification(const QString &method, const QVariantList &params);
 
     void send(const QJsonDocument &doc);
 

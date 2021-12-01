@@ -120,6 +120,15 @@ void Aria2c::addUri(const QStringList &uris, const QVariantHash &options /*= {}*
 }
 
 
+void Aria2c::remove(const QString &gid)
+{
+    callAsync([this](const QString &, const QVariant result)
+    {
+        emit removed(result.toString());
+    }, QS("aria2.remove"), gid);
+}
+
+
 void Aria2c::tellAll()
 {
     auto handler = std::bind(&Aria2c::handleTellDownload, this, _1, _2);
@@ -147,13 +156,59 @@ void Aria2c::handleMessage(const QString &msg)
     qDebug() << ">>>" << qUtf8Printable(msg);
 #endif
 
-    auto json = QJsonDocument::fromJson(msg.toUtf8());
-    auto obj = json.object().toVariantHash();
-    auto id = obj.value(QS("id")).toString();
-    Q_ASSERT(calls_.contains(id));
+    const auto json = QJsonDocument::fromJson(msg.toUtf8());
+    const auto obj = json.object().toVariantHash();
 
-    auto handler = calls_.take(id);
-    handler(id, obj.value(QS("result")));
+    if (obj.contains(QS("id")))
+    {
+        auto id = obj.value(QS("id")).toString();
+        Q_ASSERT(calls_.contains(id));
+
+        auto handler = calls_.take(id);
+        handler(id, obj.value(QS("result")));
+    }
+    else
+    {
+        const auto method = obj.value(QS("method")).toString();
+        Q_ASSERT(!method.isEmpty());
+        handleNotification(method, obj.value(QS("params")).toList());
+    }
+}
+
+
+void Aria2c::handleNotification(const QString &method, const QVariantList &params)
+{
+    Q_ASSERT(params.length() == 1);
+    const auto gid = params.first().toString();
+
+    if (method == QL("aria2.onDownloadStart"))
+    {
+        emit started(gid);
+    }
+    else if (method == QL("aria2.onDownloadPause"))
+    {
+        emit paused(gid);
+    }
+    else if (method == QL("aria2.onDownloadStop"))
+    {
+        emit stopped(gid);
+    }
+    else if (method == QL("aria2.onDownloadComplete"))
+    {
+        emit completed(gid);
+    }
+    else if (method == QL("aria2.onDownloadError"))
+    {
+        emit failed(gid);
+    }
+    else if (method == QL("aria2.onBtDownloadComplete"))
+    {
+        emit btCompleted(gid);
+    }
+    else
+    {
+        qWarning() << "Unknown notification" << method << params;
+    }
 }
 
 

@@ -49,8 +49,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="168"/>
-        <location filename="downloadtablemodel.cpp" line="172"/>
+        <location filename="downloadtablemodel.cpp" line="198"/>
+        <location filename="downloadtablemodel.cpp" line="202"/>
         <source>%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -144,17 +144,32 @@
     </message>
     <message>
         <location filename="mainwindow.ui" line="155"/>
-        <source>&amp;Add...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.ui" line="160"/>
-        <source>E&amp;xit</source>
+        <source>Main</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="mainwindow.ui" line="168"/>
+        <source>&amp;Add...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="173"/>
+        <source>E&amp;xit</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="181"/>
         <source>&amp;Options...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.ui" line="186"/>
+        <source>&amp;Remove</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="124"/>
+        <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -86,43 +86,48 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
 
     QVariant var;
 
-    if (role == Qt::DisplayRole || role == Qt::EditRole || role == Qt::ToolTipRole)
+    switch (role)
     {
-        const auto &item = items_.at(idx.row());
-
-        switch (idx.column())
+    case Qt::DisplayRole:
+    case Qt::EditRole:
+    case Qt::ToolTipRole:
         {
-        case NameColumn:
-            var = itemName(item);
-            break;
-        case SizeColumn:
-            var = item.totalLength;
-            break;
-        case ProgressColumn:
-            var = item.totalLength > 0 ? item.completedLength * 100 / item.totalLength : 0;
-            break;
-        case StatusColumn:
-            var = static_cast<int>(item.status);
-            break;
-        case DownloadSpeedColumn:
-            var = item.downloadSpeed;
-            break;
-        case UploadSpeedColumn:
-            var = item.uploadSpeed;
-            break;
-        case RemainingTimeColumn:
-            var = item.downloadSpeed > 0 ? (item.totalLength - item.completedLength) / item.downloadSpeed : 0;
-            break;
-        case CreationTimeColumn:
-            //var = item;
-            break;
-        case FinishTimeColumn:
-            //var = tr("Finish Time");
-            break;
+            const auto &item = items_.at(idx.row());
+
+            switch (idx.column())
+            {
+            case NameColumn:
+                var = itemName(item);
+                break;
+            case SizeColumn:
+                var = item.totalLength;
+                break;
+            case ProgressColumn:
+                var = item.totalLength > 0 ? item.completedLength * 100 / item.totalLength : 0;
+                break;
+            case StatusColumn:
+                var = static_cast<int>(item.status);
+                break;
+            case DownloadSpeedColumn:
+                var = item.downloadSpeed;
+                break;
+            case UploadSpeedColumn:
+                var = item.uploadSpeed;
+                break;
+            case RemainingTimeColumn:
+                var = item.downloadSpeed > 0 ? (item.totalLength - item.completedLength) / item.downloadSpeed : 0;
+                break;
+            case CreationTimeColumn:
+                //var = item;
+                break;
+            case FinishTimeColumn:
+                //var = tr("Finish Time");
+                break;
+            }
         }
-    }
-    else if (role == Qt::TextAlignmentRole)
-    {
+        break;
+
+    case Qt::TextAlignmentRole:
         switch (idx.column())
         {
         case SizeColumn:
@@ -135,6 +140,14 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
             var = static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
             break;
         }
+        break;
+
+    case GidRole:
+        {
+            const auto &item = items_.at(idx.row());
+            var = item.gid;
+        }
+        break;
     }
 
     return var;
@@ -148,6 +161,23 @@ void DownloadTableModel::append(const DownloadItems &items)
         beginInsertRows({}, items_.count(), items_.count() + items.count() - 1);
         items_.append(items);
         endInsertRows();
+    }
+}
+
+
+void DownloadTableModel::remove(const QString &gid)
+{
+    for (int i = 0; i < items_.count(); i++)
+    {
+        const auto &item = items_.at(i);
+
+        if (item.gid == gid)
+        {
+            beginRemoveRows({}, i, i);
+            items_.removeAt(i);
+            endRemoveRows();
+            break;
+        }
     }
 }
 

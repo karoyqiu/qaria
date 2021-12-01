@@ -35,6 +35,11 @@ public:
         ColumnCount,
     };
 
+    enum Role
+    {
+        GidRole = Qt::UserRole,
+    };
+
     explicit DownloadTableModel(QObject *parent = nullptr);
 
     // Header:
@@ -54,6 +59,7 @@ public:
     virtual QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const override;
 
     void append(const DownloadItems &items);
+    void remove(const QString &gid);
 
 private:
     static QString fileSizeToString(qint64 bytes);

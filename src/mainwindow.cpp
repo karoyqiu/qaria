@@ -31,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     ui->centralWidget->setStretchFactor(1, 5);
 
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::addUri);
+    connect(ui->actionRemove, &QAction::triggered, this, &MainWindow::remove);
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
 
     model_ = new DownloadTableModel(this);
@@ -48,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
     aria2c_ = new Aria2c(this);
     connect(aria2c_, &Aria2c::downloadTold, model_, &DownloadTableModel::append);
+    connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
 
     aria2c_->start();
 }
@@ -109,6 +111,23 @@ void MainWindow::addUri()
     if (ok && !uri.isEmpty())
     {
         aria2c_->addUri(uri.split(QL('\n'), Qt::SkipEmptyParts));
+    }
+}
+
+
+void MainWindow::remove()
+{
+    auto idx = ui->tableMain->currentIndex();
+
+    if (idx.isValid())
+    {
+        auto answer = QMessageBox::question(this, {}, tr("Do you really want to remove current download?"));
+
+        if (answer == QMessageBox::Yes)
+        {
+            auto gid = idx.data(DownloadTableModel::GidRole).toString();
+            aria2c_->remove(gid);
+        }
     }
 }
 
