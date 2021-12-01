@@ -14,6 +14,7 @@
 #include "ui_mainwindow.h"
 
 #include "aria2c.h"
+#include "datasizedelegate.h"
 #include "downloadtablemodel.h"
 #include "optionsdialog.h"
 
@@ -34,6 +35,14 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
     model_ = new DownloadTableModel(this);
     ui->tableMain->setModel(model_);
+
+    auto *sizeDlgt = new DataSizeDelegate(this);
+    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::SizeColumn, sizeDlgt);
+    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::ProgressColumn, sizeDlgt);
+
+    auto *speedDlgt = new DataSizeDelegate(QS("/s"), this);
+    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::DownloadSpeedColumn, speedDlgt);
+    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::UploadSpeedColumn, speedDlgt);
 
     loadSettings();
 
