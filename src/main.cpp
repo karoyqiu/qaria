@@ -61,19 +61,19 @@ int main(int argc, char *argv[])
     QApplication::setAttribute(Qt::AA_DisableWindowContextHelpButton);
 
     QApplication a(argc, argv);
-    QApplication::setApplicationName(QS("qaria"));
+    QApplication::setApplicationName(QS("qaria2"));
     QApplication::setOrganizationName(QS("karoyqiu"));
     QApplication::setOrganizationDomain(QS("karoyqiu.google.com"));
 
     QTranslator translator;
     QLocale locale;
 
-    if (translator.load(locale, QS("qaria"), QS("_"), QS(":/i18n")))
+    if (translator.load(locale, QS("qaria2"), QS("_"), QS(":/i18n")))
     {
         a.installTranslator(&translator);
     }
 
-    QApplication::setApplicationDisplayName(QApplication::translate("main", "qaria"));
+    QApplication::setApplicationDisplayName(QApplication::translate("main", "qaria2"));
 
     makeQuestions();
 

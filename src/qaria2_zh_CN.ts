@@ -186,6 +186,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="optionsdialog.ui" line="40"/>
+        <location filename="optionsdialog.ui" line="73"/>
+        <source>Browse...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="optionsdialog.ui" line="47"/>
         <source>aria2&amp;c:</source>
         <translation type="unfinished"></translation>
@@ -195,18 +201,12 @@
         <source>Download &amp;Directory:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="optionsdialog.ui" line="40"/>
-        <location filename="optionsdialog.ui" line="73"/>
-        <source>Browse...</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>main</name>
     <message>
         <location filename="main.cpp" line="76"/>
-        <source>qaria</source>
+        <source>qaria2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
