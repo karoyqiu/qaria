@@ -14,6 +14,7 @@
 #include "ui_mainwindow.h"
 
 #include "aria2c.h"
+#include "aria2optionsbuilder.h"
 #include "datasizedelegate.h"
 #include "downloadtablemodel.h"
 #include "optionsdialog.h"

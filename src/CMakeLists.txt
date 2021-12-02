@@ -16,6 +16,7 @@ set(SOURCES
     "aria2c.h" "aria2c.cpp"
     "downloadtablemodel.h" "downloadtablemodel.cpp"
     "datasizedelegate.h" "datasizedelegate.cpp"
+    "aria2optionsbuilder.h"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"
 )
 

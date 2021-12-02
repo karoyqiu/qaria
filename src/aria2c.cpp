@@ -11,6 +11,7 @@
  *
  **************************************************************************************************/
 #include "aria2c.h"
+#include "aria2optionsbuilder.h"
 
 #define GET(item, obj, key)     get(item.key, obj, QS(#key))
 
@@ -146,6 +147,9 @@ QString Aria2c::generateToken()
 
 void Aria2c::onConnected()
 {
+    // 设置全局选项
+    OptionsBuilder opts;
+
     tellAll();
 }
 

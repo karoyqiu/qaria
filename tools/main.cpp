@@ -42,10 +42,59 @@ static QString ToCamelCase(const QString &s)
 static bool isNumeric(const QString &value)
 {
     static const QStringList numerics{
-        QS("n"), QS("num"), QS("sec"), QS("pid"), QS("size"),
+        QS("n"), QS("num"), QS("sec"), QS("pid"),
     };
 
     return numerics.contains(value);
+}
+
+
+static QString valueType(const QString &value)
+{
+    if (value == QL("size"))
+    {
+        return QS("qint64 ");
+    }
+
+    if (isNumeric(value))
+    {
+        return QS("int ");
+    }
+
+    return QS("const QString &");
+}
+
+
+static void writeFunction(QTextStream &in, QTextStream &out, const QString &name,
+                          const QString &valueType, const QString &value)
+{
+    if (name.startsWith(QS("on")))
+    {
+        return;
+    }
+
+    auto line = in.readLine();
+    Q_ASSERT(line.isEmpty());
+    line = in.readLine().trimmed();
+
+    out << "    /*!" << Qt::endl;
+
+    while (!line.isEmpty())
+    {
+        out << "     * " << line << Qt::endl;
+        line = in.readLine().trimmed();
+    }
+
+    out << "     */" << Qt::endl;
+    out << "    void set" << ToCamelCase(name) << "(" << valueType << value;
+
+    if (valueType == QL("bool "))
+    {
+        out << " = true";
+    }
+
+    out << ")" << Qt::endl;
+    out << "    { hash_.insert(QS(\"" << name << "\"), " << value << "); }" << Qt::endl << Qt::endl;
 }
 
 
@@ -82,7 +131,17 @@ static void parseOptions(QFile *input, const QString &outputFilename)
     out << " *" << Qt::endl;
     out << " **************************************************************************************************/" << Qt::endl;
     out << "#pragma once" << Qt::endl;
-    out << "#include <QVariantHash>" << Qt::endl << Qt::endl << Qt::endl;
+    out << "#include <QVariantHash>" << Qt::endl << Qt::endl;
+
+    out << R"(inline constexpr qint64 operator"" _K(quint64 value))" << Qt::endl;
+    out << "{" << Qt::endl;
+    out << "    return value * 1024;" << Qt::endl;
+    out << "}" << Qt::endl << Qt::endl;
+
+    out << R"(inline constexpr qint64 operator"" _M(quint64 value))" << Qt::endl;
+    out << "{" << Qt::endl;
+    out << "    return value * 1024 * 1024;" << Qt::endl;
+    out << "}" << Qt::endl << Qt::endl << Qt::endl;
 
     out << "class OptionsBuilder" << Qt::endl;
     out << "{" << Qt::endl;
@@ -102,46 +161,22 @@ static void parseOptions(QFile *input, const QString &outputFilename)
         }
         else if (line.startsWith(QL(".. option:: ")))
         {
-            static const QRegularExpression withValue(QS(R"(\-\-([a-z-]+)=<([A-Z]+)>)"));
+            static const QRegularExpression withValue(QS(R"(--([a-z-]+)=<([A-Z]+)>)"));
+            static const QRegularExpression withBoolean(QS(R"(--([a-z-]+)\s\[true\|false\])"));
 
             if (line.contains(withValue))
             {
                 auto match = withValue.match(line);
                 auto name = match.captured(1);
-
-                if (name.startsWith(QL("on")))
-                {
-                    continue;
-                }
-
                 auto value = match.captured(2).toLower();
-
-                line = in.readLine();
-                Q_ASSERT(line.isEmpty());
-                line = in.readLine().trimmed();
-
-                out << "    /*!" << Qt::endl;
-
-                while (!line.isEmpty())
-                {
-                    out << "     * " << line << Qt::endl;
-                    line = in.readLine().trimmed();
-                }
-
-                out << "     */" << Qt::endl;
-                out << "    void set" << ToCamelCase(name) << "(";
-
-                if (isNumeric(value))
-                {
-                    out << "int " << value;
-                }
-                else
-                {
-                    out << "const QString &" << value;
-                }
-
-                out << ")" << Qt::endl;
-                out << "    { hash_.insert(QS(\"" << name << "\"), " << value << "); }" << Qt::endl << Qt::endl;
+                auto type = valueType(value);
+                writeFunction(in, out, name, type, value);
+            }
+            else if (line.contains(withBoolean))
+            {
+                auto match = withBoolean.match(line);
+                auto name = match.captured(1);
+                writeFunction(in, out, name, QS("bool "), QS("value"));
             }
         }
     }
