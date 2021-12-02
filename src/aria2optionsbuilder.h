@@ -1,6 +1,6 @@
 ﻿/*! ***********************************************************************************************
  *
- * \file        aria2optionsbuilder.h
+ * \file        C:/Users/karoy/source/repos/qaria/tools/../src/aria2optionsbuilder.h
  * \brief       OptionsBuilder 类头文件。
  * \version     0.1
  * \date        2021-12-02
@@ -12,7 +12,6 @@
 #pragma once
 #include <QVariantHash>
 
-
 inline constexpr qint64 operator"" _K(quint64 value)
 {
     return value * 1024;
@@ -21,6 +20,21 @@ inline constexpr qint64 operator"" _K(quint64 value)
 inline constexpr qint64 operator"" _M(quint64 value)
 {
     return value * 1024 * 1024;
+}
+
+inline constexpr qint64 operator"" _min(quint64 value)
+{
+    return value * 60;
+}
+
+inline constexpr qint64 operator"" _h(quint64 value)
+{
+    return value * 60 * 60;
+}
+
+inline constexpr qint64 operator"" _d(quint64 value)
+{
+    return value * 60 * 60 * 24;
 }
 
 
@@ -71,6 +85,31 @@ public:
     void setMaxConcurrentDownloads(int n)
     { hash_.insert(QS("max-concurrent-downloads"), n); }
 
+    /*!
+     * Check file integrity by validating piece hashes or a hash of entire
+     * file.  This option has effect only in BitTorrent, Metalink downloads
+     * with checksums or HTTP(S)/FTP downloads with
+     * :option:`--checksum` option.  If
+     * piece hashes are provided, this option can detect damaged portions
+     * of a file and re-download them.  If a hash of entire file is
+     * provided, hash check is only done when file has been already
+     * download. This is determined by file length. If hash check fails,
+     * file is re-downloaded from scratch.  If both piece hashes and a hash
+     * of entire file are provided, only piece hashes are used. Default:
+     * ``false``
+     */
+    void setCheckIntegrity(bool value = true)
+    { hash_.insert(QS("check-integrity"), value); }
+
+    /*!
+     * Continue downloading a partially downloaded file.
+     * Use this option to resume a download started by a web browser or another
+     * program which downloads files sequentially from the beginning.
+     * Currently this option is only applicable to HTTP(S)/FTP downloads.
+     */
+    void setContinue(bool value = true)
+    { hash_.insert(QS("continue"), value); }
+
     //////////////////////////////////////////////////////////////////////////
     //
     // HTTP/FTP/SFTP Options
@@ -119,6 +158,15 @@ public:
      */
     void setConnectTimeout(int sec)
     { hash_.insert(QS("connect-timeout"), sec); }
+
+    /*!
+     * If ``true`` is given, aria2 just checks whether the remote file is
+     * available and doesn't download data. This option has effect on
+     * HTTP/FTP download.  BitTorrent downloads are canceled if ``true`` is
+     * specified.  Default: ``false``
+     */
+    void setDryRun(bool value = true)
+    { hash_.insert(QS("dry-run"), value); }
 
     /*!
      * Close connection if download speed is lower than or equal to this
@@ -177,6 +225,12 @@ public:
     { hash_.insert(QS("netrc-path"), file); }
 
     /*!
+     * Disables netrc support. netrc support is enabled by default.
+     */
+    void setNoNetrc(bool value = true)
+    { hash_.insert(QS("no-netrc"), value); }
+
+    /*!
      * Specify a comma separated list of host names, domains and network addresses
      * with or without a subnet mask where no proxy should be used.
      */
@@ -200,6 +254,21 @@ public:
      */
     void setProxyMethod(const QString &method)
     { hash_.insert(QS("proxy-method"), method); }
+
+    /*!
+     * Retrieve timestamp of the remote file from the remote HTTP/FTP
+     * server and if it is available, apply it to the local file.
+     * Default: ``false``
+     */
+    void setRemoteTime(bool value = true)
+    { hash_.insert(QS("remote-time"), value); }
+
+    /*!
+     * Reuse already used URIs if no unused URIs are left.
+     * Default: ``true``
+     */
+    void setReuseUri(bool value = true)
+    { hash_.insert(QS("reuse-uri"), value); }
 
     /*!
      * Set the seconds to wait between retries. When ``SEC > 0``, aria2 will
@@ -326,6 +395,40 @@ public:
     { hash_.insert(QS("certificate"), file); }
 
     /*!
+     * Verify the peer using certificates specified in :option:`--ca-certificate` option.
+     * Default: ``true``
+     */
+    void setCheckCertificate(bool value = true)
+    { hash_.insert(QS("check-certificate"), value); }
+
+    /*!
+     * Send ``Accept: deflate, gzip`` request header and inflate response if
+     * remote server responds with ``Content-Encoding: gzip`` or
+     * ``Content-Encoding: deflate``.  Default: ``false``
+     */
+    void setHttpAcceptGzip(bool value = true)
+    { hash_.insert(QS("http-accept-gzip"), value); }
+
+    /*!
+     * Send HTTP authorization header only when it is requested by the
+     * server. If ``false`` is set, then authorization header is always sent
+     * to the server.  There is an exception: if user name and password are
+     * embedded in URI, authorization header is always sent to the server
+     * regardless of this option.  Default: ``false``
+     */
+    void setHttpAuthChallenge(bool value = true)
+    { hash_.insert(QS("http-auth-challenge"), value); }
+
+    /*!
+     * Send ``Cache-Control: no-cache`` and ``Pragma: no-cache`` header to avoid
+     * cached content.  If ``false`` is given, these headers are not sent
+     * and you can add Cache-Control header with a directive you like
+     * using :option:`--header` option. Default: ``false``
+     */
+    void setHttpNoCache(bool value = true)
+    { hash_.insert(QS("http-no-cache"), value); }
+
+    /*!
      * Set HTTP user. This affects all URIs.
      */
     void setHttpUser(const QString &user)
@@ -398,6 +501,20 @@ public:
     { hash_.insert(QS("referer"), referer); }
 
     /*!
+     * Enable HTTP/1.1 persistent connection.
+     * Default: ``true``
+     */
+    void setEnableHttpKeepAlive(bool value = true)
+    { hash_.insert(QS("enable-http-keep-alive"), value); }
+
+    /*!
+     * Enable HTTP/1.1 pipelining.
+     * Default: ``false``
+     */
+    void setEnableHttpPipelining(bool value = true)
+    { hash_.insert(QS("enable-http-pipelining"), value); }
+
+    /*!
      * Append HEADER to HTTP request header.
      * You can use this option repeatedly to specify more than one header:
      */
@@ -420,6 +537,13 @@ public:
      */
     void setSaveCookies(const QString &file)
     { hash_.insert(QS("save-cookies"), file); }
+
+    /*!
+     * Use HEAD method for the first request to the HTTP server.
+     * Default: ``false``
+     */
+    void setUseHead(bool value = true)
+    { hash_.insert(QS("use-head"), value); }
 
     //////////////////////////////////////////////////////////////////////////
     //
@@ -444,6 +568,14 @@ public:
      */
     void setFtpPasswd(const QString &passwd)
     { hash_.insert(QS("ftp-passwd"), passwd); }
+
+    /*!
+     * Use the passive mode in FTP.
+     * If ``false`` is given, the active mode will be used.
+     * Default: ``true``
+     */
+    void setFtpPasv(bool value = true)
+    { hash_.insert(QS("ftp-pasv"), value); }
 
     /*!
      * Use a proxy server for FTP.  To override a previously defined proxy,
@@ -474,6 +606,13 @@ public:
     { hash_.insert(QS("ftp-type"), type); }
 
     /*!
+     * Reuse connection in FTP.
+     * Default: ``true``
+     */
+    void setFtpReuseConnection(bool value = true)
+    { hash_.insert(QS("ftp-reuse-connection"), value); }
+
+    /*!
      * Set checksum for SSH host public key. TYPE is hash type. The
      * supported hash type is ``sha-1`` or ``md5``. DIGEST is hex
      * digest. For example:
@@ -502,11 +641,49 @@ public:
     void setSelectFile(const QString &index)
     { hash_.insert(QS("select-file"), index); }
 
+    /*!
+     * Print file listing of ".torrent", ".meta4" and ".metalink" file and exit.
+     * In case of ".torrent" file, additional information
+     * (infohash, piece length, etc) is also printed.
+     */
+    void setShowFiles(bool value = true)
+    { hash_.insert(QS("show-files"), value); }
+
     //////////////////////////////////////////////////////////////////////////
     //
     // BitTorrent Specific Options
     //
     //////////////////////////////////////////////////////////////////////////
+
+    /*!
+     * Exclude seed only downloads when counting concurrent active
+     * downloads (See :option:`-j` option).  This means that if ``-j3`` is
+     * given and this option is turned on and 3 downloads are active and
+     * one of those enters seed mode, then it is excluded from active
+     * download count (thus it becomes 2), and the next download waiting in
+     * queue gets started. But be aware that seeding item is still
+     * recognized as active download in RPC method.  Default: ``false``
+     */
+    void setBtDetachSeedOnly(bool value = true)
+    { hash_.insert(QS("bt-detach-seed-only"), value); }
+
+    /*!
+     * Allow hook command invocation after hash check (see :option:`-V`
+     * option) in BitTorrent download. By default, when hash check
+     * succeeds, the command given by :option:`--on-bt-download-complete`
+     * is executed. To disable this action, give ``false`` to this option.
+     * Default: ``true``
+     */
+    void setBtEnableHookAfterHashCheck(bool value = true)
+    { hash_.insert(QS("bt-enable-hook-after-hash-check"), value); }
+
+    /*!
+     * Enable Local Peer Discovery.  If a private flag is set in a torrent,
+     * aria2 doesn't use this feature for that download even if ``true`` is
+     * given.  Default: ``false``
+     */
+    void setBtEnableLpd(bool value = true)
+    { hash_.insert(QS("bt-enable-lpd"), value); }
 
     /*!
      * Comma separated list of BitTorrent tracker's announce URI to
@@ -528,6 +705,37 @@ public:
      */
     void setBtExternalIp(const QString &ipaddress)
     { hash_.insert(QS("bt-external-ip"), ipaddress); }
+
+    /*!
+     * Requires BitTorrent message payload encryption with arc4.  This is a
+     * shorthand of :option:`--bt-require-crypto`
+     * :option:`--bt-min-crypto-level`\=arc4.  This option does not change
+     * the option value of those options.  If ``true`` is given, deny
+     * legacy BitTorrent handshake and only use Obfuscation handshake and
+     * always encrypt message payload.  Default: ``false``
+     */
+    void setBtForceEncryption(bool value = true)
+    { hash_.insert(QS("bt-force-encryption"), value); }
+
+    /*!
+     * If ``true`` is given, after hash check using :option:`--check-integrity <-V>` option and
+     * file is complete, continue to seed file. If you want to check file
+     * and download it only when it is damaged or incomplete, set this
+     * option to ``false``.  This option has effect only on BitTorrent download.
+     * Default: ``true``
+     */
+    void setBtHashCheckSeed(bool value = true)
+    { hash_.insert(QS("bt-hash-check-seed"), value); }
+
+    /*!
+     * Before getting torrent metadata from DHT when downloading with
+     * magnet link, first try to read file saved by
+     * :option:`--bt-save-metadata` option.  If it is successful, then skip
+     * downloading metadata from DHT.
+     * Default: ``false``
+     */
+    void setBtLoadSavedMetadata(bool value = true)
+    { hash_.insert(QS("bt-load-saved-metadata"), value); }
 
     /*!
      * Use given interface for Local Peer Discovery. If this option is not
@@ -555,6 +763,35 @@ public:
     { hash_.insert(QS("bt-max-peers"), num); }
 
     /*!
+     * Download meta data only. The file(s) described in meta data will not
+     * be downloaded. This option has effect only when BitTorrent Magnet
+     * URI is used. See also :option:`--bt-save-metadata` option.  Default: ``false``
+     */
+    void setBtMetadataOnly(bool value = true)
+    { hash_.insert(QS("bt-metadata-only"), value); }
+
+    /*!
+     * Removes the unselected files when download is completed in
+     * BitTorrent. To select files, use
+     * :option:`--select-file` option. If it is
+     * not used, all files are assumed to be selected. Please use this
+     * option with care because it will actually remove files from your
+     * disk.
+     * Default: ``false``
+     */
+    void setBtRemoveUnselectedFile(bool value = true)
+    { hash_.insert(QS("bt-remove-unselected-file"), value); }
+
+    /*!
+     * If ``true`` is given, aria2 doesn't accept and establish connection with legacy
+     * BitTorrent handshake(\\19BitTorrent protocol).
+     * Thus aria2 always uses Obfuscation handshake.
+     * Default: ``false``
+     */
+    void setBtRequireCrypto(bool value = true)
+    { hash_.insert(QS("bt-require-crypto"), value); }
+
+    /*!
      * If the whole download speed of every torrent is lower than SPEED,
      * aria2 temporarily increases the number of peers to try for more
      * download speed. Configuring this option with your preferred download
@@ -564,6 +801,24 @@ public:
      */
     void setBtRequestPeerSpeedLimit(const QString &speed)
     { hash_.insert(QS("bt-request-peer-speed-limit"), speed); }
+
+    /*!
+     * Save meta data as ".torrent" file. This option has effect only when
+     * BitTorrent Magnet URI is used.  The file name is hex encoded info
+     * hash with suffix ".torrent". The directory to be saved is the same
+     * directory where download file is saved. If the same file already
+     * exists, meta data is not saved. See also :option:`--bt-metadata-only`
+     * option. Default: ``false``
+     */
+    void setBtSaveMetadata(bool value = true)
+    { hash_.insert(QS("bt-save-metadata"), value); }
+
+    /*!
+     * Seed previously downloaded files without verifying piece hashes.
+     * Default: ``false``
+     */
+    void setBtSeedUnverified(bool value = true)
+    { hash_.insert(QS("bt-seed-unverified"), value); }
 
     /*!
      * Stop BitTorrent download if download speed is 0 in consecutive SEC
@@ -635,6 +890,22 @@ public:
      */
     void setDhtMessageTimeout(int sec)
     { hash_.insert(QS("dht-message-timeout"), sec); }
+
+    /*!
+     * Enable IPv4 DHT functionality. It also enables UDP tracker
+     * support. If a private flag is set in a torrent, aria2 doesn't use
+     * DHT for that download even if ``true`` is given.  Default: ``true``
+     */
+    void setEnableDht(bool value = true)
+    { hash_.insert(QS("enable-dht"), value); }
+
+    /*!
+     * Enable Peer Exchange extension. If a private flag is set in a torrent, this
+     * feature is disabled for that download even if ``true`` is given.
+     * Default: ``true``
+     */
+    void setEnablePeerExchange(bool value = true)
+    { hash_.insert(QS("enable-peer-exchange"), value); }
 
     /*!
      * Set file path for file with index=INDEX. You can find the file index
@@ -743,6 +1014,16 @@ public:
     void setMetalinkPreferredProtocol(const QString &proto)
     { hash_.insert(QS("metalink-preferred-protocol"), proto); }
 
+    /*!
+     * If ``true`` is given and several protocols are available for a mirror in a
+     * metalink file, aria2 uses one of them.
+     * Use :option:`--metalink-preferred-protocol` option to specify the preference of
+     * protocol.
+     * Default: ``true``
+     */
+    void setMetalinkEnableUniqueProtocol(bool value = true)
+    { hash_.insert(QS("metalink-enable-unique-protocol"), value); }
+
     //////////////////////////////////////////////////////////////////////////
     //
     // RPC Options
@@ -750,11 +1031,55 @@ public:
     //////////////////////////////////////////////////////////////////////////
 
     /*!
+     * Enable JSON-RPC/XML-RPC server.  It is strongly recommended to set
+     * secret authorization token using :option:`--rpc-secret` option.  See
+     * also :option:`--rpc-listen-port` option.  Default: ``false``
+     */
+    void setEnableRpc(bool value = true)
+    { hash_.insert(QS("enable-rpc"), value); }
+
+    /*!
+     * Pause download after added. This option is effective only when
+     * :option:`--enable-rpc=true <--enable-rpc>` is given.
+     * Default: ``false``
+     */
+    void setPause(bool value = true)
+    { hash_.insert(QS("pause"), value); }
+
+    /*!
+     * Pause downloads created as a result of metadata download. There are
+     * 3 types of metadata downloads in aria2: (1) downloading .torrent
+     * file. (2) downloading torrent metadata using magnet link. (3)
+     * downloading metalink file.  These metadata downloads will generate
+     * downloads using their metadata. This option pauses these subsequent
+     * downloads. This option is effective only when
+     * :option:`--enable-rpc=true <--enable-rpc>` is given.
+     * Default: ``false``
+     */
+    void setPauseMetadata(bool value = true)
+    { hash_.insert(QS("pause-metadata"), value); }
+
+    /*!
+     * Add Access-Control-Allow-Origin header field with value ``*`` to the
+     * RPC response.
+     * Default: ``false``
+     */
+    void setRpcAllowOriginAll(bool value = true)
+    { hash_.insert(QS("rpc-allow-origin-all"), value); }
+
+    /*!
      * Use the certificate in FILE for RPC server. The certificate must be
      * either in PKCS12 (.p12, .pfx) or in PEM format.
      */
     void setRpcCertificate(const QString &file)
     { hash_.insert(QS("rpc-certificate"), file); }
+
+    /*!
+     * Listen incoming JSON-RPC/XML-RPC requests on all network interfaces. If false
+     * is given, listen only on local loopback interface.  Default: ``false``
+     */
+    void setRpcListenAll(bool value = true)
+    { hash_.insert(QS("rpc-listen-all"), value); }
 
     /*!
      * Specify a port number for JSON-RPC/XML-RPC server to listen to.  Possible
@@ -785,11 +1110,33 @@ public:
     { hash_.insert(QS("rpc-private-key"), file); }
 
     /*!
+     * Save the uploaded torrent or metalink meta data in the directory
+     * specified by :option:`--dir` option. The file name consists of SHA-1
+     * hash hex string of meta data plus extension. For torrent, the
+     * extension is '.torrent'. For metalink, it is '.meta4'.  If false is
+     * given to this option, the downloads added by
+     * :func:`aria2.addTorrent` or :func:`aria2.addMetalink` will not be
+     * saved by :option:`--save-session` option. Default: ``true``
+     */
+    void setRpcSaveUploadMetadata(bool value = true)
+    { hash_.insert(QS("rpc-save-upload-metadata"), value); }
+
+    /*!
      * Set RPC secret authorization token. Read :ref:`rpc_auth` to know
      * how this option value is used.
      */
     void setRpcSecret(const QString &token)
     { hash_.insert(QS("rpc-secret"), token); }
+
+    /*!
+     * RPC transport will be encrypted by SSL/TLS.  The RPC clients must
+     * use https scheme to access the server. For WebSocket client, use wss
+     * scheme. Use :option:`--rpc-certificate` and
+     * :option:`--rpc-private-key` options to specify the server
+     * certificate and private key.
+     */
+    void setRpcSecure(bool value = true)
+    { hash_.insert(QS("rpc-secure"), value); }
 
     /*!
      * Set JSON-RPC/XML-RPC user.
@@ -804,6 +1151,42 @@ public:
     //////////////////////////////////////////////////////////////////////////
 
     /*!
+     * Restart download from scratch if the corresponding control file
+     * doesn't exist.  See also :option:`--auto-file-renaming` option.  Default:
+     * ``false``
+     */
+    void setAllowOverwrite(bool value = true)
+    { hash_.insert(QS("allow-overwrite"), value); }
+
+    /*!
+     * If false is given, aria2 aborts download when a piece length is different
+     * from one in a control file.
+     * If true is given, you can proceed but some download progress will be lost.
+     * Default: ``false``
+     */
+    void setAllowPieceLengthChange(bool value = true)
+    { hash_.insert(QS("allow-piece-length-change"), value); }
+
+    /*!
+     * Always resume download. If ``true`` is given, aria2 always tries to
+     * resume download and if resume is not possible, aborts download.  If
+     * ``false`` is given, when all given URIs do not support resume or aria2
+     * encounters ``N`` URIs which does not support resume (``N`` is the value
+     * specified using :option:`--max-resume-failure-tries` option), aria2
+     * downloads file from scratch.  See :option:`--max-resume-failure-tries`
+     * option. Default: ``true``
+     */
+    void setAlwaysResume(bool value = true)
+    { hash_.insert(QS("always-resume"), value); }
+
+    /*!
+     * Enable asynchronous DNS.
+     * Default: ``true``
+     */
+    void setAsyncDns(bool value = true)
+    { hash_.insert(QS("async-dns"), value); }
+
+    /*!
      * Comma separated list of DNS server address used in asynchronous DNS
      * resolver. Usually asynchronous DNS resolver reads DNS server
      * addresses from ``/etc/resolv.conf``. When this option is used, it uses
@@ -816,6 +1199,16 @@ public:
     { hash_.insert(QS("async-dns-server"), ipaddress); }
 
     /*!
+     * Rename file name if the same file already exists.
+     * This option works only in HTTP(S)/FTP download.
+     * The new file name has a dot and a number(1..9999) appended after the
+     * name, but before the file extension, if any.
+     * Default: ``true``
+     */
+    void setAutoFileRenaming(bool value = true)
+    { hash_.insert(QS("auto-file-renaming"), value); }
+
+    /*!
      * Save a control file(\*.aria2) every SEC seconds.
      * If ``0`` is given, a control file is not saved during download. aria2 saves a
      * control file when it stops regardless of the value.
@@ -824,6 +1217,21 @@ public:
      */
     void setAutoSaveInterval(int sec)
     { hash_.insert(QS("auto-save-interval"), sec); }
+
+    /*!
+     * Download file only when the local file is older than remote
+     * file. This function only works with HTTP(S) downloads only.  It does
+     * not work if file size is specified in Metalink. It also ignores
+     * Content-Disposition header.  If a control file exists, this option
+     * will be ignored.  This function uses If-Modified-Since header to get
+     * only newer file conditionally. When getting modification time of
+     * local file, it uses user supplied file name (see :option:`--out <-o>` option) or
+     * file name part in URI if :option:`--out <-o>` is not specified.
+     * To overwrite existing file, :option:`--allow-overwrite` is required.
+     * Default: ``false``
+     */
+    void setConditionalGet(bool value = true)
+    { hash_.insert(QS("conditional-get"), value); }
 
     /*!
      * Change the configuration file path to PATH.
@@ -839,6 +1247,26 @@ public:
      */
     void setConsoleLogLevel(const QString &level)
     { hash_.insert(QS("console-log-level"), level); }
+
+    /*!
+     * Run as daemon. The current working directory will be changed to ``/``
+     * and standard input, standard output and standard error will be
+     * redirected to ``/dev/null``. Default: ``false``
+     */
+    void setDaemon(bool value = true)
+    { hash_.insert(QS("daemon"), value); }
+
+    /*!
+     * If ``true`` is given, aria2 does not read all URIs and options from file
+     * specified by :option:`--input-file <-i>` option at startup,
+     * but it reads one by one when it
+     * needs later. This may reduce memory usage if input file contains a
+     * lot of URIs to download.  If ``false`` is given, aria2 reads all URIs
+     * and options at startup.
+     * Default: ``false``
+     */
+    void setDeferredInput(bool value = true)
+    { hash_.insert(QS("deferred-input"), value); }
 
     /*!
      * Enable disk cache. If SIZE is ``0``, the disk cache is
@@ -888,6 +1316,20 @@ public:
     { hash_.insert(QS("rlimit-nofile"), num); }
 
     /*!
+     * Enable color output for a terminal.
+     * Default: ``true``
+     */
+    void setEnableColor(bool value = true)
+    { hash_.insert(QS("enable-color"), value); }
+
+    /*!
+     * Map files into memory. This option may not work if the file space
+     * is not pre-allocated. See :option:`--file-allocation`.
+     */
+    void setEnableMmap(bool value = true)
+    { hash_.insert(QS("enable-mmap"), value); }
+
+    /*!
      * Specify the method for polling events.  The possible values are
      * ``epoll``, ``kqueue``, ``port``, ``poll`` and ``select``.  For each ``epoll``,
      * ``kqueue``, ``port`` and ``poll``, it is available if system supports it.
@@ -920,6 +1362,25 @@ public:
     { hash_.insert(QS("file-allocation"), method); }
 
     /*!
+     * Save download with :option:`--save-session <--save-session>` option
+     * even if the download is completed or removed. This option also saves
+     * control file in that situations. This may be useful to save
+     * BitTorrent seeding which is recognized as completed state.
+     * Default: ``false``
+     */
+    void setForceSave(bool value = true)
+    { hash_.insert(QS("force-save"), value); }
+
+    /*!
+     * Save download with :option:`--save-session <--save-session>` option
+     * even if the file was not found on the server. This option also saves
+     * control file in that situations.
+     * Default: ``true``
+     */
+    void setSaveNotFound(bool value = true)
+    { hash_.insert(QS("save-not-found"), value); }
+
+    /*!
      * Set GID manually. aria2 identifies each download by the ID called
      * GID. The GID must be hex string of 16 characters, thus [0-9a-fA-F]
      * are allowed and leading zeros must not be stripped. The GID all 0 is
@@ -933,12 +1394,39 @@ public:
     { hash_.insert(QS("gid"), gid); }
 
     /*!
+     * If ``true`` is given, after hash check using
+     * :option:`--check-integrity <-V>` option,
+     * abort download whether or not download is complete.
+     * Default: ``false``
+     */
+    void setHashCheckOnly(bool value = true)
+    { hash_.insert(QS("hash-check-only"), value); }
+
+    /*!
+     * Print sizes and speed in human readable format (e.g., 1.2Ki, 3.4Mi)
+     * in the console readout. Default: ``true``
+     */
+    void setHumanReadable(bool value = true)
+    { hash_.insert(QS("human-readable"), value); }
+
+    /*!
      * Bind sockets to given interface. You can specify interface name, IP
      * address and host name.
      * Possible Values: interface, IP address, host name
      */
     void setInterface(const QString &itfc)
     { hash_.insert(QS("interface"), itfc); }
+
+    /*!
+     * Keep unfinished download results even if doing so exceeds
+     * :option:`--max-download-result`.  This is useful if all unfinished
+     * downloads must be saved in session file (see
+     * :option:`--save-session` option).  Please keep in mind that there is
+     * no upper bound to the number of unfinished download result to keep.
+     * If that is undesirable, turn this option off.  Default: ``true``
+     */
+    void setKeepUnfinishedDownloadResult(bool value = true)
+    { hash_.insert(QS("keep-unfinished-download-result"), value); }
 
     /*!
      * Set maximum number of download result kept in memory. The download
@@ -1015,12 +1503,33 @@ public:
     { hash_.insert(QS("piece-length"), length); }
 
     /*!
+     * Show console readout. Default: ``true``
+     */
+    void setShowConsoleReadout(bool value = true)
+    { hash_.insert(QS("show-console-readout"), value); }
+
+    /*!
+     * Redirect all console output that would be otherwise printed in
+     * stdout to stderr.  Default: ``false``
+     */
+    void setStderr(bool value = true)
+    { hash_.insert(QS("stderr"), value); }
+
+    /*!
      * Set interval in seconds to output download progress summary.
      * Setting ``0`` suppresses the output.
      * Default: ``60``
      */
     void setSummaryInterval(int sec)
     { hash_.insert(QS("summary-interval"), sec); }
+
+    /*!
+     * Fetch URIs in the command-line sequentially and download each URI in a
+     * separate session, like the usual command-line download utilities.
+     * Default: ``false``
+     */
+    void setForceSequential(bool value = true)
+    { hash_.insert(QS("force-sequential"), value); }
 
     /*!
      * Set max overall download speed in bytes/sec.  ``0`` means
@@ -1041,12 +1550,55 @@ public:
     { hash_.insert(QS("max-download-limit"), speed); }
 
     /*!
+     * Disable loading aria2.conf file.
+     */
+    void setNoConf(bool value = true)
+    { hash_.insert(QS("no-conf"), value); }
+
+    /*!
      * No file allocation is made for files whose size is smaller than SIZE.
      * You can append ``K`` or ``M`` (1K = 1024, 1M = 1024K).
      * Default: ``5M``
      */
     void setNoFileAllocationLimit(qint64 size)
     { hash_.insert(QS("no-file-allocation-limit"), size); }
+
+    /*!
+     * Enable parameterized URI support.
+     * You can specify set of parts: ``http://{sv1,sv2,sv3}/foo.iso``.
+     * Also you can specify numeric sequences with step counter:
+     * ``http://host/image[000-100:2].img``.
+     * A step counter can be omitted.
+     * If all URIs do not point to the same file, such as the second example above,
+     * -Z option is required.
+     * Default: ``false``
+     */
+    void setParameterizedUri(bool value = true)
+    { hash_.insert(QS("parameterized-uri"), value); }
+
+    /*!
+     * Make aria2 quiet (no console output).
+     * Default: ``false``
+     */
+    void setQuiet(bool value = true)
+    { hash_.insert(QS("quiet"), value); }
+
+    /*!
+     * Validate chunk of data by calculating checksum while downloading a file if
+     * chunk checksums are provided.
+     * Default: ``true``
+     */
+    void setRealtimeChunkChecksum(bool value = true)
+    { hash_.insert(QS("realtime-chunk-checksum"), value); }
+
+    /*!
+     * Remove control file before download. Using with
+     * :option:`--allow-overwrite=true, <--allow-overwrite>` download always starts from
+     * scratch. This will be useful for users behind proxy server which
+     * disables resume.
+     */
+    void setRemoveControlFile(bool value = true)
+    { hash_.insert(QS("remove-control-file"), value); }
 
     /*!
      * Save error/unfinished downloads to FILE on exit.  You can pass this
@@ -1096,6 +1648,13 @@ public:
      */
     void setStopWithProcess(int pid)
     { hash_.insert(QS("stop-with-process"), pid); }
+
+    /*!
+     * Truncate console readout to fit in a single line.
+     * Default: ``true``
+     */
+    void setTruncateConsoleReadout(bool value = true)
+    { hash_.insert(QS("truncate-console-readout"), value); }
 
 
     const QVariantHash &options() const { return hash_; }

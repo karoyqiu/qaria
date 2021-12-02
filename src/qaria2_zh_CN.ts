@@ -168,7 +168,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="125"/>
+        <location filename="mainwindow.cpp" line="110"/>
+        <source>Input the URL to download</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="126"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>

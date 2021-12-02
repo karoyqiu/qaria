@@ -85,8 +85,15 @@ static void writeFunction(QTextStream &in, QTextStream &out, const QString &name
         line = in.readLine().trimmed();
     }
 
+    QString v = value;
+
+    if (value == QL("interface"))
+    {
+        v = QS("itfc");
+    }
+
     out << "     */" << Qt::endl;
-    out << "    void set" << ToCamelCase(name) << "(" << valueType << value;
+    out << "    void set" << ToCamelCase(name) << "(" << valueType << v;
 
     if (valueType == QL("bool "))
     {
@@ -94,7 +101,7 @@ static void writeFunction(QTextStream &in, QTextStream &out, const QString &name
     }
 
     out << ")" << Qt::endl;
-    out << "    { hash_.insert(QS(\"" << name << "\"), " << value << "); }" << Qt::endl << Qt::endl;
+    out << "    { hash_.insert(QS(\"" << name << "\"), " << v << "); }" << Qt::endl << Qt::endl;
 }
 
 
@@ -141,6 +148,21 @@ static void parseOptions(QFile *input, const QString &outputFilename)
     out << R"(inline constexpr qint64 operator"" _M(quint64 value))" << Qt::endl;
     out << "{" << Qt::endl;
     out << "    return value * 1024 * 1024;" << Qt::endl;
+    out << "}" << Qt::endl << Qt::endl;
+
+    out << R"(inline constexpr qint64 operator"" _min(quint64 value))" << Qt::endl;
+    out << "{" << Qt::endl;
+    out << "    return value * 60;" << Qt::endl;
+    out << "}" << Qt::endl << Qt::endl;
+
+    out << R"(inline constexpr qint64 operator"" _h(quint64 value))" << Qt::endl;
+    out << "{" << Qt::endl;
+    out << "    return value * 60 * 60;" << Qt::endl;
+    out << "}" << Qt::endl << Qt::endl;
+
+    out << R"(inline constexpr qint64 operator"" _d(quint64 value))" << Qt::endl;
+    out << "{" << Qt::endl;
+    out << "    return value * 60 * 60 * 24;" << Qt::endl;
     out << "}" << Qt::endl << Qt::endl << Qt::endl;
 
     out << "class OptionsBuilder" << Qt::endl;
@@ -221,7 +243,7 @@ int main(int argc, char *argv[])
     QFileInfo info(file.fileName());
     auto dir = info.dir();
 
-    parseOptions(&file, dir.absoluteFilePath(QS("aria2options.h")));
+    parseOptions(&file, dir.absoluteFilePath(QS("../src/aria2optionsbuilder.h")));
 
     return 0;
 }

@@ -16,7 +16,6 @@
 #define GET(item, obj, key)     get(item.key, obj, QS(#key))
 
 using std::placeholders::_1;
-using std::placeholders::_2;
 
 template<typename T>
 static inline void get(T &value, const QVariantHash &obj, const QString &key)
@@ -59,6 +58,44 @@ static DownloadStatus toStatus(const QString &s)
     Q_ASSERT(map.contains(s));
     return map.value(s);
 }
+
+static DownloadItem toItem(const QVariant &var)
+{
+    DownloadItem item;
+    const auto obj = var.toHash();
+    GET(item, obj, gid);
+    GET(item, obj, totalLength);
+    GET(item, obj, completedLength);
+    GET(item, obj, uploadLength);
+    GET(item, obj, downloadSpeed);
+    GET(item, obj, uploadSpeed);
+    GET(item, obj, errorCode);
+    GET(item, obj, errorMessage);
+    GET(item, obj, dir);
+
+    auto status = obj.value(QS("status")).toString();
+    item.status = toStatus(status);
+
+    const auto files = obj.value(QS("files")).toList();
+
+    for (const auto &f : files)
+    {
+        DownloadFile df;
+        const auto fobj = f.toHash();
+        GET(df, fobj, index);
+        GET(df, fobj, path);
+        GET(df, fobj, length);
+        GET(df, fobj, completedLength);
+        GET(df, fobj, selected);
+        GET(df, fobj, index);
+
+        item.files.append(df);
+    }
+
+    return item;
+}
+
+static inline void dontCare(const QVariant &) { }
 
 
 Aria2c::Aria2c(QObject *parent /*= nullptr*/)
@@ -115,15 +152,16 @@ void Aria2c::start()
 }
 
 
-void Aria2c::addUri(const QStringList &uris, const QVariantHash &options /*= {}*/)
+void Aria2c::addUri(const QString &uris, const QVariantHash &options /*= {}*/)
 {
-    //callAsync(QS("aria2.addUri"), uris, options);
+    callAsync(std::bind(&Aria2c::handleAdd, this, _1),
+              QS("aria2.addUri"), QStringList{ uris }, options);
 }
 
 
 void Aria2c::remove(const QString &gid)
 {
-    callAsync([this](const QString &, const QVariant result)
+    callAsync([this](const QVariant result)
     {
         emit removed(result.toString());
     }, QS("aria2.remove"), gid);
@@ -132,7 +170,7 @@ void Aria2c::remove(const QString &gid)
 
 void Aria2c::tellAll()
 {
-    auto handler = std::bind(&Aria2c::handleTellDownload, this, _1, _2);
+    auto handler = std::bind(&Aria2c::handleTellDownload, this, _1);
     callAsync(handler, QS("aria2.tellActive"));
     callAsync(handler, QS("aria2.tellWaiting"), 0, 1024);
     callAsync(handler, QS("aria2.tellStopped"), 0, 1024);
@@ -148,7 +186,11 @@ QString Aria2c::generateToken()
 void Aria2c::onConnected()
 {
     // 设置全局选项
+    QSettings settings;
     OptionsBuilder opts;
+    opts.setDir(settings.value(QS("dir")).toString());
+    opts.setPauseMetadata(true);
+    callAsync(dontCare, QS("aria2.changeGlobalOption"), opts.options());
 
     tellAll();
 }
@@ -169,7 +211,7 @@ void Aria2c::handleMessage(const QString &msg)
         Q_ASSERT(calls_.contains(id));
 
         auto handler = calls_.take(id);
-        handler(id, obj.value(QS("result")));
+        handler(obj.value(QS("result")));
     }
     else
     {
@@ -229,47 +271,26 @@ void Aria2c::send(const QJsonDocument &doc)
 }
 
 
-void Aria2c::handleTellDownload(const QString &id, const QVariant &result)
+void Aria2c::handleAdd(const QVariant &result)
 {
-    Q_UNUSED(id);
+    auto gid = result.toString();
+    callAsync([this](const QVariant &var)
+    {
+        auto item = toItem(var);
+        emit added({ item });
+    }, QS("aria2.tellStatus"), gid);
+}
+
+
+void Aria2c::handleTellDownload(const QVariant &result)
+{
     const auto list = result.toList();
     DownloadItems items;
 
-    for (const auto &r : list)
+    for (const auto &var : list)
     {
-        DownloadItem item;
-        const auto obj = r.toHash();
-        GET(item, obj, gid);
-        GET(item, obj, totalLength);
-        GET(item, obj, completedLength);
-        GET(item, obj, uploadLength);
-        GET(item, obj, downloadSpeed);
-        GET(item, obj, uploadSpeed);
-        GET(item, obj, errorCode);
-        GET(item, obj, errorMessage);
-        GET(item, obj, dir);
-
-        auto status = obj.value(QS("status")).toString();
-        item.status = toStatus(status);
-
-        const auto files = obj.value(QS("files")).toList();
-
-        for (const auto &f : files)
-        {
-            DownloadFile df;
-            const auto fobj = f.toHash();
-            GET(df, fobj, index);
-            GET(df, fobj, path);
-            GET(df, fobj, length);
-            GET(df, fobj, completedLength);
-            GET(df, fobj, selected);
-            GET(df, fobj, index);
-
-            item.files.append(df);
-        }
-
-        items.append(item);
+        items.append(toItem(var));
     }
 
-    emit downloadTold(items);
+    emit added(items);
 }

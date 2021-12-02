@@ -49,7 +49,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     loadSettings();
 
     aria2c_ = new Aria2c(this);
-    connect(aria2c_, &Aria2c::downloadTold, model_, &DownloadTableModel::append);
+    connect(aria2c_, &Aria2c::added, model_, &DownloadTableModel::append);
     connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
 
     aria2c_->start();
@@ -107,11 +107,12 @@ void MainWindow::saveSettings() const
 void MainWindow::addUri()
 {
     bool ok = false;
-    auto uri = QInputDialog::getMultiLineText(this, {}, tr(""), {}, &ok);
+    auto uri = QInputDialog::getText(this, {}, tr("Input the URL to download"), QLineEdit::Normal,
+                                     {}, &ok);
 
     if (ok && !uri.isEmpty())
     {
-        aria2c_->addUri(uri.split(QL('\n'), Qt::SkipEmptyParts));
+        aria2c_->addUri(uri);
     }
 }
 
