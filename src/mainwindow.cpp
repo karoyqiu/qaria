@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     loadSettings();
 
     aria2c_ = new Aria2c(this);
+    connect(aria2c_, &Aria2c::aria2Started, this, &MainWindow::downloadTrackers);
     connect(aria2c_, &Aria2c::added, model_, &DownloadTableModel::append);
     connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
 
@@ -138,4 +139,26 @@ void MainWindow::showOptions()
 {
     OptionsDialog dialog(this);
     dialog.exec();
+}
+
+
+void MainWindow::downloadTrackers()
+{
+    auto *net = new QNetworkAccessManager(this);
+    QNetworkRequest req(QS("https://ngosang.github.io/trackerslist/trackers_all.txt"));
+    auto *reply = net->get(req);
+    connect(reply, &QNetworkReply::finished, this, &MainWindow::handleTrackers);
+}
+
+
+void MainWindow::handleTrackers()
+{
+    auto *reply = qobject_cast<QNetworkReply *>(sender());
+    auto body = reply->readAll();
+    reply->deleteLater();
+    reply->manager()->deleteLater();
+
+    auto s = QSS(body);
+    auto list = s.split(QL('\n'), Qt::SkipEmptyParts);
+    aria2c_->setBtTrackers(list);
 }

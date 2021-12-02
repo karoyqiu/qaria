@@ -41,6 +41,9 @@ private:
     void remove();
     void showOptions();
 
+    void downloadTrackers();
+    void handleTrackers();
+
 private:
     Ui::MainWindow *ui;
     Aria2c *aria2c_;

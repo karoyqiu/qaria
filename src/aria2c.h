@@ -116,8 +116,11 @@ public:
     void remove(const QString &gid);
 
     void tellAll();
+    void setBtTrackers(const QStringList &trackers);
 
 signals:
+    void aria2Started();
+
     void started(const QString &gid);
     void paused(const QString &gid);
     void stopped(const QString &gid);

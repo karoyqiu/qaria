@@ -119,9 +119,11 @@ void Aria2c::start()
 #ifdef QT_DEBUG
     auto logfile = QDir::temp().absoluteFilePath(QS("aria2c.log"));
     QFile::remove(logfile);
-#endif
 
+    secret_ = QS("03f682c8b4f94201995da1471ec47f23");
+#else
     secret_ = generateToken();
+#endif
 
     QStringList args{
         QS("--enable-rpc"),
@@ -130,6 +132,7 @@ void Aria2c::start()
         QS("--save-session"), sessionFile,
         QS("--save-session-interval"), QS("60"),
         QS("--stop-with-process"), QSS(qApp->applicationPid()),
+        QS("--daemon"),
         QS("--quiet"),
 #ifdef QT_DEBUG
         QS("--log"), logfile,
@@ -177,6 +180,14 @@ void Aria2c::tellAll()
 }
 
 
+void Aria2c::setBtTrackers(const QStringList &trackers)
+{
+    OptionsBuilder builder;
+    builder.setBtTracker(trackers.join(QL(',')));
+    callAsync(dontCare, QS("aria2.changeGlobalOption"), builder.options());
+}
+
+
 QString Aria2c::generateToken()
 {
     return QUuid::createUuid().toString(QUuid::Id128);
@@ -191,6 +202,8 @@ void Aria2c::onConnected()
     opts.setDir(settings.value(QS("dir")).toString());
     opts.setPauseMetadata(true);
     callAsync(dontCare, QS("aria2.changeGlobalOption"), opts.options());
+
+    emit aria2Started();
 
     tellAll();
 }
