@@ -41,7 +41,12 @@ set(CMAKE_AUTORCC ON)
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Core Widgets WebSockets LinguistTools REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Core Widgets WebSockets LinguistTools REQUIRED)
 
+# 默认警告
+include(CheckWarningFlags)
+check_warning_flags(CXX PROJECT_WARNING_FLAGS)
+
 include(AddQtExecutable)
 
 # 添加源代码子目录
 add_subdirectory(src)
+add_subdirectory(tools)

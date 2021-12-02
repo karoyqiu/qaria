@@ -112,12 +112,7 @@ public:
 
     void start();
 
-    void addUri(const QStringList &uris, const QVariantHash &options = {});
-    void addUri(const QString &uri, const QVariantHash &options = {})
-    {
-        addUri(QStringList{ uri }, options);
-    }
-
+    void addUri(const QString &uri, const QVariantHash &options = {});
     void remove(const QString &gid);
 
     void tellAll();
@@ -131,10 +126,10 @@ signals:
     void btCompleted(const QString &gid);
     void removed(const QString &gid);
 
-    void downloadTold(const DownloadItems &items);
+    void added(const DownloadItems &items);
 
 private:
-    using MessageHandler = std::function<void(const QString &, const QVariant &result)>;
+    using MessageHandler = std::function<void(const QVariant &result)>;
 
     static QString generateToken();
 
@@ -155,7 +150,8 @@ private:
     template<typename T, typename... Ts>
     void toQVariantList(QVariantList &result, T &&head, Ts&&... tail);
 
-    void handleTellDownload(const QString &id, const QVariant &result);
+    void handleAdd(const QVariant &result);
+    void handleTellDownload(const QVariant &result);
 
 private:
     QWebSocket *ws_;
