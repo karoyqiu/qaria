@@ -58,7 +58,7 @@ public:
 
     virtual QVariant data(const QModelIndex &idx, int role = Qt::DisplayRole) const override;
 
-    void append(const DownloadItems &items);
+    void upsert(const DownloadItems &items);
     void remove(const QString &gid);
 
 private:

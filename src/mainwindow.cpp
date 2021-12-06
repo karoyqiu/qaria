@@ -18,6 +18,7 @@
 #include "datasizedelegate.h"
 #include "downloadtablemodel.h"
 #include "optionsdialog.h"
+#include "statusdelegate.h"
 
 
 MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
@@ -46,11 +47,15 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     ui->tableMain->setItemDelegateForColumn(DownloadTableModel::DownloadSpeedColumn, speedDlgt);
     ui->tableMain->setItemDelegateForColumn(DownloadTableModel::UploadSpeedColumn, speedDlgt);
 
+    auto *statusDlgt = new StatusDelegate(this);
+    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::StatusColumn, statusDlgt);
+
+
     loadSettings();
 
     aria2c_ = new Aria2c(this);
     connect(aria2c_, &Aria2c::aria2Started, this, &MainWindow::downloadTrackers);
-    connect(aria2c_, &Aria2c::added, model_, &DownloadTableModel::append);
+    connect(aria2c_, &Aria2c::changed, model_, &DownloadTableModel::upsert);
     connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
 
     aria2c_->start();

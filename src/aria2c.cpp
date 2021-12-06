@@ -290,7 +290,7 @@ void Aria2c::handleAdd(const QVariant &result)
     callAsync([this](const QVariant &var)
     {
         auto item = toItem(var);
-        emit added({ item });
+        emit changed({ item });
     }, QS("aria2.tellStatus"), gid);
 }
 
@@ -305,5 +305,5 @@ void Aria2c::handleTellDownload(const QVariant &result)
         items.append(toItem(var));
     }
 
-    emit added(items);
+    emit changed(items);
 }

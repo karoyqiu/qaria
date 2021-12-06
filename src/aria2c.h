@@ -129,7 +129,7 @@ signals:
     void btCompleted(const QString &gid);
     void removed(const QString &gid);
 
-    void added(const DownloadItems &items);
+    void changed(const DownloadItems &items);
 
 private:
     using MessageHandler = std::function<void(const QVariant &result)>;

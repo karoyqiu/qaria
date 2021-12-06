@@ -49,8 +49,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="198"/>
-        <location filename="downloadtablemodel.cpp" line="202"/>
+        <location filename="downloadtablemodel.cpp" line="233"/>
+        <location filename="downloadtablemodel.cpp" line="237"/>
         <source>%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -168,12 +168,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="111"/>
+        <location filename="mainwindow.cpp" line="116"/>
         <source>Input the URL to download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="127"/>
+        <location filename="mainwindow.cpp" line="132"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -204,6 +204,39 @@
     <message>
         <location filename="optionsdialog.ui" line="60"/>
         <source>Download &amp;Directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StatusDelegate</name>
+    <message>
+        <location filename="statusdelegate.cpp" line="31"/>
+        <source>Active</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="statusdelegate.cpp" line="33"/>
+        <source>Waiting</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="statusdelegate.cpp" line="35"/>
+        <source>Paused</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="statusdelegate.cpp" line="37"/>
+        <source>Error</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="statusdelegate.cpp" line="39"/>
+        <source>Complete</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="statusdelegate.cpp" line="41"/>
+        <source>Removed</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

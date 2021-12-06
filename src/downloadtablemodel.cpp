@@ -139,6 +139,9 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
         case FinishTimeColumn:
             var = static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
             break;
+        case StatusColumn:
+            var = Qt::AlignCenter;
+            break;
         }
         break;
 
@@ -154,13 +157,45 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
 }
 
 
-void DownloadTableModel::append(const DownloadItems &items)
+void DownloadTableModel::upsert(const DownloadItems &items)
 {
     if (!items.isEmpty())
     {
-        beginInsertRows({}, items_.count(), items_.count() + items.count() - 1);
-        items_.append(items);
-        endInsertRows();
+        DownloadItems insert;
+
+        for (const auto &item : items)
+        {
+            bool updated = false;
+
+            for (int i = 0; i < items_.count(); i++)
+            {
+                auto &e = items_[i];
+
+                if (e.gid == item.gid)
+                {
+                    e = item;
+                    updated = true;
+
+                    auto first = index(i, 0);
+                    auto last = first.siblingAtRow(ColumnCount - 1);
+                    emit dataChanged(first, last);
+
+                    break;
+                }
+            }
+
+            if (!updated)
+            {
+                insert.append(item);
+            }
+        }
+
+        if (!insert.isEmpty())
+        {
+            beginInsertRows({}, items_.count(), items_.count() + insert.count() - 1);
+            items_.append(insert);
+            endInsertRows();
+        }
     }
 }
 
