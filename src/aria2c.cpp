@@ -72,6 +72,8 @@ static DownloadItem toItem(const QVariant &var)
     GET(item, obj, errorCode);
     GET(item, obj, errorMessage);
     GET(item, obj, dir);
+    GET(item, obj, following);
+    GET(item, obj, followedBy);
 
     auto status = obj.value(QS("status")).toString();
     item.status = toStatus(status);
@@ -179,9 +181,11 @@ void Aria2c::remove(const QString &gid)
 void Aria2c::tellAll()
 {
     auto handler = std::bind(&Aria2c::handleTellDownload, this, _1);
-    callAsync(handler, QS("aria2.tellActive"));
-    callAsync(handler, QS("aria2.tellWaiting"), 0, 1024);
-    callAsync(handler, QS("aria2.tellStopped"), 0, 1024);
+    QHash<QString, QVariantList> methods;
+    methods.insert(QS("aria2.tellActive"), {});
+    methods.insert(QS("aria2.tellWaiting"), { 0, 1024 });
+    methods.insert(QS("aria2.tellStopped"), { 0, 1024 });
+    batchCall(handler, methods);
 }
 
 
@@ -230,21 +234,48 @@ void Aria2c::handleMessage(const QString &msg)
 #endif
 
     const auto json = QJsonDocument::fromJson(msg.toUtf8());
-    const auto obj = json.object().toVariantHash();
 
-    if (obj.contains(QS("id")))
+    if (json.isObject())
     {
-        auto id = obj.value(QS("id")).toString();
-        Q_ASSERT(calls_.contains(id));
+        const auto obj = json.object().toVariantHash();
+
+        if (obj.contains(QS("id")))
+        {
+            auto id = obj.value(QS("id")).toString();
+            Q_ASSERT(calls_.contains(id));
+
+            auto handler = calls_.take(id);
+            handler(obj.value(QS("result")));
+        }
+        else
+        {
+            const auto method = obj.value(QS("method")).toString();
+            Q_ASSERT(!method.isEmpty());
+            handleNotification(method, obj.value(QS("params")).toList());
+        }
+    }
+    else if (json.isArray())
+    {
+        // Batch call
+        const auto list = json.array().toVariantList();
+        QVariantList results;
+        QString id;
+
+        for (const auto &var : list)
+        {
+            const auto obj = var.toHash();
+
+            if (id.isEmpty())
+            {
+                id = obj.value(QS("id")).toString();
+                Q_ASSERT(calls_.contains(id));
+            }
+
+            results.append(obj.value(QS("result")));
+        }
 
         auto handler = calls_.take(id);
-        handler(obj.value(QS("result")));
-    }
-    else
-    {
-        const auto method = obj.value(QS("method")).toString();
-        Q_ASSERT(!method.isEmpty());
-        handleNotification(method, obj.value(QS("params")).toList());
+        handler(results);
     }
 }
 
@@ -298,6 +329,35 @@ void Aria2c::send(const QJsonDocument &doc)
 }
 
 
+QStringList Aria2c::batchCall(MessageHandler handler, const QHash<QString, QVariantList> &methods)
+{
+    QStringList ids;
+    QJsonArray arr;
+
+    for (const auto &m : methods.keys())
+    {
+        auto params = methods.value(m);
+        params.prepend(QString(QL("token:") % secret_));
+
+        auto id = generateToken();
+        ids.append(id);
+
+        QJsonObject obj{
+            { QS("jsonrpc"), QS("2.0") },
+            { QS("id"), id },
+            { QS("method"), m },
+            { QS("params"), QJsonArray::fromVariantList(params) },
+        };
+        arr.append(obj);
+    }
+
+    calls_.insert(ids.first(), handler);
+
+    send(QJsonDocument(arr));
+    return ids;
+}
+
+
 void Aria2c::handleAdd(const QVariant &result)
 {
     auto gid = result.toString();
@@ -312,12 +372,20 @@ void Aria2c::handleAdd(const QVariant &result)
 void Aria2c::handleTellDownload(const QVariant &result)
 {
     const auto list = result.toList();
-    DownloadItems items;
+    DownloadItems all;
 
     for (const auto &var : list)
     {
-        items.append(toItem(var));
+        const auto sublist = var.toList();
+        DownloadItems items;
+
+        for (const auto &subvar : sublist)
+        {
+            items.append(toItem(subvar));
+        }
+
+        all.append(items);
     }
 
-    emit changed(items);
+    emit changed(all);
 }

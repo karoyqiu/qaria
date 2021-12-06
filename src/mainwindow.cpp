@@ -55,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
     aria2c_ = new Aria2c(this);
     connect(aria2c_, &Aria2c::aria2Started, this, &MainWindow::downloadTrackers);
-    connect(aria2c_, &Aria2c::changed, model_, &DownloadTableModel::upsert);
+    connect(aria2c_, &Aria2c::changed, model_, &DownloadTableModel::reset);
     connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
 
     aria2c_->start();

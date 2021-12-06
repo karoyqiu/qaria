@@ -144,6 +144,8 @@ private:
     template<typename... T>
     QString callAsync(MessageHandler handler, const QString &method, T&&... args);
 
+    QStringList batchCall(MessageHandler handler, const QHash<QString, QVariantList> &methods);
+
     void toQVariantList(QVariantList & /*result*/) {}
 
     template<typename T>

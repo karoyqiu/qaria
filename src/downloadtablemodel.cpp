@@ -157,45 +157,66 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
 }
 
 
-void DownloadTableModel::upsert(const DownloadItems &items)
+void DownloadTableModel::reset(const DownloadItems &items)
 {
-    if (!items.isEmpty())
+    DownloadItems insert;
+    QSet<int> updatedIndexes;
+
+    // 更新相同的
+    for (const auto &item : items)
     {
-        DownloadItems insert;
-
-        for (const auto &item : items)
+        if (!item.followedBy.isEmpty())
         {
-            bool updated = false;
+            // 跳过生成子任务的
+            continue;
+        }
 
-            for (int i = 0; i < items_.count(); i++)
+        bool updated = false;
+
+        for (int i = 0; i < items_.count(); i++)
+        {
+            auto &e = items_[i];
+
+            if (e.gid == item.gid)
             {
-                auto &e = items_[i];
+                e = item;
+                updated = true;
+                updatedIndexes.insert(i);
 
-                if (e.gid == item.gid)
-                {
-                    e = item;
-                    updated = true;
+                auto first = index(i, 0);
+                auto last = first.siblingAtRow(ColumnCount - 1);
+                emit dataChanged(first, last);
 
-                    auto first = index(i, 0);
-                    auto last = first.siblingAtRow(ColumnCount - 1);
-                    emit dataChanged(first, last);
-
-                    break;
-                }
-            }
-
-            if (!updated)
-            {
-                insert.append(item);
+                break;
             }
         }
 
-        if (!insert.isEmpty())
+        if (!updated)
         {
-            beginInsertRows({}, items_.count(), items_.count() + insert.count() - 1);
-            items_.append(insert);
-            endInsertRows();
+            insert.append(item);
         }
+    }
+
+    // 删除没有的
+    if (updatedIndexes.count() < items_.count())
+    {
+        for (int i = items_.count() - 1; i >= 0; i--)
+        {
+            if (!updatedIndexes.contains(i))
+            {
+                beginRemoveRows({}, i, i);
+                items_.removeAt(i);
+                endRemoveRows();
+            }
+        }
+    }
+
+    // 添加剩下的
+    if (!insert.isEmpty())
+    {
+        beginInsertRows({}, items_.count(), items_.count() + insert.count() - 1);
+        items_.append(insert);
+        endInsertRows();
     }
 }
 

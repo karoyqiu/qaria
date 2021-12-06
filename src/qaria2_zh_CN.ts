@@ -49,8 +49,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="233"/>
-        <location filename="downloadtablemodel.cpp" line="237"/>
+        <location filename="downloadtablemodel.cpp" line="254"/>
+        <location filename="downloadtablemodel.cpp" line="258"/>
         <source>%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
