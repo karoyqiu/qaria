@@ -115,7 +115,6 @@ public:
     void addUri(const QString &uri, const QVariantHash &options = {});
     void remove(const QString &gid);
 
-    void tellAll();
     void setBtTrackers(const QStringList &trackers);
 
 signals:
@@ -153,11 +152,14 @@ private:
     template<typename T, typename... Ts>
     void toQVariantList(QVariantList &result, T &&head, Ts&&... tail);
 
+    void tellAll();
+
     void handleAdd(const QVariant &result);
     void handleTellDownload(const QVariant &result);
 
 private:
     QWebSocket *ws_;
+    QTimer *tellingTimer_;
     QString secret_;
     QHash<QString, MessageHandler> calls_;
 };

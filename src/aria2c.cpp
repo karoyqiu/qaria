@@ -76,6 +76,12 @@ static DownloadItem toItem(const QVariant &var)
     auto status = obj.value(QS("status")).toString();
     item.status = toStatus(status);
 
+    const auto bt = obj.value(QS("bittorrent")).toHash();
+    GET(item.bittorrent, bt, comment);
+    GET(item.bittorrent, bt, creationDate);
+    GET(item.bittorrent, bt, mode);
+    item.bittorrent.name = bt.value(QS("info")).toHash().value(QS("name")).toString();
+
     const auto files = obj.value(QS("files")).toList();
 
     for (const auto &f : files)
@@ -101,13 +107,14 @@ static inline void dontCare(const QVariant &) { }
 Aria2c::Aria2c(QObject *parent /*= nullptr*/)
     : QObject(parent)
     , ws_(nullptr)
+    , tellingTimer_(nullptr)
 {
 }
 
 
 void Aria2c::start()
 {
-    Q_ASSERT(ws_ == nullptr);
+    Q_ASSERT(ws_ == nullptr && tellingTimer_ == nullptr);
 
     QSettings settings;
     auto aria2c = settings.value(QS("aria2c")).toString();
@@ -127,10 +134,8 @@ void Aria2c::start()
 
     QStringList args{
         QS("--enable-rpc"),
-        QS("--pause-metadata"),
         QS("--rpc-secret"), secret_,
         QS("--save-session"), sessionFile,
-        QS("--save-session-interval"), QS("60"),
         QS("--stop-with-process"), QSS(qApp->applicationPid()),
         QS("--daemon"),
         QS("--quiet"),
@@ -201,11 +206,20 @@ void Aria2c::onConnected()
     OptionsBuilder opts;
     opts.setDir(settings.value(QS("dir")).toString());
     opts.setPauseMetadata(true);
+    opts.setSaveSessionInterval(60);
+    opts.setBtSaveMetadata(true);
+    opts.setMaxConnectionPerServer(8);
+    opts.setMinSplitSize(5_K);
     callAsync(dontCare, QS("aria2.changeGlobalOption"), opts.options());
 
     emit aria2Started();
 
-    tellAll();
+    Q_ASSERT(tellingTimer_ == nullptr);
+    tellingTimer_ = new QTimer(this);
+    tellingTimer_->setInterval(1000);
+    tellingTimer_->setTimerType(Qt::VeryCoarseTimer);
+    connect(tellingTimer_, &QTimer::timeout, this, &Aria2c::tellAll);
+    tellingTimer_->start();
 }
 
 

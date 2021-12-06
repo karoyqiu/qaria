@@ -75,7 +75,7 @@ int main(int argc, char *argv[])
 
     QApplication::setApplicationDisplayName(QApplication::translate("main", "qaria2"));
 
-    makeQuestions();
+    //makeQuestions();
 
     MainWindow w;
     w.show();
