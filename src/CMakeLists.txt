@@ -19,6 +19,7 @@ set(SOURCES
     "aria2optionsbuilder.h"
     "statusdelegate.h" "statusdelegate.cpp"
     "newbittorrentdialog.h" "newbittorrentdialog.cpp" "newbittorrentdialog.ui"
+    "progressitemdelegate.h" "progressitemdelegate.cpp"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"
 )
 

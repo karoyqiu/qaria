@@ -67,6 +67,8 @@ public:
 private:
     static int columnAlignment(int col);
 
+    void tickProgress();
+
 private:
     DownloadItems items_;
 };

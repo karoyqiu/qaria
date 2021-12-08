@@ -4,47 +4,47 @@
 <context>
     <name>DownloadTableModel</name>
     <message>
-        <location filename="downloadtablemodel.cpp" line="48"/>
+        <location filename="downloadtablemodel.cpp" line="52"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="51"/>
+        <location filename="downloadtablemodel.cpp" line="55"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="54"/>
+        <location filename="downloadtablemodel.cpp" line="58"/>
         <source>Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="57"/>
+        <location filename="downloadtablemodel.cpp" line="61"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="60"/>
+        <location filename="downloadtablemodel.cpp" line="64"/>
         <source>Download Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="63"/>
+        <location filename="downloadtablemodel.cpp" line="67"/>
         <source>Upload Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="66"/>
+        <location filename="downloadtablemodel.cpp" line="70"/>
         <source>Remaining Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="69"/>
+        <location filename="downloadtablemodel.cpp" line="73"/>
         <source>Creation Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="72"/>
+        <location filename="downloadtablemodel.cpp" line="76"/>
         <source>Finish Time</source>
         <translation type="unfinished"></translation>
     </message>
@@ -167,12 +167,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="119"/>
+        <location filename="mainwindow.cpp" line="123"/>
         <source>Input the URL to download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="135"/>
+        <location filename="mainwindow.cpp" line="139"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>

@@ -28,6 +28,10 @@ static QString itemName(const DownloadItem &item)
 DownloadTableModel::DownloadTableModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
+    auto *timer = new QTimer(this);
+    timer->setInterval(40);
+    connect(timer, &QTimer::timeout, this, &DownloadTableModel::tickProgress);
+    timer->start();
 }
 
 
@@ -249,16 +253,27 @@ int DownloadTableModel::columnAlignment(int col)
     {
     case SerialColumn:
     case SizeColumn:
-    case ProgressColumn:
     case DownloadSpeedColumn:
     case UploadSpeedColumn:
     case RemainingTimeColumn:
     case CreationTimeColumn:
     case FinishTimeColumn:
         return Qt::AlignRight | Qt::AlignVCenter;
+    case ProgressColumn:
     case StatusColumn:
         return Qt::AlignCenter;
     }
 
     return 0;
+}
+
+
+void DownloadTableModel::tickProgress()
+{
+    if (!items_.isEmpty())
+    {
+        auto first = index(0, ProgressColumn);
+        auto last = first.siblingAtRow(items_.count() - 1);
+        emit dataChanged(first, last);
+    }
 }

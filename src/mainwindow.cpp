@@ -19,6 +19,7 @@
 #include "downloadtablemodel.h"
 #include "newbittorrentdialog.h"
 #include "optionsdialog.h"
+#include "progressitemdelegate.h"
 #include "statusdelegate.h"
 
 
@@ -44,6 +45,9 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
     auto *sizeDlgt = new DataSizeDelegate(this);
     ui->treeMain->setItemDelegateForColumn(DownloadTableModel::SizeColumn, sizeDlgt);
+
+    auto *prgDlgt = new ProgressItemDelegate(this);
+    ui->treeMain->setItemDelegateForColumn(DownloadTableModel::ProgressColumn, prgDlgt);
 
     auto *speedDlgt = new DataSizeDelegate(QS("/s"), this);
     ui->treeMain->setItemDelegateForColumn(DownloadTableModel::DownloadSpeedColumn, speedDlgt);
