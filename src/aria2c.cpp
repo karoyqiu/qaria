@@ -226,7 +226,7 @@ void Aria2c::setBtTrackers(const QStringList &trackers)
 {
     OptionsBuilder builder;
     builder.setBtTracker(trackers.join(QL(',')));
-    //callAsync(dontCare, QS("aria2.changeGlobalOption"), builder.options());
+    callAsync(dontCare, QS("aria2.changeGlobalOption"), builder.options());
 }
 
 
@@ -243,10 +243,14 @@ void Aria2c::onConnected()
     OptionsBuilder opts;
     opts.setDir(settings.value(QS("dir")).toString());
     opts.setPauseMetadata();
+    opts.setAutoSaveInterval(60);
     opts.setSaveSessionInterval(60);
     opts.setBtSaveMetadata();
+    opts.setBtEnableLpd();
+    opts.setBtLoadSavedMetadata();
+    opts.setBtRemoveUnselectedFile();
     opts.setMaxConnectionPerServer(8);
-    opts.setMinSplitSize(5_K);
+    opts.setMinSplitSize(1_M);
     callAsync(dontCare, QS("aria2.changeGlobalOption"), opts.options());
 
     emit aria2Started();

@@ -98,6 +98,11 @@ static void writeFunction(QTextStream &in, QTextStream &out, const QString &name
     if (valueType == QL("bool "))
     {
         out << " = true";
+        v = QS(R"((%1 ? QL("true") : QL("false")))").arg(v);
+    }
+    else if (!valueType.contains(QS("QString")))
+    {
+        v = QS("QSS(%1)").arg(v);
     }
 
     out << ")" << Qt::endl;
@@ -224,7 +229,7 @@ int main(int argc, char *argv[])
 
     if (args.length() != 2)
     {
-        filename = QS(R"(C:\Users\karoy\source\repos\qaria\tools\aria2c.rst.txt)");
+        filename = QS(R"(C:\Users\karoy\source\repos\qaria2\tools\aria2c.rst.txt)");
         //return 1;
     }
     else

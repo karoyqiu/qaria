@@ -1,9 +1,9 @@
 ﻿/*! ***********************************************************************************************
  *
- * \file        C:/Users/karoy/source/repos/qaria/tools/../src/aria2optionsbuilder.h
+ * \file        C:/Users/karoy/source/repos/qaria2/tools/../src/aria2optionsbuilder.h
  * \brief       OptionsBuilder 类头文件。
  * \version     0.1
- * \date        2021-12-02
+ * \date        2021-12-08
  *
  * \author      Roy QIU <karoyqiu@gmail.com>
  * \copyright   © 2021 karoyqiu。
@@ -83,7 +83,7 @@ public:
      * Default: ``5``
      */
     void setMaxConcurrentDownloads(int n)
-    { hash_.insert(QS("max-concurrent-downloads"), n); }
+    { hash_.insert(QS("max-concurrent-downloads"), QSS(n)); }
 
     /*!
      * Check file integrity by validating piece hashes or a hash of entire
@@ -99,7 +99,7 @@ public:
      * ``false``
      */
     void setCheckIntegrity(bool value = true)
-    { hash_.insert(QS("check-integrity"), value); }
+    { hash_.insert(QS("check-integrity"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Continue downloading a partially downloaded file.
@@ -108,7 +108,7 @@ public:
      * Currently this option is only applicable to HTTP(S)/FTP downloads.
      */
     void setContinue(bool value = true)
-    { hash_.insert(QS("continue"), value); }
+    { hash_.insert(QS("continue"), (value ? QL("true") : QL("false"))); }
 
     //////////////////////////////////////////////////////////////////////////
     //
@@ -157,7 +157,7 @@ public:
      * Default: ``60``
      */
     void setConnectTimeout(int sec)
-    { hash_.insert(QS("connect-timeout"), sec); }
+    { hash_.insert(QS("connect-timeout"), QSS(sec)); }
 
     /*!
      * If ``true`` is given, aria2 just checks whether the remote file is
@@ -166,7 +166,7 @@ public:
      * specified.  Default: ``false``
      */
     void setDryRun(bool value = true)
-    { hash_.insert(QS("dry-run"), value); }
+    { hash_.insert(QS("dry-run"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Close connection if download speed is lower than or equal to this
@@ -184,7 +184,7 @@ public:
      * Default: ``1``
      */
     void setMaxConnectionPerServer(int num)
-    { hash_.insert(QS("max-connection-per-server"), num); }
+    { hash_.insert(QS("max-connection-per-server"), QSS(num)); }
 
     /*!
      * If aria2 receives "file not found" status from the remote HTTP/FTP
@@ -195,7 +195,7 @@ public:
      * configured too.
      */
     void setMaxFileNotFound(int num)
-    { hash_.insert(QS("max-file-not-found"), num); }
+    { hash_.insert(QS("max-file-not-found"), QSS(num)); }
 
     /*!
      * Set number of tries. ``0`` means unlimited.
@@ -203,7 +203,7 @@ public:
      * Default: ``5``
      */
     void setMaxTries(int n)
-    { hash_.insert(QS("max-tries"), n); }
+    { hash_.insert(QS("max-tries"), QSS(n)); }
 
     /*!
      * aria2 does not split less than 2*SIZE byte range.  For example,
@@ -215,7 +215,7 @@ public:
      * Possible Values: ``1M`` -``1024M`` Default: ``20M``
      */
     void setMinSplitSize(qint64 size)
-    { hash_.insert(QS("min-split-size"), size); }
+    { hash_.insert(QS("min-split-size"), QSS(size)); }
 
     /*!
      * Specify the path to the netrc file.
@@ -228,7 +228,7 @@ public:
      * Disables netrc support. netrc support is enabled by default.
      */
     void setNoNetrc(bool value = true)
-    { hash_.insert(QS("no-netrc"), value); }
+    { hash_.insert(QS("no-netrc"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Specify a comma separated list of host names, domains and network addresses
@@ -261,14 +261,14 @@ public:
      * Default: ``false``
      */
     void setRemoteTime(bool value = true)
-    { hash_.insert(QS("remote-time"), value); }
+    { hash_.insert(QS("remote-time"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Reuse already used URIs if no unused URIs are left.
      * Default: ``true``
      */
     void setReuseUri(bool value = true)
-    { hash_.insert(QS("reuse-uri"), value); }
+    { hash_.insert(QS("reuse-uri"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set the seconds to wait between retries. When ``SEC > 0``, aria2 will
@@ -276,7 +276,7 @@ public:
      * ``0``
      */
     void setRetryWait(int sec)
-    { hash_.insert(QS("retry-wait"), sec); }
+    { hash_.insert(QS("retry-wait"), QSS(sec)); }
 
     /*!
      * Specify the file name to which performance profile of the servers is
@@ -303,7 +303,7 @@ public:
      * Default: ``86400`` (24hours)
      */
     void setServerStatTimeout(int sec)
-    { hash_.insert(QS("server-stat-timeout"), sec); }
+    { hash_.insert(QS("server-stat-timeout"), QSS(sec)); }
 
     /*!
      * Download a file using N connections.  If more than N URIs are given,
@@ -316,7 +316,7 @@ public:
      * Default: ``5``
      */
     void setSplit(int n)
-    { hash_.insert(QS("split"), n); }
+    { hash_.insert(QS("split"), QSS(n)); }
 
     /*!
      * Specify piece selection algorithm used in HTTP/FTP download. Piece
@@ -351,7 +351,7 @@ public:
      * Default: ``60``
      */
     void setTimeout(int sec)
-    { hash_.insert(QS("timeout"), sec); }
+    { hash_.insert(QS("timeout"), QSS(sec)); }
 
     /*!
      * Specify URI selection algorithm. The possible values are ``inorder``,
@@ -399,7 +399,7 @@ public:
      * Default: ``true``
      */
     void setCheckCertificate(bool value = true)
-    { hash_.insert(QS("check-certificate"), value); }
+    { hash_.insert(QS("check-certificate"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Send ``Accept: deflate, gzip`` request header and inflate response if
@@ -407,7 +407,7 @@ public:
      * ``Content-Encoding: deflate``.  Default: ``false``
      */
     void setHttpAcceptGzip(bool value = true)
-    { hash_.insert(QS("http-accept-gzip"), value); }
+    { hash_.insert(QS("http-accept-gzip"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Send HTTP authorization header only when it is requested by the
@@ -417,7 +417,7 @@ public:
      * regardless of this option.  Default: ``false``
      */
     void setHttpAuthChallenge(bool value = true)
-    { hash_.insert(QS("http-auth-challenge"), value); }
+    { hash_.insert(QS("http-auth-challenge"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Send ``Cache-Control: no-cache`` and ``Pragma: no-cache`` header to avoid
@@ -426,7 +426,7 @@ public:
      * using :option:`--header` option. Default: ``false``
      */
     void setHttpNoCache(bool value = true)
-    { hash_.insert(QS("http-no-cache"), value); }
+    { hash_.insert(QS("http-no-cache"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set HTTP user. This affects all URIs.
@@ -505,14 +505,14 @@ public:
      * Default: ``true``
      */
     void setEnableHttpKeepAlive(bool value = true)
-    { hash_.insert(QS("enable-http-keep-alive"), value); }
+    { hash_.insert(QS("enable-http-keep-alive"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Enable HTTP/1.1 pipelining.
      * Default: ``false``
      */
     void setEnableHttpPipelining(bool value = true)
-    { hash_.insert(QS("enable-http-pipelining"), value); }
+    { hash_.insert(QS("enable-http-pipelining"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Append HEADER to HTTP request header.
@@ -543,7 +543,7 @@ public:
      * Default: ``false``
      */
     void setUseHead(bool value = true)
-    { hash_.insert(QS("use-head"), value); }
+    { hash_.insert(QS("use-head"), (value ? QL("true") : QL("false"))); }
 
     //////////////////////////////////////////////////////////////////////////
     //
@@ -575,7 +575,7 @@ public:
      * Default: ``true``
      */
     void setFtpPasv(bool value = true)
-    { hash_.insert(QS("ftp-pasv"), value); }
+    { hash_.insert(QS("ftp-pasv"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Use a proxy server for FTP.  To override a previously defined proxy,
@@ -610,7 +610,7 @@ public:
      * Default: ``true``
      */
     void setFtpReuseConnection(bool value = true)
-    { hash_.insert(QS("ftp-reuse-connection"), value); }
+    { hash_.insert(QS("ftp-reuse-connection"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set checksum for SSH host public key. TYPE is hash type. The
@@ -647,7 +647,7 @@ public:
      * (infohash, piece length, etc) is also printed.
      */
     void setShowFiles(bool value = true)
-    { hash_.insert(QS("show-files"), value); }
+    { hash_.insert(QS("show-files"), (value ? QL("true") : QL("false"))); }
 
     //////////////////////////////////////////////////////////////////////////
     //
@@ -665,7 +665,7 @@ public:
      * recognized as active download in RPC method.  Default: ``false``
      */
     void setBtDetachSeedOnly(bool value = true)
-    { hash_.insert(QS("bt-detach-seed-only"), value); }
+    { hash_.insert(QS("bt-detach-seed-only"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Allow hook command invocation after hash check (see :option:`-V`
@@ -675,7 +675,7 @@ public:
      * Default: ``true``
      */
     void setBtEnableHookAfterHashCheck(bool value = true)
-    { hash_.insert(QS("bt-enable-hook-after-hash-check"), value); }
+    { hash_.insert(QS("bt-enable-hook-after-hash-check"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Enable Local Peer Discovery.  If a private flag is set in a torrent,
@@ -683,7 +683,7 @@ public:
      * given.  Default: ``false``
      */
     void setBtEnableLpd(bool value = true)
-    { hash_.insert(QS("bt-enable-lpd"), value); }
+    { hash_.insert(QS("bt-enable-lpd"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Comma separated list of BitTorrent tracker's announce URI to
@@ -715,7 +715,7 @@ public:
      * always encrypt message payload.  Default: ``false``
      */
     void setBtForceEncryption(bool value = true)
-    { hash_.insert(QS("bt-force-encryption"), value); }
+    { hash_.insert(QS("bt-force-encryption"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * If ``true`` is given, after hash check using :option:`--check-integrity <-V>` option and
@@ -725,7 +725,7 @@ public:
      * Default: ``true``
      */
     void setBtHashCheckSeed(bool value = true)
-    { hash_.insert(QS("bt-hash-check-seed"), value); }
+    { hash_.insert(QS("bt-hash-check-seed"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Before getting torrent metadata from DHT when downloading with
@@ -735,7 +735,7 @@ public:
      * Default: ``false``
      */
     void setBtLoadSavedMetadata(bool value = true)
-    { hash_.insert(QS("bt-load-saved-metadata"), value); }
+    { hash_.insert(QS("bt-load-saved-metadata"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Use given interface for Local Peer Discovery. If this option is not
@@ -752,7 +752,7 @@ public:
      * Default: ``100``
      */
     void setBtMaxOpenFiles(int num)
-    { hash_.insert(QS("bt-max-open-files"), num); }
+    { hash_.insert(QS("bt-max-open-files"), QSS(num)); }
 
     /*!
      * Specify the maximum number of peers per torrent.  ``0`` means
@@ -760,7 +760,7 @@ public:
      * Default: ``55``
      */
     void setBtMaxPeers(int num)
-    { hash_.insert(QS("bt-max-peers"), num); }
+    { hash_.insert(QS("bt-max-peers"), QSS(num)); }
 
     /*!
      * Download meta data only. The file(s) described in meta data will not
@@ -768,7 +768,7 @@ public:
      * URI is used. See also :option:`--bt-save-metadata` option.  Default: ``false``
      */
     void setBtMetadataOnly(bool value = true)
-    { hash_.insert(QS("bt-metadata-only"), value); }
+    { hash_.insert(QS("bt-metadata-only"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Removes the unselected files when download is completed in
@@ -780,7 +780,7 @@ public:
      * Default: ``false``
      */
     void setBtRemoveUnselectedFile(bool value = true)
-    { hash_.insert(QS("bt-remove-unselected-file"), value); }
+    { hash_.insert(QS("bt-remove-unselected-file"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * If ``true`` is given, aria2 doesn't accept and establish connection with legacy
@@ -789,7 +789,7 @@ public:
      * Default: ``false``
      */
     void setBtRequireCrypto(bool value = true)
-    { hash_.insert(QS("bt-require-crypto"), value); }
+    { hash_.insert(QS("bt-require-crypto"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * If the whole download speed of every torrent is lower than SPEED,
@@ -811,21 +811,21 @@ public:
      * option. Default: ``false``
      */
     void setBtSaveMetadata(bool value = true)
-    { hash_.insert(QS("bt-save-metadata"), value); }
+    { hash_.insert(QS("bt-save-metadata"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Seed previously downloaded files without verifying piece hashes.
      * Default: ``false``
      */
     void setBtSeedUnverified(bool value = true)
-    { hash_.insert(QS("bt-seed-unverified"), value); }
+    { hash_.insert(QS("bt-seed-unverified"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Stop BitTorrent download if download speed is 0 in consecutive SEC
      * seconds. If ``0`` is given, this feature is disabled.  Default: ``0``
      */
     void setBtStopTimeout(int sec)
-    { hash_.insert(QS("bt-stop-timeout"), sec); }
+    { hash_.insert(QS("bt-stop-timeout"), QSS(sec)); }
 
     /*!
      * Comma separated list of additional BitTorrent tracker's announce
@@ -843,7 +843,7 @@ public:
      * ``60``
      */
     void setBtTrackerConnectTimeout(int sec)
-    { hash_.insert(QS("bt-tracker-connect-timeout"), sec); }
+    { hash_.insert(QS("bt-tracker-connect-timeout"), QSS(sec)); }
 
     /*!
      * Set the interval in seconds between tracker requests. This
@@ -853,13 +853,13 @@ public:
      * response of tracker and the download progress.  Default: ``0``
      */
     void setBtTrackerInterval(int sec)
-    { hash_.insert(QS("bt-tracker-interval"), sec); }
+    { hash_.insert(QS("bt-tracker-interval"), QSS(sec)); }
 
     /*!
      * Set timeout in seconds. Default: ``60``
      */
     void setBtTrackerTimeout(int sec)
-    { hash_.insert(QS("bt-tracker-timeout"), sec); }
+    { hash_.insert(QS("bt-tracker-timeout"), QSS(sec)); }
 
     /*!
      * Set host and port as an entry point to IPv4 DHT network.
@@ -889,7 +889,7 @@ public:
      * Set timeout in seconds. Default: ``10``
      */
     void setDhtMessageTimeout(int sec)
-    { hash_.insert(QS("dht-message-timeout"), sec); }
+    { hash_.insert(QS("dht-message-timeout"), QSS(sec)); }
 
     /*!
      * Enable IPv4 DHT functionality. It also enables UDP tracker
@@ -897,7 +897,7 @@ public:
      * DHT for that download even if ``true`` is given.  Default: ``true``
      */
     void setEnableDht(bool value = true)
-    { hash_.insert(QS("enable-dht"), value); }
+    { hash_.insert(QS("enable-dht"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Enable Peer Exchange extension. If a private flag is set in a torrent, this
@@ -905,7 +905,7 @@ public:
      * Default: ``true``
      */
     void setEnablePeerExchange(bool value = true)
-    { hash_.insert(QS("enable-peer-exchange"), value); }
+    { hash_.insert(QS("enable-peer-exchange"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set file path for file with index=INDEX. You can find the file index
@@ -1022,7 +1022,7 @@ public:
      * Default: ``true``
      */
     void setMetalinkEnableUniqueProtocol(bool value = true)
-    { hash_.insert(QS("metalink-enable-unique-protocol"), value); }
+    { hash_.insert(QS("metalink-enable-unique-protocol"), (value ? QL("true") : QL("false"))); }
 
     //////////////////////////////////////////////////////////////////////////
     //
@@ -1036,7 +1036,7 @@ public:
      * also :option:`--rpc-listen-port` option.  Default: ``false``
      */
     void setEnableRpc(bool value = true)
-    { hash_.insert(QS("enable-rpc"), value); }
+    { hash_.insert(QS("enable-rpc"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Pause download after added. This option is effective only when
@@ -1044,7 +1044,7 @@ public:
      * Default: ``false``
      */
     void setPause(bool value = true)
-    { hash_.insert(QS("pause"), value); }
+    { hash_.insert(QS("pause"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Pause downloads created as a result of metadata download. There are
@@ -1057,7 +1057,7 @@ public:
      * Default: ``false``
      */
     void setPauseMetadata(bool value = true)
-    { hash_.insert(QS("pause-metadata"), value); }
+    { hash_.insert(QS("pause-metadata"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Add Access-Control-Allow-Origin header field with value ``*`` to the
@@ -1065,7 +1065,7 @@ public:
      * Default: ``false``
      */
     void setRpcAllowOriginAll(bool value = true)
-    { hash_.insert(QS("rpc-allow-origin-all"), value); }
+    { hash_.insert(QS("rpc-allow-origin-all"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Use the certificate in FILE for RPC server. The certificate must be
@@ -1079,7 +1079,7 @@ public:
      * is given, listen only on local loopback interface.  Default: ``false``
      */
     void setRpcListenAll(bool value = true)
-    { hash_.insert(QS("rpc-listen-all"), value); }
+    { hash_.insert(QS("rpc-listen-all"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Specify a port number for JSON-RPC/XML-RPC server to listen to.  Possible
@@ -1093,7 +1093,7 @@ public:
      * more than SIZE bytes, it drops connection. Default: ``2M``
      */
     void setRpcMaxRequestSize(qint64 size)
-    { hash_.insert(QS("rpc-max-request-size"), size); }
+    { hash_.insert(QS("rpc-max-request-size"), QSS(size)); }
 
     /*!
      * Set JSON-RPC/XML-RPC password.
@@ -1119,7 +1119,7 @@ public:
      * saved by :option:`--save-session` option. Default: ``true``
      */
     void setRpcSaveUploadMetadata(bool value = true)
-    { hash_.insert(QS("rpc-save-upload-metadata"), value); }
+    { hash_.insert(QS("rpc-save-upload-metadata"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set RPC secret authorization token. Read :ref:`rpc_auth` to know
@@ -1136,7 +1136,7 @@ public:
      * certificate and private key.
      */
     void setRpcSecure(bool value = true)
-    { hash_.insert(QS("rpc-secure"), value); }
+    { hash_.insert(QS("rpc-secure"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set JSON-RPC/XML-RPC user.
@@ -1156,7 +1156,7 @@ public:
      * ``false``
      */
     void setAllowOverwrite(bool value = true)
-    { hash_.insert(QS("allow-overwrite"), value); }
+    { hash_.insert(QS("allow-overwrite"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * If false is given, aria2 aborts download when a piece length is different
@@ -1165,7 +1165,7 @@ public:
      * Default: ``false``
      */
     void setAllowPieceLengthChange(bool value = true)
-    { hash_.insert(QS("allow-piece-length-change"), value); }
+    { hash_.insert(QS("allow-piece-length-change"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Always resume download. If ``true`` is given, aria2 always tries to
@@ -1177,14 +1177,14 @@ public:
      * option. Default: ``true``
      */
     void setAlwaysResume(bool value = true)
-    { hash_.insert(QS("always-resume"), value); }
+    { hash_.insert(QS("always-resume"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Enable asynchronous DNS.
      * Default: ``true``
      */
     void setAsyncDns(bool value = true)
-    { hash_.insert(QS("async-dns"), value); }
+    { hash_.insert(QS("async-dns"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Comma separated list of DNS server address used in asynchronous DNS
@@ -1206,7 +1206,7 @@ public:
      * Default: ``true``
      */
     void setAutoFileRenaming(bool value = true)
-    { hash_.insert(QS("auto-file-renaming"), value); }
+    { hash_.insert(QS("auto-file-renaming"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Save a control file(\*.aria2) every SEC seconds.
@@ -1216,7 +1216,7 @@ public:
      * Default: ``60``
      */
     void setAutoSaveInterval(int sec)
-    { hash_.insert(QS("auto-save-interval"), sec); }
+    { hash_.insert(QS("auto-save-interval"), QSS(sec)); }
 
     /*!
      * Download file only when the local file is older than remote
@@ -1231,7 +1231,7 @@ public:
      * Default: ``false``
      */
     void setConditionalGet(bool value = true)
-    { hash_.insert(QS("conditional-get"), value); }
+    { hash_.insert(QS("conditional-get"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Change the configuration file path to PATH.
@@ -1254,7 +1254,7 @@ public:
      * redirected to ``/dev/null``. Default: ``false``
      */
     void setDaemon(bool value = true)
-    { hash_.insert(QS("daemon"), value); }
+    { hash_.insert(QS("daemon"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * If ``true`` is given, aria2 does not read all URIs and options from file
@@ -1266,7 +1266,7 @@ public:
      * Default: ``false``
      */
     void setDeferredInput(bool value = true)
-    { hash_.insert(QS("deferred-input"), value); }
+    { hash_.insert(QS("deferred-input"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Enable disk cache. If SIZE is ``0``, the disk cache is
@@ -1280,7 +1280,7 @@ public:
      * (1K = 1024, 1M = 1024K). Default: ``16M``
      */
     void setDiskCache(qint64 size)
-    { hash_.insert(QS("disk-cache"), size); }
+    { hash_.insert(QS("disk-cache"), QSS(size)); }
 
     /*!
      * This option changes the way ``Download Results`` is formatted. If
@@ -1313,21 +1313,21 @@ public:
      * This open will only have effect when:
      */
     void setRlimitNofile(int num)
-    { hash_.insert(QS("rlimit-nofile"), num); }
+    { hash_.insert(QS("rlimit-nofile"), QSS(num)); }
 
     /*!
      * Enable color output for a terminal.
      * Default: ``true``
      */
     void setEnableColor(bool value = true)
-    { hash_.insert(QS("enable-color"), value); }
+    { hash_.insert(QS("enable-color"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Map files into memory. This option may not work if the file space
      * is not pre-allocated. See :option:`--file-allocation`.
      */
     void setEnableMmap(bool value = true)
-    { hash_.insert(QS("enable-mmap"), value); }
+    { hash_.insert(QS("enable-mmap"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Specify the method for polling events.  The possible values are
@@ -1369,7 +1369,7 @@ public:
      * Default: ``false``
      */
     void setForceSave(bool value = true)
-    { hash_.insert(QS("force-save"), value); }
+    { hash_.insert(QS("force-save"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Save download with :option:`--save-session <--save-session>` option
@@ -1378,7 +1378,7 @@ public:
      * Default: ``true``
      */
     void setSaveNotFound(bool value = true)
-    { hash_.insert(QS("save-not-found"), value); }
+    { hash_.insert(QS("save-not-found"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set GID manually. aria2 identifies each download by the ID called
@@ -1400,14 +1400,14 @@ public:
      * Default: ``false``
      */
     void setHashCheckOnly(bool value = true)
-    { hash_.insert(QS("hash-check-only"), value); }
+    { hash_.insert(QS("hash-check-only"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Print sizes and speed in human readable format (e.g., 1.2Ki, 3.4Mi)
      * in the console readout. Default: ``true``
      */
     void setHumanReadable(bool value = true)
-    { hash_.insert(QS("human-readable"), value); }
+    { hash_.insert(QS("human-readable"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Bind sockets to given interface. You can specify interface name, IP
@@ -1426,7 +1426,7 @@ public:
      * If that is undesirable, turn this option off.  Default: ``true``
      */
     void setKeepUnfinishedDownloadResult(bool value = true)
-    { hash_.insert(QS("keep-unfinished-download-result"), value); }
+    { hash_.insert(QS("keep-unfinished-download-result"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set maximum number of download result kept in memory. The download
@@ -1442,7 +1442,7 @@ public:
      * Default: ``1000``
      */
     void setMaxDownloadResult(int num)
-    { hash_.insert(QS("max-download-result"), num); }
+    { hash_.insert(QS("max-download-result"), QSS(num)); }
 
     /*!
      * Set the maximum file size to enable mmap (see
@@ -1454,7 +1454,7 @@ public:
      * Default: ``9223372036854775807``
      */
     void setMaxMmapLimit(qint64 size)
-    { hash_.insert(QS("max-mmap-limit"), size); }
+    { hash_.insert(QS("max-mmap-limit"), QSS(size)); }
 
     /*!
      * When used with :option:`--always-resume=false, <--always-resume>` aria2 downloads file from
@@ -1464,7 +1464,7 @@ public:
      * Default: ``0``
      */
     void setMaxResumeFailureTries(int n)
-    { hash_.insert(QS("max-resume-failure-tries"), n); }
+    { hash_.insert(QS("max-resume-failure-tries"), QSS(n)); }
 
     /*!
      * Specify minimum SSL/TLS version to enable.
@@ -1506,14 +1506,14 @@ public:
      * Show console readout. Default: ``true``
      */
     void setShowConsoleReadout(bool value = true)
-    { hash_.insert(QS("show-console-readout"), value); }
+    { hash_.insert(QS("show-console-readout"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Redirect all console output that would be otherwise printed in
      * stdout to stderr.  Default: ``false``
      */
     void setStderr(bool value = true)
-    { hash_.insert(QS("stderr"), value); }
+    { hash_.insert(QS("stderr"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set interval in seconds to output download progress summary.
@@ -1521,7 +1521,7 @@ public:
      * Default: ``60``
      */
     void setSummaryInterval(int sec)
-    { hash_.insert(QS("summary-interval"), sec); }
+    { hash_.insert(QS("summary-interval"), QSS(sec)); }
 
     /*!
      * Fetch URIs in the command-line sequentially and download each URI in a
@@ -1529,7 +1529,7 @@ public:
      * Default: ``false``
      */
     void setForceSequential(bool value = true)
-    { hash_.insert(QS("force-sequential"), value); }
+    { hash_.insert(QS("force-sequential"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Set max overall download speed in bytes/sec.  ``0`` means
@@ -1553,7 +1553,7 @@ public:
      * Disable loading aria2.conf file.
      */
     void setNoConf(bool value = true)
-    { hash_.insert(QS("no-conf"), value); }
+    { hash_.insert(QS("no-conf"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * No file allocation is made for files whose size is smaller than SIZE.
@@ -1561,7 +1561,7 @@ public:
      * Default: ``5M``
      */
     void setNoFileAllocationLimit(qint64 size)
-    { hash_.insert(QS("no-file-allocation-limit"), size); }
+    { hash_.insert(QS("no-file-allocation-limit"), QSS(size)); }
 
     /*!
      * Enable parameterized URI support.
@@ -1574,14 +1574,14 @@ public:
      * Default: ``false``
      */
     void setParameterizedUri(bool value = true)
-    { hash_.insert(QS("parameterized-uri"), value); }
+    { hash_.insert(QS("parameterized-uri"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Make aria2 quiet (no console output).
      * Default: ``false``
      */
     void setQuiet(bool value = true)
-    { hash_.insert(QS("quiet"), value); }
+    { hash_.insert(QS("quiet"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Validate chunk of data by calculating checksum while downloading a file if
@@ -1589,7 +1589,7 @@ public:
      * Default: ``true``
      */
     void setRealtimeChunkChecksum(bool value = true)
-    { hash_.insert(QS("realtime-chunk-checksum"), value); }
+    { hash_.insert(QS("realtime-chunk-checksum"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Remove control file before download. Using with
@@ -1598,7 +1598,7 @@ public:
      * disables resume.
      */
     void setRemoveControlFile(bool value = true)
-    { hash_.insert(QS("remove-control-file"), value); }
+    { hash_.insert(QS("remove-control-file"), (value ? QL("true") : QL("false"))); }
 
     /*!
      * Save error/unfinished downloads to FILE on exit.  You can pass this
@@ -1621,7 +1621,7 @@ public:
      * given, file will be saved only when aria2 exits. Default: ``0``
      */
     void setSaveSessionInterval(int sec)
-    { hash_.insert(QS("save-session-interval"), sec); }
+    { hash_.insert(QS("save-session-interval"), QSS(sec)); }
 
     /*!
      * Set the maximum socket receive buffer in bytes.  Specifying ``0``
@@ -1630,7 +1630,7 @@ public:
      * call.  Default: ``0``
      */
     void setSocketRecvBufferSize(qint64 size)
-    { hash_.insert(QS("socket-recv-buffer-size"), size); }
+    { hash_.insert(QS("socket-recv-buffer-size"), QSS(size)); }
 
     /*!
      * Stop application after SEC seconds has passed.
@@ -1638,7 +1638,7 @@ public:
      * Default: ``0``
      */
     void setStop(int sec)
-    { hash_.insert(QS("stop"), sec); }
+    { hash_.insert(QS("stop"), QSS(sec)); }
 
     /*!
      * Stop application when process PID is not running.  This is useful if
@@ -1647,15 +1647,20 @@ public:
      * some reason, aria2 can detect it and shutdown itself.
      */
     void setStopWithProcess(int pid)
-    { hash_.insert(QS("stop-with-process"), pid); }
+    { hash_.insert(QS("stop-with-process"), QSS(pid)); }
 
     /*!
      * Truncate console readout to fit in a single line.
      * Default: ``true``
      */
     void setTruncateConsoleReadout(bool value = true)
-    { hash_.insert(QS("truncate-console-readout"), value); }
+    { hash_.insert(QS("truncate-console-readout"), (value ? QL("true") : QL("false"))); }
 
+    //////////////////////////////////////////////////////////////////////////
+    //
+    // Notes for Options
+    //
+    //////////////////////////////////////////////////////////////////////////
 
     const QVariantHash &options() const { return hash_; }
 
