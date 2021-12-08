@@ -39,6 +39,7 @@ private:
 
     void addUri();
     void remove();
+    void resume();
     void showOptions();
 
     void downloadTrackers();

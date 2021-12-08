@@ -182,11 +182,24 @@ void Aria2c::remove(const QString &gid)
 void Aria2c::tellAll()
 {
     auto handler = std::bind(&Aria2c::handleTellDownload, this, _1);
-    QHash<QString, QVariantList> methods;
-    methods.insert(QS("aria2.tellActive"), {});
-    methods.insert(QS("aria2.tellWaiting"), { 0, 1024 });
-    methods.insert(QS("aria2.tellStopped"), { 0, 1024 });
+    BatchMethods methods;
+    methods.append({ QS("aria2.tellActive"), {} });
+    methods.append({ QS("aria2.tellWaiting"), { 0, 1024 } });
+    methods.append({ QS("aria2.tellStopped"), { 0, 1024 } });
     batchCall(handler, methods);
+}
+
+
+void Aria2c::resume(const QStringList &gids)
+{
+    BatchMethods methods;
+
+    for (const auto &gid : gids)
+    {
+        methods.append({ QS("aria2.unpause"), { gid } });
+    }
+
+    batchCall(dontCare, methods);
 }
 
 
@@ -331,14 +344,14 @@ void Aria2c::send(const QJsonDocument &doc)
 }
 
 
-QStringList Aria2c::batchCall(MessageHandler handler, const QHash<QString, QVariantList> &methods)
+QStringList Aria2c::batchCall(MessageHandler handler, const BatchMethods &methods)
 {
     QStringList ids;
     QJsonArray arr;
 
-    for (const auto &m : methods.keys())
+    for (const auto &m : methods)
     {
-        auto params = methods.value(m);
+        auto params = m.second;
         params.prepend(QString(QL("token:") % secret_));
 
         auto id = generateToken();
@@ -347,7 +360,7 @@ QStringList Aria2c::batchCall(MessageHandler handler, const QHash<QString, QVari
         QJsonObject obj{
             { QS("jsonrpc"), QS("2.0") },
             { QS("id"), id },
-            { QS("method"), m },
+            { QS("method"), m.first },
             { QS("params"), QJsonArray::fromVariantList(params) },
         };
         arr.append(obj);

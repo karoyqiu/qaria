@@ -116,6 +116,8 @@ public:
 
     void addUri(const QString &uri, const QVariantHash &options = {});
     void remove(const QString &gid);
+    void resume(const QStringList &gids);
+    void resume(const QString &gid) { resume(QStringList{ gid }); }
 
     void setBtTrackers(const QStringList &trackers);
 
@@ -134,6 +136,7 @@ signals:
 
 private:
     using MessageHandler = std::function<void(const QVariant &result)>;
+    using BatchMethods = QList<QPair<QString, QVariantList>>;
 
     static QString generateToken();
 
@@ -146,7 +149,7 @@ private:
     template<typename... T>
     QString callAsync(MessageHandler handler, const QString &method, T&&... args);
 
-    QStringList batchCall(MessageHandler handler, const QHash<QString, QVariantList> &methods);
+    QStringList batchCall(MessageHandler handler, const BatchMethods &methods);
 
     void toQVariantList(QVariantList & /*result*/) {}
 

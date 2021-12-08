@@ -114,11 +114,14 @@
      </item>
     </item>
    </widget>
-   <widget class="QTableView" name="tableMain">
+   <widget class="QTreeView" name="treeMain">
     <property name="alternatingRowColors">
      <bool>true</bool>
     </property>
-    <property name="sortingEnabled">
+    <property name="rootIsDecorated">
+     <bool>false</bool>
+    </property>
+    <property name="uniformRowHeights">
      <bool>true</bool>
     </property>
    </widget>
@@ -162,6 +165,8 @@
    </attribute>
    <addaction name="actionAdd"/>
    <addaction name="actionRemove"/>
+   <addaction name="separator"/>
+   <addaction name="actionResume"/>
   </widget>
   <action name="actionAdd">
    <property name="text">
@@ -184,6 +189,11 @@
   <action name="actionRemove">
    <property name="text">
     <string>&amp;Remove</string>
+   </property>
+  </action>
+  <action name="actionResume">
+   <property name="text">
+    <string>&amp;Resume</string>
    </property>
   </action>
  </widget>

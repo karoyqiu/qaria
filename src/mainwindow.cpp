@@ -32,23 +32,25 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     ui->treeFilter->expandAll();
     ui->centralWidget->setStretchFactor(0, 1);
     ui->centralWidget->setStretchFactor(1, 5);
+    ui->actionResume->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
 
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::addUri);
     connect(ui->actionRemove, &QAction::triggered, this, &MainWindow::remove);
+    connect(ui->actionResume, &QAction::triggered, this, &MainWindow::resume);
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
 
     model_ = new DownloadTableModel(this);
-    ui->tableMain->setModel(model_);
+    ui->treeMain->setModel(model_);
 
     auto *sizeDlgt = new DataSizeDelegate(this);
-    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::SizeColumn, sizeDlgt);
+    ui->treeMain->setItemDelegateForColumn(DownloadTableModel::SizeColumn, sizeDlgt);
 
     auto *speedDlgt = new DataSizeDelegate(QS("/s"), this);
-    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::DownloadSpeedColumn, speedDlgt);
-    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::UploadSpeedColumn, speedDlgt);
+    ui->treeMain->setItemDelegateForColumn(DownloadTableModel::DownloadSpeedColumn, speedDlgt);
+    ui->treeMain->setItemDelegateForColumn(DownloadTableModel::UploadSpeedColumn, speedDlgt);
 
     auto *statusDlgt = new StatusDelegate(this);
-    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::StatusColumn, statusDlgt);
+    ui->treeMain->setItemDelegateForColumn(DownloadTableModel::StatusColumn, statusDlgt);
 
 
     loadSettings();
@@ -96,7 +98,7 @@ void MainWindow::loadSettings()
     QSettings settings;
     restoreGeometry(settings.value(QS("geo")).toByteArray());
     restoreState(settings.value(QS("sta")).toByteArray());
-    ui->tableMain->horizontalHeader()->restoreState(settings.value(QS("hdr")).toByteArray());
+    ui->treeMain->header()->restoreState(settings.value(QS("hdr")).toByteArray());
     ui->centralWidget->restoreState(settings.value(QS("spl")).toByteArray());
 }
 
@@ -106,7 +108,7 @@ void MainWindow::saveSettings() const
     QSettings settings;
     settings.setValue(QS("geo"), saveGeometry());
     settings.setValue(QS("sta"), saveState());
-    settings.setValue(QS("hdr"), ui->tableMain->horizontalHeader()->saveState());
+    settings.setValue(QS("hdr"), ui->treeMain->header()->saveState());
     settings.setValue(QS("spl"), ui->centralWidget->saveState());
 }
 
@@ -126,7 +128,7 @@ void MainWindow::addUri()
 
 void MainWindow::remove()
 {
-    auto idx = ui->tableMain->currentIndex();
+    auto idx = ui->treeMain->currentIndex();
 
     if (idx.isValid())
     {
@@ -138,6 +140,20 @@ void MainWindow::remove()
             aria2c_->remove(gid);
         }
     }
+}
+
+
+void MainWindow::resume()
+{
+    QStringList gids;
+    const auto rows = ui->treeMain->selectionModel()->selectedRows();
+
+    for (const auto &idx : rows)
+    {
+        gids.append(idx.data(DownloadTableModel::GidRole).toString());
+    }
+
+    aria2c_->resume(gids);
 }
 
 
