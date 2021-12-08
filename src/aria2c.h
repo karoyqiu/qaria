@@ -97,6 +97,8 @@ struct DownloadItem
     DownloadFiles files;
     /// BitTorrent only.
     BitTorrentInfo bittorrent;
+    /// InfoHash. BitTorrent only.
+    QString infoHash;
 };
 
 using DownloadItems = QList<DownloadItem>;

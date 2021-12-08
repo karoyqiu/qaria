@@ -61,6 +61,8 @@ public:
     void reset(const DownloadItems &items);
     void remove(const QString &gid);
 
+    const DownloadItem &item(const QModelIndex &idx) const;
+
 private:
     static QString fileSizeToString(qint64 bytes);
 

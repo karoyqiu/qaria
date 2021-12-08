@@ -238,6 +238,13 @@ void DownloadTableModel::remove(const QString &gid)
 }
 
 
+const DownloadItem &DownloadTableModel::item(const QModelIndex &idx) const
+{
+    Q_ASSERT(checkIndex(idx, CheckIndexOption::IndexIsValid | CheckIndexOption::ParentIsInvalid));
+    return items_.at(idx.row());
+}
+
+
 QString DownloadTableModel::fileSizeToString(qint64 bytes)
 {
     static const QLatin1String units[] = {

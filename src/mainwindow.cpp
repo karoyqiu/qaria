@@ -17,6 +17,7 @@
 #include "aria2optionsbuilder.h"
 #include "datasizedelegate.h"
 #include "downloadtablemodel.h"
+#include "newbittorrentdialog.h"
 #include "optionsdialog.h"
 #include "statusdelegate.h"
 
@@ -41,7 +42,6 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
     auto *sizeDlgt = new DataSizeDelegate(this);
     ui->tableMain->setItemDelegateForColumn(DownloadTableModel::SizeColumn, sizeDlgt);
-    ui->tableMain->setItemDelegateForColumn(DownloadTableModel::ProgressColumn, sizeDlgt);
 
     auto *speedDlgt = new DataSizeDelegate(QS("/s"), this);
     ui->tableMain->setItemDelegateForColumn(DownloadTableModel::DownloadSpeedColumn, speedDlgt);
@@ -57,6 +57,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(aria2c_, &Aria2c::aria2Started, this, &MainWindow::downloadTrackers);
     connect(aria2c_, &Aria2c::changed, model_, &DownloadTableModel::reset);
     connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
+    connect(model_, &QAbstractItemModel::rowsInserted, this, &MainWindow::handleAdded);
 
     aria2c_->start();
 }
@@ -166,4 +167,25 @@ void MainWindow::handleTrackers()
     auto s = QSS(body);
     auto list = s.split(QL('\n'), Qt::SkipEmptyParts);
     aria2c_->setBtTrackers(list);
+}
+
+
+void MainWindow::handleAdded(const QModelIndex &parent, int first, int last)
+{
+    for (int i = first; i <= last; i++)
+    {
+        auto idx = model_->index(i, 0, parent);
+        const auto &item = model_->item(idx);
+
+        if (item.status == DownloadStatus::Paused
+            && !item.infoHash.isEmpty() && !item.files.isEmpty()
+            && !item.files.first().path.startsWith(QL("[METADATA]")))
+        {
+            NewBitTorrentDialog dialog(item, this);
+
+            if (dialog.exec() == QDialog::Accepted)
+            {
+            }
+        }
+    }
 }

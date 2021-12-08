@@ -44,6 +44,8 @@ private:
     void downloadTrackers();
     void handleTrackers();
 
+    void handleAdded(const QModelIndex &parent, int first, int last);
+
 private:
     Ui::MainWindow *ui;
     Aria2c *aria2c_;

@@ -49,8 +49,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="254"/>
-        <location filename="downloadtablemodel.cpp" line="258"/>
+        <location filename="downloadtablemodel.cpp" line="261"/>
+        <location filename="downloadtablemodel.cpp" line="265"/>
         <source>%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
@@ -168,13 +168,71 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="116"/>
+        <location filename="mainwindow.cpp" line="117"/>
         <source>Input the URL to download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="132"/>
+        <location filename="mainwindow.cpp" line="133"/>
         <source>Do you really want to remove current download?</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewBitTorrentDialog</name>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="19"/>
+        <source>&amp;Download Directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="32"/>
+        <source>&amp;Browse...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="39"/>
+        <source>&amp;Category:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="50"/>
+        <source>Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="55"/>
+        <source>Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="60"/>
+        <source>Compressed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="65"/>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="70"/>
+        <source>Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="75"/>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="98"/>
+        <source>File</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="103"/>
+        <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

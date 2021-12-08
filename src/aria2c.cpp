@@ -74,6 +74,7 @@ static DownloadItem toItem(const QVariant &var)
     GET(item, obj, dir);
     GET(item, obj, following);
     GET(item, obj, followedBy);
+    GET(item, obj, infoHash);
 
     auto status = obj.value(QS("status")).toString();
     item.status = toStatus(status);
@@ -222,6 +223,7 @@ void Aria2c::onConnected()
     tellingTimer_ = new QTimer(this);
     tellingTimer_->setInterval(1000);
     tellingTimer_->setTimerType(Qt::VeryCoarseTimer);
+    tellingTimer_->setSingleShot(true);
     connect(tellingTimer_, &QTimer::timeout, this, &Aria2c::tellAll);
     tellingTimer_->start();
 }
@@ -388,4 +390,6 @@ void Aria2c::handleTellDownload(const QVariant &result)
     }
 
     emit changed(all);
+
+    tellingTimer_->start();
 }

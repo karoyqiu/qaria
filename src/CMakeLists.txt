@@ -18,6 +18,7 @@ set(SOURCES
     "datasizedelegate.h" "datasizedelegate.cpp"
     "aria2optionsbuilder.h"
     "statusdelegate.h" "statusdelegate.cpp"
+    "newbittorrentdialog.h" "newbittorrentdialog.cpp" "newbittorrentdialog.ui"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"
 )
 
