@@ -190,6 +190,19 @@ void Aria2c::tellAll()
 }
 
 
+void Aria2c::pause(const QStringList &gids)
+{
+    BatchMethods methods;
+
+    for (const auto &gid : gids)
+    {
+        methods.append({ QS("aria2.pause"), { gid } });
+    }
+
+    batchCall(dontCare, methods);
+}
+
+
 void Aria2c::resume(const QStringList &gids)
 {
     BatchMethods methods;
@@ -203,11 +216,17 @@ void Aria2c::resume(const QStringList &gids)
 }
 
 
+void Aria2c::changeOption(const QString &gid, const QVariantHash &options)
+{
+    callAsync(dontCare, QS("aria2.changeOption"), gid, options);
+}
+
+
 void Aria2c::setBtTrackers(const QStringList &trackers)
 {
     OptionsBuilder builder;
     builder.setBtTracker(trackers.join(QL(',')));
-    callAsync(dontCare, QS("aria2.changeGlobalOption"), builder.options());
+    //callAsync(dontCare, QS("aria2.changeGlobalOption"), builder.options());
 }
 
 
@@ -223,9 +242,9 @@ void Aria2c::onConnected()
     QSettings settings;
     OptionsBuilder opts;
     opts.setDir(settings.value(QS("dir")).toString());
-    opts.setPauseMetadata(true);
+    opts.setPauseMetadata();
     opts.setSaveSessionInterval(60);
-    opts.setBtSaveMetadata(true);
+    opts.setBtSaveMetadata();
     opts.setMaxConnectionPerServer(8);
     opts.setMinSplitSize(5_K);
     callAsync(dontCare, QS("aria2.changeGlobalOption"), opts.options());
@@ -257,7 +276,11 @@ void Aria2c::handleMessage(const QString &msg)
         if (obj.contains(QS("id")))
         {
             auto id = obj.value(QS("id")).toString();
-            Q_ASSERT(calls_.contains(id));
+
+            if (!calls_.contains(id))
+            {
+                return;
+            }
 
             auto handler = calls_.take(id);
             handler(obj.value(QS("result")));
@@ -283,7 +306,11 @@ void Aria2c::handleMessage(const QString &msg)
             if (id.isEmpty())
             {
                 id = obj.value(QS("id")).toString();
-                Q_ASSERT(calls_.contains(id));
+
+                if (!calls_.contains(id))
+                {
+                    return;
+                }
             }
 
             results.append(obj.value(QS("result")));

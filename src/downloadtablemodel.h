@@ -23,6 +23,7 @@ class DownloadTableModel : public QAbstractTableModel
 public:
     enum Column
     {
+        SerialColumn,
         NameColumn,
         SizeColumn,
         ProgressColumn,
@@ -64,7 +65,7 @@ public:
     const DownloadItem &item(const QModelIndex &idx) const;
 
 private:
-    static QString fileSizeToString(qint64 bytes);
+    static int columnAlignment(int col);
 
 private:
     DownloadItems items_;

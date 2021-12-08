@@ -116,8 +116,12 @@ public:
 
     void addUri(const QString &uri, const QVariantHash &options = {});
     void remove(const QString &gid);
+
+    void pause(const QStringList &gids);
+    void pause(const QString &gid) { pause(QStringList{ gid }); }
     void resume(const QStringList &gids);
     void resume(const QString &gid) { resume(QStringList{ gid }); }
+    void changeOption(const QString &gid, const QVariantHash &options);
 
     void setBtTrackers(const QStringList &trackers);
 

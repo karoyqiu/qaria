@@ -35,40 +35,50 @@ QVariant DownloadTableModel::headerData(int section, Qt::Orientation orientation
 {
     QVariant var;
 
-    if (orientation == Qt::Horizontal && role == Qt::DisplayRole)
+    if (orientation == Qt::Horizontal)
     {
-        switch (section)
+        if (role == Qt::DisplayRole)
         {
-        case NameColumn:
-            var = tr("Name");
-            break;
-        case SizeColumn:
-            var = tr("Size");
-            break;
-        case ProgressColumn:
-            var = tr("Progress");
-            break;
-        case StatusColumn:
-            var = tr("Status");
-            break;
-        case DownloadSpeedColumn:
-            var = tr("Download Speed");
-            break;
-        case UploadSpeedColumn:
-            var = tr("Upload Speed");
-            break;
-        case RemainingTimeColumn:
-            var = tr("Remaining Time");
-            break;
-        case CreationTimeColumn:
-            var = tr("Creation Time");
-            break;
-        case FinishTimeColumn:
-            var = tr("Finish Time");
-            break;
-        case ColumnCount:
-        default:
-            break;
+            switch (section)
+            {
+            case SerialColumn:
+                var = QS("#");
+                break;
+            case NameColumn:
+                var = tr("Name");
+                break;
+            case SizeColumn:
+                var = tr("Size");
+                break;
+            case ProgressColumn:
+                var = tr("Progress");
+                break;
+            case StatusColumn:
+                var = tr("Status");
+                break;
+            case DownloadSpeedColumn:
+                var = tr("Download Speed");
+                break;
+            case UploadSpeedColumn:
+                var = tr("Upload Speed");
+                break;
+            case RemainingTimeColumn:
+                var = tr("Remaining Time");
+                break;
+            case CreationTimeColumn:
+                var = tr("Creation Time");
+                break;
+            case FinishTimeColumn:
+                var = tr("Finish Time");
+                break;
+            case ColumnCount:
+            default:
+                break;
+            }
+        }
+        else if (role == Qt::TextAlignmentRole)
+        {
+            var = columnAlignment(section);
         }
     }
     else
@@ -89,13 +99,15 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
     switch (role)
     {
     case Qt::DisplayRole:
-    case Qt::EditRole:
     case Qt::ToolTipRole:
         {
             const auto &item = items_.at(idx.row());
 
             switch (idx.column())
             {
+            case SerialColumn:
+                var = idx.row() + 1;
+                break;
             case NameColumn:
                 var = itemName(item);
                 break;
@@ -128,21 +140,7 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
         break;
 
     case Qt::TextAlignmentRole:
-        switch (idx.column())
-        {
-        case SizeColumn:
-        case ProgressColumn:
-        case DownloadSpeedColumn:
-        case UploadSpeedColumn:
-        case RemainingTimeColumn:
-        case CreationTimeColumn:
-        case FinishTimeColumn:
-            var = static_cast<int>(Qt::AlignRight | Qt::AlignVCenter);
-            break;
-        case StatusColumn:
-            var = Qt::AlignCenter;
-            break;
-        }
+        var = columnAlignment(idx.column());
         break;
 
     case GidRole:
@@ -245,22 +243,22 @@ const DownloadItem &DownloadTableModel::item(const QModelIndex &idx) const
 }
 
 
-QString DownloadTableModel::fileSizeToString(qint64 bytes)
+int DownloadTableModel::columnAlignment(int col)
 {
-    static const QLatin1String units[] = {
-        QL("B"),
-        QL("KB"),
-        QL("MB"),
-        QL("GB"),
-        QL("TB"),
-        QL("PB"),
-    };
-
-    if (bytes < 1024)
+    switch (col)
     {
-        return tr("%1 %2").arg(bytes).arg(units[0]);
+    case SerialColumn:
+    case SizeColumn:
+    case ProgressColumn:
+    case DownloadSpeedColumn:
+    case UploadSpeedColumn:
+    case RemainingTimeColumn:
+    case CreationTimeColumn:
+    case FinishTimeColumn:
+        return Qt::AlignRight | Qt::AlignVCenter;
+    case StatusColumn:
+        return Qt::AlignCenter;
     }
 
-    auto n = qFloor(qLn(bytes) / qLn(1024));
-    return tr("%1 %2").arg(bytes / qPow(1024, n), 0, 'f', 2).arg(units[n]);
+    return 0;
 }

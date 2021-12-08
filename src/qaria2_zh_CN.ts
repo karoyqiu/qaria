@@ -4,54 +4,48 @@
 <context>
     <name>DownloadTableModel</name>
     <message>
-        <location filename="downloadtablemodel.cpp" line="43"/>
+        <location filename="downloadtablemodel.cpp" line="48"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="46"/>
+        <location filename="downloadtablemodel.cpp" line="51"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="49"/>
+        <location filename="downloadtablemodel.cpp" line="54"/>
         <source>Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="52"/>
+        <location filename="downloadtablemodel.cpp" line="57"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="55"/>
+        <location filename="downloadtablemodel.cpp" line="60"/>
         <source>Download Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="58"/>
+        <location filename="downloadtablemodel.cpp" line="63"/>
         <source>Upload Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="61"/>
+        <location filename="downloadtablemodel.cpp" line="66"/>
         <source>Remaining Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="64"/>
+        <location filename="downloadtablemodel.cpp" line="69"/>
         <source>Creation Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="67"/>
+        <location filename="downloadtablemodel.cpp" line="72"/>
         <source>Finish Time</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="downloadtablemodel.cpp" line="261"/>
-        <location filename="downloadtablemodel.cpp" line="265"/>
-        <source>%1 %2</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -186,57 +180,67 @@
 <context>
     <name>NewBitTorrentDialog</name>
     <message>
-        <location filename="newbittorrentdialog.ui" line="19"/>
-        <source>&amp;Download Directory:</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="newbittorrentdialog.ui" line="32"/>
+        <location filename="newbittorrentdialog.ui" line="30"/>
         <source>&amp;Browse...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="39"/>
-        <source>&amp;Category:</source>
+        <location filename="newbittorrentdialog.ui" line="21"/>
+        <source>&amp;Download Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="50"/>
+        <location filename="newbittorrentdialog.ui" line="40"/>
+        <source>&amp;Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="47"/>
         <source>Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="55"/>
+        <location filename="newbittorrentdialog.ui" line="52"/>
         <source>Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="60"/>
+        <location filename="newbittorrentdialog.ui" line="57"/>
         <source>Compressed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="65"/>
+        <location filename="newbittorrentdialog.ui" line="62"/>
         <source>Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="70"/>
+        <location filename="newbittorrentdialog.ui" line="67"/>
         <source>Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="75"/>
+        <location filename="newbittorrentdialog.ui" line="72"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="101"/>
+        <location filename="newbittorrentdialog.ui" line="83"/>
+        <source>E&amp;xtensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="89"/>
+        <source>&amp;All</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newbittorrentdialog.ui" line="130"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="106"/>
+        <location filename="newbittorrentdialog.ui" line="135"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>

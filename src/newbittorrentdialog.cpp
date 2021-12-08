@@ -16,6 +16,12 @@
 #include "datasizedelegate.h"
 
 
+static inline Qt::CheckState checkState(bool on)
+{
+    return on ? Qt::Checked : Qt::Unchecked;
+}
+
+
 NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *parent /*= nullptr*/)
     : QDialog(parent)
     , ui(new Ui::NewBitTorrentDialog)
@@ -28,8 +34,18 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
     QFileIconProvider iconProvider;
     auto dirIcon = iconProvider.icon(QFileIconProvider::Folder);
 
+    QMap<QString, QIcon> exts;
+
     for (const auto &file : download.files)
     {
+        QFileInfo info(file.path);
+        auto icon = iconProvider.icon(info);
+
+        if (!exts.contains(info.suffix()))
+        {
+            exts.insert(info.suffix(), icon);
+        }
+
         auto path = QDir::fromNativeSeparators(file.path);
         Q_ASSERT(path.startsWith(dir));
         path.remove(0, dir.length() + 1);
@@ -45,11 +61,10 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
         }
 
         QTreeWidgetItem *item = new QTreeWidgetItem();
-        QFileInfo info(file.path);
         item->setText(0, filename);
-        item->setIcon(0, iconProvider.icon(info));
+        item->setIcon(0, icon);
         item->setData(0, Qt::UserRole, file.index);
-        item->setCheckState(0, file.selected ? Qt::Checked : Qt::Unchecked);
+        item->setCheckState(0, checkState(file.selected));
         item->setData(1, Qt::DisplayRole, file.length);
         item->setTextAlignment(1, Qt::AlignRight | Qt::AlignVCenter);
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
@@ -71,6 +86,18 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
     ui->treeFiles->setItemDelegateForColumn(1, dlgt);
 
     ui->treeFiles->expandAll();
+
+
+    for (const auto &ext : exts.keys())
+    {
+        auto *item = new QListWidgetItem(exts.value(ext), ext, ui->listExt);
+        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
+        item->setCheckState(Qt::Checked);
+    }
+
+
+    connect(ui->checkAllExt, &QCheckBox::toggled, this, &NewBitTorrentDialog::handleAllExtChecked);
+    connect(ui->listExt, &QListWidget::itemChanged, this, &NewBitTorrentDialog::handleExtChanged);
 }
 
 
@@ -83,6 +110,15 @@ NewBitTorrentDialog::~NewBitTorrentDialog()
 QVector<int> NewBitTorrentDialog::selectedFiles() const
 {
     QVector<int> selected;
+
+    for (const auto *item : fileItems_)
+    {
+        if (item->checkState(0) == Qt::Checked)
+        {
+            selected.append(item->data(0, Qt::UserRole).toInt());
+        }
+    }
+
     return selected;
 }
 
@@ -185,4 +221,29 @@ qint64 NewBitTorrentDialog::calcSize(QTreeWidgetItem *parent)
     parent->setTextAlignment(1, Qt::AlignRight | Qt::AlignVCenter);
 
     return total;
+}
+
+
+void NewBitTorrentDialog::handleAllExtChecked(bool on)
+{
+    for (int i = 0; i < ui->listExt->count(); i++)
+    {
+        auto *item = ui->listExt->item(i);
+        item->setCheckState(checkState(on));
+    }
+}
+
+
+void NewBitTorrentDialog::handleExtChanged(QListWidgetItem *item)
+{
+    auto ext = item->text();
+    auto check = item->checkState();
+
+    for (auto *f : fileItems_)
+    {
+        if (f->text(0).endsWith(ext))
+        {
+            f->setCheckState(0, check);
+        }
+    }
 }

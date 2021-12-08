@@ -193,13 +193,36 @@ void MainWindow::handleAdded(const QModelIndex &parent, int first, int last)
         auto idx = model_->index(i, 0, parent);
         const auto &item = model_->item(idx);
 
-        if (item.status == DownloadStatus::Paused
-            && !item.infoHash.isEmpty() && !item.files.isEmpty()
+        if (!item.infoHash.isEmpty() && !item.files.isEmpty()
             && !item.files.first().path.startsWith(QL("[METADATA]")))
         {
+            if (item.status == DownloadStatus::Active)
+            {
+                aria2c_->pause(item.gid);
+            }
+
             NewBitTorrentDialog dialog(item, this);
 
             if (dialog.exec() == QDialog::Accepted)
+            {
+                QStringList selected;
+
+                for (const auto &index : dialog.selectedFiles())
+                {
+                    selected.append(QSS(index));
+                }
+
+                OptionsBuilder builder;
+                builder.setSelectFile(selected.join(QL(',')));
+                builder.setBtSaveMetadata();
+                builder.setBtLoadSavedMetadata();
+                builder.setAutoSaveInterval(60);
+                builder.setSaveSessionInterval(60);
+                builder.setBtRemoveUnselectedFile();
+                aria2c_->changeOption(item.gid, builder.options());
+                aria2c_->resume(item.gid);
+            }
+            else
             {
             }
         }

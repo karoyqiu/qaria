@@ -35,8 +35,12 @@ protected:
 
 private:
     QTreeWidgetItem *addSegmentTo(QTreeWidgetItem *parent, const QString &seg);
+
     void calcSize();
     qint64 calcSize(QTreeWidgetItem *parent);
+
+    void handleAllExtChecked(bool on);
+    void handleExtChanged(QListWidgetItem *item);
 
 private:
     Ui::NewBitTorrentDialog *ui;

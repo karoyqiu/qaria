@@ -6,110 +6,141 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
+    <width>900</width>
     <height>500</height>
    </rect>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout">
+  <layout class="QVBoxLayout" name="verticalLayout_4">
    <item>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
-       <property name="text">
-        <string>&amp;Download Directory:</string>
-       </property>
-       <property name="buddy">
-        <cstring>editDir</cstring>
-       </property>
-      </widget>
+    <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,1">
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QGroupBox" name="groupDir">
+         <property name="title">
+          <string>&amp;Download Directory</string>
+         </property>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLineEdit" name="editDir"/>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonBrowseDir">
+            <property name="text">
+             <string>&amp;Browse...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupCategory">
+         <property name="title">
+          <string>&amp;Category</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout">
+          <item>
+           <widget class="QComboBox" name="comboCategory">
+            <item>
+             <property name="text">
+              <string>Video</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Audio</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Compressed</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Document</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Application</string>
+             </property>
+            </item>
+            <item>
+             <property name="text">
+              <string>Other</string>
+             </property>
+            </item>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="groupExt">
+         <property name="title">
+          <string>E&amp;xtensions</string>
+         </property>
+         <layout class="QVBoxLayout" name="verticalLayout_2">
+          <item>
+           <widget class="QCheckBox" name="checkAllExt">
+            <property name="text">
+             <string>&amp;All</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QListWidget" name="listExt">
+            <property name="alternatingRowColors">
+             <bool>true</bool>
+            </property>
+            <property name="uniformItemSizes">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+      </layout>
      </item>
-     <item row="0" column="1">
-      <widget class="QLineEdit" name="editDir"/>
-     </item>
-     <item row="0" column="2">
-      <widget class="QPushButton" name="buttonBrowseDir">
-       <property name="text">
-        <string>&amp;Browse...</string>
+     <item>
+      <widget class="QTreeWidget" name="treeFiles">
+       <property name="alternatingRowColors">
+        <bool>true</bool>
        </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="label_2">
-       <property name="text">
-        <string>&amp;Category:</string>
+       <property name="uniformRowHeights">
+        <bool>true</bool>
        </property>
-       <property name="buddy">
-        <cstring>comboCategory</cstring>
+       <property name="sortingEnabled">
+        <bool>true</bool>
        </property>
-      </widget>
-     </item>
-     <item row="1" column="1">
-      <widget class="QComboBox" name="comboCategory">
-       <item>
+       <property name="animated">
+        <bool>true</bool>
+       </property>
+       <attribute name="headerStretchLastSection">
+        <bool>false</bool>
+       </attribute>
+       <column>
         <property name="text">
-         <string>Video</string>
+         <string>File</string>
         </property>
-       </item>
-       <item>
+       </column>
+       <column>
         <property name="text">
-         <string>Audio</string>
+         <string>Size</string>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Compressed</string>
+        <property name="textAlignment">
+         <set>AlignTrailing|AlignVCenter</set>
         </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Document</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Application</string>
-        </property>
-       </item>
-       <item>
-        <property name="text">
-         <string>Other</string>
-        </property>
-       </item>
+       </column>
       </widget>
      </item>
     </layout>
-   </item>
-   <item>
-    <widget class="QTreeWidget" name="treeFiles">
-     <property name="alternatingRowColors">
-      <bool>true</bool>
-     </property>
-     <property name="uniformRowHeights">
-      <bool>true</bool>
-     </property>
-     <property name="sortingEnabled">
-      <bool>true</bool>
-     </property>
-     <property name="animated">
-      <bool>true</bool>
-     </property>
-     <attribute name="headerStretchLastSection">
-      <bool>false</bool>
-     </attribute>
-     <column>
-      <property name="text">
-       <string>File</string>
-      </property>
-     </column>
-     <column>
-      <property name="text">
-       <string>Size</string>
-      </property>
-      <property name="textAlignment">
-       <set>AlignTrailing|AlignVCenter</set>
-      </property>
-     </column>
-    </widget>
    </item>
    <item>
     <widget class="QDialogButtonBox" name="buttonBox">
@@ -123,6 +154,14 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>treeFiles</tabstop>
+  <tabstop>editDir</tabstop>
+  <tabstop>buttonBrowseDir</tabstop>
+  <tabstop>comboCategory</tabstop>
+  <tabstop>checkAllExt</tabstop>
+  <tabstop>listExt</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
