@@ -25,6 +25,7 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
 
     const auto dir = QDir::fromNativeSeparators(download.dir);
     QFileIconProvider iconProvider;
+    auto dirIcon = iconProvider.icon(QFileIconProvider::Folder);
 
     for (const auto &file : download.files)
     {
@@ -39,6 +40,7 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
         for (const auto &seg : qAsConst(segments))
         {
             p = addSegmentTo(p, seg);
+            p->setIcon(0, dirIcon);
         }
 
         QTreeWidgetItem *item = new QTreeWidgetItem();
@@ -61,6 +63,8 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
             p->addChild(item);
         }
     }
+
+    calcSize();
 
     auto *dlgt = new DataSizeDelegate(this);
     ui->treeFiles->setItemDelegateForColumn(1, dlgt);
@@ -133,7 +137,6 @@ QTreeWidgetItem *NewBitTorrentDialog::addSegmentTo(QTreeWidgetItem *parent, cons
         item = new QTreeWidgetItem;
         item->setText(0, seg);
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable | Qt::ItemIsAutoTristate);
-        item->setIcon(0, style()->standardIcon(QStyle::SP_DirIcon));
 
         if (parent == nullptr)
         {
@@ -146,4 +149,39 @@ QTreeWidgetItem *NewBitTorrentDialog::addSegmentTo(QTreeWidgetItem *parent, cons
     }
 
     return item;
+}
+
+
+void NewBitTorrentDialog::calcSize()
+{
+    for (int i = 0; i < ui->treeFiles->topLevelItemCount(); i++)
+    {
+        auto *p = ui->treeFiles->topLevelItem(i);
+        calcSize(p);
+    }
+}
+
+
+qint64 NewBitTorrentDialog::calcSize(QTreeWidgetItem *parent)
+{
+    qint64 total = 0;
+
+    for (int i = 0; i < parent->childCount(); i++)
+    {
+        auto *item = parent->child(i);
+
+        if (item->childCount() == 0)
+        {
+            total += item->data(1, Qt::DisplayRole).toLongLong();
+        }
+        else
+        {
+            total += calcSize(item);
+        }
+    }
+
+    parent->setData(1, Qt::DisplayRole, total);
+    parent->setTextAlignment(1, Qt::AlignRight | Qt::AlignVCenter);
+
+    return total;
 }
