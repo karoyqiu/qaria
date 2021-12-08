@@ -22,6 +22,7 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
 {
     ui->setupUi(this);
     ui->treeFiles->header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    ui->treeFiles->sortItems(1, Qt::DescendingOrder);
 
     const auto dir = QDir::fromNativeSeparators(download.dir);
     QFileIconProvider iconProvider;

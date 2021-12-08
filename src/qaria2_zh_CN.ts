@@ -231,12 +231,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="98"/>
+        <location filename="newbittorrentdialog.ui" line="101"/>
         <source>File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="103"/>
+        <location filename="newbittorrentdialog.ui" line="106"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
