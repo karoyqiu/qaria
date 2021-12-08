@@ -215,6 +215,7 @@ void MainWindow::handleAdded(const QModelIndex &parent, int first, int last)
             }
             else
             {
+                aria2c_->remove(item.gid);
             }
         }
     }

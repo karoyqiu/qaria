@@ -38,6 +38,18 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
 
     for (const auto &file : download.files)
     {
+        auto path = QDir::fromNativeSeparators(file.path);
+        Q_ASSERT(path.startsWith(dir));
+        path.remove(0, dir.length() + 1);
+
+        auto segments = path.split(QL('/'), Qt::SkipEmptyParts);
+        auto filename = segments.takeLast();
+
+        if (filename.startsWith(QL("_____padding_file_")))
+        {
+            continue;
+        }
+
         QFileInfo info(file.path);
         auto icon = iconProvider.icon(info);
 
@@ -46,12 +58,6 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
             exts.insert(info.suffix(), icon);
         }
 
-        auto path = QDir::fromNativeSeparators(file.path);
-        Q_ASSERT(path.startsWith(dir));
-        path.remove(0, dir.length() + 1);
-
-        auto segments = path.split(QL('/'), Qt::SkipEmptyParts);
-        auto filename = segments.takeLast();
         QTreeWidgetItem *p = nullptr;
 
         for (const auto &seg : qAsConst(segments))
