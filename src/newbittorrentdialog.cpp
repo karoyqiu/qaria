@@ -13,6 +13,7 @@
 #include "newbittorrentdialog.h"
 #include "ui_newbittorrentdialog.h"
 
+#include "aria2optionsbuilder.h"
 #include "datasizedelegate.h"
 
 
@@ -102,6 +103,9 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
     }
 
 
+    ui->editDir->setText(download.dir);
+
+
     connect(ui->checkAllExt, &QCheckBox::toggled, this, &NewBitTorrentDialog::handleAllExtChecked);
     connect(ui->listExt, &QListWidget::itemChanged, this, &NewBitTorrentDialog::handleExtChanged);
 }
@@ -113,19 +117,23 @@ NewBitTorrentDialog::~NewBitTorrentDialog()
 }
 
 
-QVector<int> NewBitTorrentDialog::selectedFiles() const
+void NewBitTorrentDialog::buildOptions(OptionsBuilder &builder) const
 {
-    QVector<int> selected;
+    QString selected;
 
     for (const auto *item : fileItems_)
     {
         if (item->checkState(0) == Qt::Checked)
         {
-            selected.append(item->data(0, Qt::UserRole).toInt());
+            selected.append(item->data(0, Qt::UserRole).toString());
+            selected.append(QL(','));
         }
     }
 
-    return selected;
+    builder.setSelectFile(selected);
+
+    QDir dir(ui->editDir->text());
+    builder.setDir(dir.absoluteFilePath(ui->comboCategory->currentText()));
 }
 
 

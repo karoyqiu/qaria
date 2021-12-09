@@ -64,6 +64,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(aria2c_, &Aria2c::changed, model_, &DownloadTableModel::reset);
     connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
     connect(model_, &QAbstractItemModel::rowsInserted, this, &MainWindow::handleAdded);
+    connect(ui->treeMain, &QTreeView::doubleClicked, this, &MainWindow::edit);
 
     aria2c_->start();
 }
@@ -205,15 +206,8 @@ void MainWindow::handleAdded(const QModelIndex &parent, int first, int last)
 
             if (dialog.exec() == QDialog::Accepted)
             {
-                QStringList selected;
-
-                for (const auto &index : dialog.selectedFiles())
-                {
-                    selected.append(QSS(index));
-                }
-
                 OptionsBuilder builder;
-                builder.setSelectFile(selected.join(QL(',')));
+                dialog.buildOptions(builder);
                 aria2c_->changeOption(item.gid, builder.options());
                 aria2c_->resume(item.gid);
             }
@@ -222,5 +216,24 @@ void MainWindow::handleAdded(const QModelIndex &parent, int first, int last)
                 aria2c_->remove(item.gid);
             }
         }
+    }
+}
+
+
+void MainWindow::edit(const QModelIndex &idx)
+{
+    if (!idx.isValid())
+    {
+        return;
+    }
+
+    const auto &item = model_->item(idx);
+    NewBitTorrentDialog dialog(item, this);
+
+    if (dialog.exec() == QDialog::Accepted)
+    {
+        OptionsBuilder builder;
+        dialog.buildOptions(builder);
+        aria2c_->changeOption(item.gid, builder.options());
     }
 }

@@ -1656,11 +1656,24 @@ public:
     void setTruncateConsoleReadout(bool value = true)
     { hash_.insert(QS("truncate-console-readout"), (value ? QL("true") : QL("false"))); }
 
-    //////////////////////////////////////////////////////////////////////////
-    //
-    // Notes for Options
-    //
-    //////////////////////////////////////////////////////////////////////////
+
+    /*!
+     * Optimizes the number of concurrent downloads according to the bandwidth available.
+     * aria2 uses the download speed observed in the previous downloads to adapt the number
+     * of downloads launched in parallel according to the rule N = A + B Log10(speed in Mbps).
+     * The coefficients A and B can be customized in the option arguments with A and B separated
+     * by a colon. The default values (A=5, B=25) lead to using typically 5 parallel downloads
+     * on 1Mbps networks and above 50 on 100Mbps networks. The number of parallel downloads
+     * remains constrained under the maximum defined by the --max-concurrent-downloads parameter.
+     * Default: ``false``
+     */
+    void setOptimizeConcurrentDownloads(bool value = true)
+    { hash_.insert(QS("optimize-concurrent-downloads"), (value ? QL("true") : QL("false"))); }
+
+    void setOption(const QString &name, const QVariant &value)
+    {
+        hash_.insert(name, value.toString());
+    }
 
     const QVariantHash &options() const { return hash_; }
 

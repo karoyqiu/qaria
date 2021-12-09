@@ -46,6 +46,7 @@ private:
     void handleTrackers();
 
     void handleAdded(const QModelIndex &parent, int first, int last);
+    void edit(const QModelIndex &idx);
 
 private:
     Ui::MainWindow *ui;

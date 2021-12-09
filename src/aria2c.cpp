@@ -143,7 +143,7 @@ void Aria2c::start()
         QS("--daemon"),
         QS("--quiet"),
 #ifdef QT_DEBUG
-        QS("--log"), logfile,
+        //QS("--log"), logfile,
 #endif
     };
 
@@ -251,6 +251,8 @@ void Aria2c::onConnected()
     opts.setBtRemoveUnselectedFile();
     opts.setMaxConnectionPerServer(8);
     opts.setMinSplitSize(1_M);
+    opts.setFileAllocation(QS("falloc"));
+    opts.setOptimizeConcurrentDownloads();
     callAsync(dontCare, QS("aria2.changeGlobalOption"), opts.options());
 
     emit aria2Started();

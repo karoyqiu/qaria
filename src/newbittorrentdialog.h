@@ -19,6 +19,8 @@ namespace Ui {
 class NewBitTorrentDialog;
 }
 
+class OptionsBuilder;
+
 
 class NewBitTorrentDialog : public QDialog
 {
@@ -28,7 +30,7 @@ public:
     explicit NewBitTorrentDialog(const DownloadItem &download, QWidget *parent = nullptr);
     virtual ~NewBitTorrentDialog();
 
-    QVector<int> selectedFiles() const;
+    void buildOptions(OptionsBuilder &builder) const;
 
 protected:
     virtual void changeEvent(QEvent *e) override;
