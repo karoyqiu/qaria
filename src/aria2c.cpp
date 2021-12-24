@@ -268,6 +268,9 @@ void Aria2c::onConnected()
     opts.setMinSplitSize(1_M);
     opts.setFileAllocation(QS("falloc"));
     opts.setOptimizeConcurrentDownloads();
+    opts.setMaxOverallUploadLimit(QS("128K"));
+    opts.setSeedRatio("1.0");
+    opts.setSeedTime(QS("30"));
     callAsync(dontCare, QS("aria2.changeGlobalOption"), opts.options());
 
     emit aria2Started();

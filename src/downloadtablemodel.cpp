@@ -131,7 +131,10 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
                 var = item.uploadSpeed;
                 break;
             case RemainingTimeColumn:
-                var = item.downloadSpeed > 0 ? (item.totalLength - item.completedLength) / item.downloadSpeed : 0;
+                if (item.status == DownloadStatus::Active)
+                {
+                    var = item.downloadSpeed > 0 ? (item.totalLength - item.completedLength) / item.downloadSpeed : -1;
+                }
                 break;
             case CreationTimeColumn:
                 //var = item;

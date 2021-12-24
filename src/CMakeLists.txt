@@ -21,6 +21,7 @@ set(SOURCES
     "newdownloaddialog.h" "newdownloaddialog.cpp" "newdownloaddialog.ui"
     "newbittorrentdialog.h" "newbittorrentdialog.cpp" "newbittorrentdialog.ui"
     "progressitemdelegate.h" "progressitemdelegate.cpp"
+    "remainingtimedelegate.h" "remainingtimedelegate.cpp"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"
 )
 

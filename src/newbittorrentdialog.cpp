@@ -67,7 +67,7 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
             p->setIcon(0, dirIcon);
         }
 
-        QTreeWidgetItem *item = new QTreeWidgetItem();
+        auto *item = new QTreeWidgetItem();
         item->setText(0, filename);
         item->setIcon(0, icon);
         item->setData(0, Qt::UserRole, file.index);
@@ -103,7 +103,7 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
     }
 
 
-    ui->editDir->setText(download.dir);
+    ui->editDir->setText(QDir::toNativeSeparators(download.dir));
 
 
     connect(ui->checkAllExt, &QCheckBox::toggled, this, &NewBitTorrentDialog::handleAllExtChecked);
@@ -131,9 +131,6 @@ void NewBitTorrentDialog::buildOptions(OptionsBuilder &builder) const
     }
 
     builder.setSelectFile(selected);
-
-    QDir dir(ui->editDir->text());
-    builder.setDir(dir.absoluteFilePath(ui->comboCategory->currentText()));
 }
 
 

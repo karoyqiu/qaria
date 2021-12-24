@@ -21,6 +21,7 @@
 #include "newbittorrentdialog.h"
 #include "optionsdialog.h"
 #include "progressitemdelegate.h"
+#include "remainingtimedelegate.h"
 #include "statusdelegate.h"
 
 
@@ -56,6 +57,9 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
     auto *statusDlgt = new StatusDelegate(this);
     ui->treeMain->setItemDelegateForColumn(DownloadTableModel::StatusColumn, statusDlgt);
+
+    auto *rtDlgt = new RemainingTimeDelegate(this);
+    ui->treeMain->setItemDelegateForColumn(DownloadTableModel::RemainingTimeColumn, rtDlgt);
 
 
     loadSettings();
