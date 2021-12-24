@@ -114,7 +114,7 @@ public:
 
     void start();
 
-    void addUri(const QString &uri, const QVariantHash &options = {});
+    void addUri(const QUrl &uri, const QVariantHash &options = {});
     void remove(const QString &gid);
 
     void pause(const QStringList &gids);
@@ -144,6 +144,7 @@ private:
 
     static QString generateToken();
 
+    void runAria2();
     void onConnected();
     void handleMessage(const QString &msg);
     void handleNotification(const QString &method, const QVariantList &params);

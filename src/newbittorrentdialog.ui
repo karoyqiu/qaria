@@ -22,12 +22,9 @@
          </property>
          <layout class="QHBoxLayout" name="horizontalLayout">
           <item>
-           <widget class="QLineEdit" name="editDir"/>
-          </item>
-          <item>
-           <widget class="QPushButton" name="buttonBrowseDir">
-            <property name="text">
-             <string>&amp;Browse...</string>
+           <widget class="QLineEdit" name="editDir">
+            <property name="enabled">
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -42,6 +39,9 @@
          <layout class="QVBoxLayout" name="verticalLayout">
           <item>
            <widget class="QComboBox" name="comboCategory">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <item>
              <property name="text">
               <string>Video</string>
@@ -157,7 +157,6 @@
  <tabstops>
   <tabstop>treeFiles</tabstop>
   <tabstop>editDir</tabstop>
-  <tabstop>buttonBrowseDir</tabstop>
   <tabstop>comboCategory</tabstop>
   <tabstop>checkAllExt</tabstop>
   <tabstop>listExt</tabstop>

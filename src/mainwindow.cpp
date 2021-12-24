@@ -17,6 +17,7 @@
 #include "aria2optionsbuilder.h"
 #include "datasizedelegate.h"
 #include "downloadtablemodel.h"
+#include "newdownloaddialog.h"
 #include "newbittorrentdialog.h"
 #include "optionsdialog.h"
 #include "progressitemdelegate.h"
@@ -120,13 +121,26 @@ void MainWindow::saveSettings() const
 
 void MainWindow::addUri()
 {
-    bool ok = false;
-    auto uri = QInputDialog::getText(this, {}, tr("Input the URL to download"), QLineEdit::Normal,
-                                     {}, &ok);
+    //bool ok = false;
+    //auto uri = QInputDialog::getText(this, {}, tr("Input the URL to download"), QLineEdit::Normal,
+    //                                 {}, &ok);
 
-    if (ok && !uri.isEmpty())
+    //if (ok && !uri.isEmpty())
+    //{
+    //    aria2c_->addUri(uri);
+    //}
+
+    NewDownloadDialog dialog(this);
+
+    if (dialog.exec() == QDialog::Accepted)
     {
-        aria2c_->addUri(uri);
+        const auto uris = dialog.uris();
+        auto opts = dialog.options();
+
+        for (const auto &uri : uris)
+        {
+            aria2c_->addUri(uri, opts);
+        }
     }
 }
 

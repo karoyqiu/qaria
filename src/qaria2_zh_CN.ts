@@ -167,12 +167,7 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="124"/>
-        <source>Input the URL to download</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="mainwindow.cpp" line="140"/>
+        <location filename="mainwindow.cpp" line="154"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -180,17 +175,12 @@
 <context>
     <name>NewBitTorrentDialog</name>
     <message>
-        <location filename="newbittorrentdialog.ui" line="30"/>
-        <source>&amp;Browse...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="newbittorrentdialog.ui" line="21"/>
         <source>&amp;Download Directory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="newbittorrentdialog.ui" line="40"/>
+        <location filename="newbittorrentdialog.ui" line="37"/>
         <source>&amp;Category</source>
         <translation type="unfinished"></translation>
     </message>
@@ -242,6 +232,64 @@
     <message>
         <location filename="newbittorrentdialog.ui" line="135"/>
         <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NewDownloadDialog</name>
+    <message>
+        <location filename="newdownloaddialog.ui" line="19"/>
+        <source>&amp;Download Directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="32"/>
+        <source>&amp;Browse...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="39"/>
+        <source>&amp;Category:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="50"/>
+        <source>Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="55"/>
+        <source>Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="60"/>
+        <source>Compressed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="65"/>
+        <source>Document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="70"/>
+        <source>Application</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="75"/>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="83"/>
+        <source>&amp;URLs:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="93"/>
+        <source>Input one URL per line.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

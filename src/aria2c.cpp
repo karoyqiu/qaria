@@ -111,71 +111,33 @@ Aria2c::Aria2c(QObject *parent /*= nullptr*/)
     : QObject(parent)
     , ws_(nullptr)
     , tellingTimer_(nullptr)
+    , secret_(QS("03f682c8b4f94201995da1471ec47f23"))
 {
 }
 
 
 void Aria2c::start()
 {
-    Q_ASSERT(ws_ == nullptr && tellingTimer_ == nullptr);
-
-    QSettings settings;
-    auto aria2c = settings.value(QS("aria2c")).toString();
-
-    QDir appDataDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
-    appDataDir.mkpath(QS("."));
-    auto sessionFile = appDataDir.absoluteFilePath(QS("aria2.session"));
-
-#ifdef QT_DEBUG
-    auto logfile = QDir::temp().absoluteFilePath(QS("aria2c.log"));
-    QFile::remove(logfile);
-
-    secret_ = QS("03f682c8b4f94201995da1471ec47f23");
-#else
-    secret_ = generateToken();
-#endif
-
-    QStringList args{
-        QS("--enable-rpc"),
-        QS("--rpc-secret"), secret_,
-        QS("--save-session"), sessionFile,
-        QS("--stop-with-process"), QSS(qApp->applicationPid()),
-        QS("--daemon"),
-        QS("--quiet"),
-#ifdef QT_DEBUG
-        //QS("--log"), logfile,
-#endif
-    };
-
-    if (QFileInfo::exists(sessionFile))
-    {
-        args.append({ QS("--input-file"), sessionFile });
-    }
-
-    QProcess::startDetached(aria2c, args);
-
-
+    Q_ASSERT(ws_ == nullptr);
     ws_ = new QWebSocket(qApp->applicationName(), QWebSocketProtocol::VersionLatest, this);
     connect(ws_, &QWebSocket::connected, this, &Aria2c::onConnected);
     connect(ws_, &QWebSocket::textMessageReceived, this, &Aria2c::handleMessage);
+    connect(ws_, qOverload< QAbstractSocket::SocketError>(&QWebSocket::error), this, &Aria2c::runAria2);
 
     ws_->open(QS("ws://127.0.0.1:6800/jsonrpc"));
 }
 
 
-void Aria2c::addUri(const QString &uris, const QVariantHash &options /*= {}*/)
+void Aria2c::addUri(const QUrl &uris, const QVariantHash &options /*= {}*/)
 {
     callAsync(std::bind(&Aria2c::handleAdd, this, _1),
-              QS("aria2.addUri"), QStringList{ uris }, options);
+              QS("aria2.addUri"), QStringList{ uris.toString() }, options);
 }
 
 
 void Aria2c::remove(const QString &gid)
 {
-    callAsync([this](const QVariant result)
-    {
-        emit removed(result.toString());
-    }, QS("aria2.remove"), gid);
+    callAsync(dontCare, QS("aria2.forceRemove"), gid);
 }
 
 
@@ -233,6 +195,59 @@ void Aria2c::setBtTrackers(const QStringList &trackers)
 QString Aria2c::generateToken()
 {
     return QUuid::createUuid().toString(QUuid::Id128);
+}
+
+
+void Aria2c::runAria2()
+{
+    if (ws_ != nullptr)
+    {
+        ws_->deleteLater();
+        ws_ = nullptr;
+    }
+
+    if (tellingTimer_ != nullptr)
+    {
+        tellingTimer_->deleteLater();
+        tellingTimer_ = nullptr;
+    }
+
+    QSettings settings;
+    auto aria2c = settings.value(QS("aria2c")).toString();
+
+    QDir appDataDir(QStandardPaths::writableLocation(QStandardPaths::AppDataLocation));
+    appDataDir.mkpath(QS("."));
+    auto sessionFile = appDataDir.absoluteFilePath(QS("aria2.session"));
+
+#ifdef QT_DEBUG
+    auto logfile = QDir::temp().absoluteFilePath(QS("aria2c.log"));
+    QFile::remove(logfile);
+#else
+    secret_ = generateToken();
+#endif
+
+    QStringList args{
+        QS("--enable-rpc"),
+        QS("--rpc-secret"), secret_,
+        QS("--save-session"), sessionFile,
+        QS("--daemon"),
+        QS("--quiet"),
+#ifdef QT_DEBUG
+        QS("--log-level"), QS("notice"),
+        QS("--log"), logfile,
+#else
+        QS("--stop-with-process"), QSS(qApp->applicationPid()),
+#endif
+    };
+
+    if (QFileInfo::exists(sessionFile))
+    {
+        args.append({ QS("--input-file"), sessionFile });
+    }
+
+    QProcess::startDetached(aria2c, args);
+
+    start();
 }
 
 
