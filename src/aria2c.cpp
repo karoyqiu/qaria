@@ -163,6 +163,7 @@ void Aria2c::tellAll()
     methods.append({ QS("aria2.tellActive"), {} });
     methods.append({ QS("aria2.tellWaiting"), { 0, 1024 } });
     methods.append({ QS("aria2.tellStopped"), { 0, 1024 } });
+    methods.append({ QS("aria2.getGlobalStat"), {} });
     batchCall(handler, methods);
 }
 
@@ -204,6 +205,22 @@ void Aria2c::setBtTrackers(const QStringList &trackers)
     OptionsBuilder builder;
     builder.setBtTracker(trackers.join(QL(',')));
     callAsync(dontCare, QS("aria2.changeGlobalOption"), builder.options());
+}
+
+
+void Aria2c::getGlobalStat()
+{
+    callAsync([this](const QVariant &result)
+    {
+        auto obj = result.toHash();
+        GlobalStat stat;
+        GET(stat, obj, downloadSpeed);
+        GET(stat, obj, uploadSpeed);
+        GET(stat, obj, numActive);
+        GET(stat, obj, numWaiting);
+        GET(stat, obj, numStopped);
+        GET(stat, obj, numStoppedTotal);
+    }, QS("getGlobalStat"));
 }
 
 
@@ -253,7 +270,7 @@ void Aria2c::runAria2()
 #else
         QS("--stop-with-process"), QSS(qApp->applicationPid()),
 #endif
-};
+    };
 
     if (QFileInfo::exists(sessionFile))
     {
@@ -453,11 +470,12 @@ void Aria2c::handleAdd(const QVariant &result)
 void Aria2c::handleTellDownload(const QVariant &result)
 {
     const auto list = result.toList();
+    Q_ASSERT(list.count() == 4);
     DownloadItems all;
 
-    for (const auto &var : list)
+    for (int i = 0; i < 3; i++)
     {
-        const auto sublist = var.toList();
+        const auto sublist = list.at(i).toList();
         DownloadItems items;
 
         for (const auto &subvar : sublist)
@@ -469,6 +487,18 @@ void Aria2c::handleTellDownload(const QVariant &result)
     }
 
     emit changed(all);
+
+
+    auto obj = list.last().toHash();
+    GlobalStat stat;
+    GET(stat, obj, downloadSpeed);
+    GET(stat, obj, uploadSpeed);
+    GET(stat, obj, numActive);
+    GET(stat, obj, numWaiting);
+    GET(stat, obj, numStopped);
+    GET(stat, obj, numStoppedTotal);
+    emit globalStat(stat);
+
 
     tellingTimer_->start();
 }

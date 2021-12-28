@@ -30,12 +30,20 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     , ui(new Ui::MainWindow)
     , aria2c_(nullptr)
     , model_(nullptr)
+    , downLabel_(nullptr)
+    , upLabel_(nullptr)
 {
     ui->setupUi(this);
     ui->treeFilter->expandAll();
     ui->centralWidget->setStretchFactor(0, 1);
     ui->centralWidget->setStretchFactor(1, 5);
     ui->actionResume->setIcon(style()->standardIcon(QStyle::SP_MediaPlay));
+
+    downLabel_ = new QLabel(this);
+    ui->statusBar->addPermanentWidget(downLabel_);
+
+    upLabel_ = new QLabel(this);
+    ui->statusBar->addPermanentWidget(upLabel_);
 
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::addUri);
     connect(ui->actionRemove, &QAction::triggered, this, &MainWindow::remove);
@@ -66,6 +74,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
     aria2c_ = new Aria2c(this);
     connect(aria2c_, &Aria2c::aria2Started, this, &MainWindow::downloadTrackers);
+    connect(aria2c_, &Aria2c::globalStat, this, &MainWindow::updateStat);
     connect(aria2c_, &Aria2c::changed, model_, &DownloadTableModel::reset);
     connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
     connect(model_, &QAbstractItemModel::rowsInserted, this, &MainWindow::handleAdded);
@@ -80,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     tray->setToolTip(qApp->applicationDisplayName());
     tray->show();
     connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::showMe);
+
 }
 
 
@@ -279,4 +289,12 @@ void MainWindow::showFiles(const QModelIndex &idx)
     {
         ui->treeFiles->clear();
     }
+}
+
+
+void MainWindow::updateStat(const GlobalStat &stat)
+{
+    QLocale loc;
+    downLabel_->setText(tr("Download speed: %1/s").arg(loc.formattedDataSize(stat.downloadSpeed)));
+    upLabel_->setText(tr("Upload speed: %1/s").arg(loc.formattedDataSize(stat.uploadSpeed)));
 }

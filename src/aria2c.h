@@ -108,6 +108,19 @@ using DownloadItems = QList<DownloadItem>;
 Q_DECLARE_METATYPE(DownloadItem)
 
 
+struct GlobalStat
+{
+    qint64 downloadSpeed = 0;
+    qint64 uploadSpeed = 0;
+    int numActive = 0;
+    int numWaiting = 0;
+    int numStopped = 0;
+    int numStoppedTotal = 0;
+};
+
+Q_DECLARE_METATYPE(GlobalStat)
+
+
 class Aria2c : public QObject
 {
     Q_OBJECT
@@ -128,6 +141,8 @@ public:
 
     void setBtTrackers(const QStringList &trackers);
 
+    void getGlobalStat();
+
 signals:
     void aria2Started();
 
@@ -140,6 +155,8 @@ signals:
     void removed(const QString &gid);
 
     void changed(const DownloadItems &items);
+
+    void globalStat(const GlobalStat &stat);
 
 private:
     using MessageHandler = std::function<void(const QVariant &result)>;

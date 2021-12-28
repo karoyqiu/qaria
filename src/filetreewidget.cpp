@@ -269,8 +269,11 @@ QPair<qint64, qint64> FileTreeWidget::calcSize(QTreeWidgetItem *parent)
 
         if (item->childCount() == 0)
         {
-            total += item->data(SizeColumn, Qt::DisplayRole).toLongLong();
-            remaining += item->data(RemainingSizeColumn, Qt::DisplayRole).toLongLong();
+            if (item->checkState(0) == Qt::Checked)
+            {
+                total += item->data(SizeColumn, Qt::DisplayRole).toLongLong();
+                remaining += item->data(RemainingSizeColumn, Qt::DisplayRole).toLongLong();
+            }
         }
         else
         {

@@ -190,8 +190,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="179"/>
+        <location filename="mainwindow.cpp" line="180"/>
         <source>Do you really want to remove current download?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="298"/>
+        <source>Download speed: %1/s</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="299"/>
+        <source>Upload speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

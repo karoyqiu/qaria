@@ -19,6 +19,7 @@ class MainWindow;
 
 class Aria2c;
 class DownloadTableModel;
+struct GlobalStat;
 
 
 class MainWindow : public QMainWindow
@@ -51,8 +52,12 @@ private:
     void edit(const QModelIndex &idx);
     void showFiles(const QModelIndex &idx);
 
+    void updateStat(const GlobalStat &stat);
+
 private:
     Ui::MainWindow *ui;
     Aria2c *aria2c_;
     DownloadTableModel *model_;
+    QLabel *downLabel_;
+    QLabel *upLabel_;
 };
