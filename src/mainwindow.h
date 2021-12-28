@@ -37,6 +37,8 @@ private:
     void loadSettings();
     void saveSettings() const;
 
+    void showMe();
+
     void addUri();
     void remove();
     void resume();

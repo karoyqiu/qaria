@@ -41,13 +41,13 @@ BEGIN
     BEGIN
         BLOCK "000004b0"
         BEGIN
-            VALUE "CompanyName", "@VRDP_ORG_NAME@"
+            VALUE "CompanyName", "karoyqiu@gmail.com"
             VALUE "FileDescription", "Qt Aria2 Frontend"
             VALUE "FileVersion", "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@"
-            VALUE "InternalName", "qaria.exe"
+            VALUE "InternalName", "qaria2.exe"
             VALUE "LegalCopyright", "© 2021 karoyqiu. All rights reserved."
-            VALUE "OriginalFilename", "qaria.exe"
-            VALUE "ProductName", "qaria"
+            VALUE "OriginalFilename", "qaria2.exe"
+            VALUE "ProductName", "qaria2"
             VALUE "ProductVersion", "@PROJECT_VERSION_MAJOR@.@PROJECT_VERSION_MINOR@.@PROJECT_VERSION_PATCH@.@PROJECT_VERSION_TWEAK@"
         END
     END
@@ -65,7 +65,7 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-//IDI_ICON1               ICON                    "wheel.ico"
+IDI_ICON1               ICON                    "icons/qa2.ico"
 
 #endif    // 非特定语言 resources
 /////////////////////////////////////////////////////////////////////////////

@@ -74,6 +74,12 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
             this, &MainWindow::showFiles);
 
     aria2c_->start();
+
+
+    auto *tray = new QSystemTrayIcon(QIcon(QS(":/icons/qa2.png")), this);
+    tray->setToolTip(qApp->applicationDisplayName());
+    tray->show();
+    connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::showMe);
 }
 
 
@@ -91,6 +97,12 @@ void MainWindow::changeEvent(QEvent *e)
     {
     case QEvent::LanguageChange:
         ui->retranslateUi(this);
+        break;
+    case QEvent::WindowStateChange:
+        if (isMinimized())
+        {
+            hide();
+        }
         break;
     default:
         break;
@@ -125,17 +137,15 @@ void MainWindow::saveSettings() const
 }
 
 
+void MainWindow::showMe()
+{
+    setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
+    show();
+}
+
+
 void MainWindow::addUri()
 {
-    //bool ok = false;
-    //auto uri = QInputDialog::getText(this, {}, tr("Input the URL to download"), QLineEdit::Normal,
-    //                                 {}, &ok);
-
-    //if (ok && !uri.isEmpty())
-    //{
-    //    aria2c_->addUri(uri);
-    //}
-
     NewDownloadDialog dialog(this);
 
     if (dialog.exec() == QDialog::Accepted)
