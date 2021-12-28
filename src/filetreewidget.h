@@ -46,7 +46,7 @@ private:
 
     QTreeWidgetItem *addSegmentTo(QTreeWidgetItem *parent, const QString &seg);
     void calcSize();
-    qint64 calcSize(QTreeWidgetItem *parent);
+    QPair<qint64, qint64> calcSize(QTreeWidgetItem *parent);
 
 private:
     QVector<QTreeWidgetItem *> fileItems_;

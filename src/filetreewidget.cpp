@@ -14,6 +14,7 @@
 
 #include "aria2c.h"
 #include "datasizedelegate.h"
+#include "progressitemdelegate.h"
 
 
 static inline Qt::CheckState checkState(bool on)
@@ -37,8 +38,14 @@ FileTreeWidget::FileTreeWidget(QWidget *parent /*= nullptr*/)
 
     setHeaderItem(item);
 
+    auto *dlgt = new DataSizeDelegate(this);
+    setItemDelegateForColumn(SizeColumn, dlgt);
+    setItemDelegateForColumn(RemainingSizeColumn, dlgt);
 
-    header()->setSectionResizeMode(0, QHeaderView::Stretch);
+    auto *pdlgt = new ProgressItemDelegate(this);
+    setItemDelegateForColumn(ProgressColumn, pdlgt);
+
+    header()->setSectionResizeMode(NameColumn, QHeaderView::Stretch);
     sortItems(1, Qt::DescendingOrder);
 }
 
@@ -87,12 +94,26 @@ void FileTreeWidget::setDownloadItem(const DownloadItem &download)
         }
 
         auto *item = new QTreeWidgetItem();
-        item->setText(0, filename);
-        item->setIcon(0, icon);
-        item->setData(0, Qt::UserRole, file.index);
-        item->setCheckState(0, checkState(file.selected));
-        item->setData(1, Qt::DisplayRole, file.length);
-        item->setTextAlignment(1, Qt::AlignRight | Qt::AlignVCenter);
+        item->setText(NameColumn, filename);
+        item->setIcon(NameColumn, icon);
+        item->setData(NameColumn, Qt::UserRole, file.index);
+        item->setCheckState(NameColumn, checkState(file.selected));
+        item->setData(SizeColumn, Qt::DisplayRole, file.length);
+
+        if (file.length > 0)
+        {
+            item->setData(ProgressColumn, Qt::DisplayRole, file.completedLength * 100 / file.length);
+            item->setData(RemainingSizeColumn, Qt::DisplayRole, file.length - file.completedLength);
+        }
+        else
+        {
+            item->setData(ProgressColumn, Qt::DisplayRole, 100);
+            item->setData(RemainingSizeColumn, Qt::DisplayRole, 0);
+        }
+
+        item->setTextAlignment(SizeColumn, Qt::AlignRight | Qt::AlignVCenter);
+        item->setTextAlignment(ProgressColumn, Qt::AlignCenter);
+        item->setTextAlignment(RemainingSizeColumn, Qt::AlignRight | Qt::AlignVCenter);
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
         fileItems_.append(item);
 
@@ -107,9 +128,6 @@ void FileTreeWidget::setDownloadItem(const DownloadItem &download)
     }
 
     calcSize();
-
-    auto *dlgt = new DataSizeDelegate(this);
-    setItemDelegateForColumn(1, dlgt);
 
     expandAll();
 }
@@ -235,14 +253,15 @@ void FileTreeWidget::calcSize()
     for (int i = 0; i < topLevelItemCount(); i++)
     {
         auto *p = topLevelItem(i);
-        totalSize_ += calcSize(p);
+        totalSize_ += calcSize(p).first;
     }
 }
 
 
-qint64 FileTreeWidget::calcSize(QTreeWidgetItem *parent)
+QPair<qint64, qint64> FileTreeWidget::calcSize(QTreeWidgetItem *parent)
 {
     qint64 total = 0;
+    qint64 remaining = 0;
 
     for (int i = 0; i < parent->childCount(); i++)
     {
@@ -250,16 +269,32 @@ qint64 FileTreeWidget::calcSize(QTreeWidgetItem *parent)
 
         if (item->childCount() == 0)
         {
-            total += item->data(1, Qt::DisplayRole).toLongLong();
+            total += item->data(SizeColumn, Qt::DisplayRole).toLongLong();
+            remaining += item->data(RemainingSizeColumn, Qt::DisplayRole).toLongLong();
         }
         else
         {
-            total += calcSize(item);
+            auto sizes = calcSize(item);
+            total += sizes.first;
+            remaining += sizes.second;
         }
     }
 
-    parent->setData(1, Qt::DisplayRole, total);
-    parent->setTextAlignment(1, Qt::AlignRight | Qt::AlignVCenter);
+    parent->setData(SizeColumn, Qt::DisplayRole, total);
+    parent->setTextAlignment(SizeColumn, Qt::AlignRight | Qt::AlignVCenter);
+    parent->setTextAlignment(ProgressColumn, Qt::AlignCenter);
+    parent->setTextAlignment(RemainingSizeColumn, Qt::AlignRight | Qt::AlignVCenter);
 
-    return total;
+    if (total > 0)
+    {
+        parent->setData(ProgressColumn, Qt::DisplayRole, (total - remaining) * 100 / total);
+        parent->setData(RemainingSizeColumn, Qt::DisplayRole, remaining);
+    }
+    else
+    {
+        parent->setData(ProgressColumn, Qt::DisplayRole, 100);
+        parent->setData(RemainingSizeColumn, Qt::DisplayRole, 0);
+    }
+
+    return qMakePair(total, remaining);
 }

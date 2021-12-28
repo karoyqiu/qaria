@@ -46,35 +46,63 @@
       <property name="text">
        <string>All</string>
       </property>
+      <property name="icon">
+       <iconset resource="icons/icons.qrc">
+        <normaloff>:/icons/filterall.svg</normaloff>:/icons/filterall.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Downloading</string>
+      </property>
+      <property name="icon">
+       <iconset resource="icons/icons.qrc">
+        <normaloff>:/icons/filteractive.svg</normaloff>:/icons/filteractive.svg</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Waiting</string>
       </property>
+      <property name="icon">
+       <iconset resource="icons/icons.qrc">
+        <normaloff>:/icons/filterstalled.svg</normaloff>:/icons/filterstalled.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Completed</string>
+      </property>
+      <property name="icon">
+       <iconset resource="icons/icons.qrc">
+        <normaloff>:/icons/completed.svg</normaloff>:/icons/completed.svg</iconset>
       </property>
      </item>
      <item>
       <property name="text">
        <string>Paused</string>
       </property>
+      <property name="icon">
+       <iconset resource="icons/icons.qrc">
+        <normaloff>:/icons/media-playback-pause.svg</normaloff>:/icons/media-playback-pause.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Error</string>
       </property>
+      <property name="icon">
+       <iconset resource="icons/icons.qrc">
+        <normaloff>:/icons/error.svg</normaloff>:/icons/error.svg</iconset>
+      </property>
      </item>
      <item>
       <property name="text">
        <string>Removed</string>
+      </property>
+      <property name="icon">
+       <iconset resource="icons/icons.qrc">
+        <normaloff>:/icons/list-remove.svg</normaloff>:/icons/list-remove.svg</iconset>
       </property>
      </item>
     </item>
@@ -194,11 +222,19 @@
    <addaction name="actionResume"/>
   </widget>
   <action name="actionAdd">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/insert-link.svg</normaloff>:/icons/insert-link.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Add...</string>
    </property>
   </action>
   <action name="actionExit">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/application-exit.svg</normaloff>:/icons/application-exit.svg</iconset>
+   </property>
    <property name="text">
     <string>E&amp;xit</string>
    </property>
@@ -207,16 +243,28 @@
    </property>
   </action>
   <action name="actionOptions">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/gear.svg</normaloff>:/icons/gear.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Options...</string>
    </property>
   </action>
   <action name="actionRemove">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/list-remove.svg</normaloff>:/icons/list-remove.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Remove</string>
    </property>
   </action>
   <action name="actionResume">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-playback-start.svg</normaloff>:/icons/media-playback-start.svg</iconset>
+   </property>
    <property name="text">
     <string>&amp;Resume</string>
    </property>
@@ -229,7 +277,9 @@
    <header>filetreewidget.h</header>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="icons/icons.qrc"/>
+ </resources>
  <connections>
   <connection>
    <sender>actionExit</sender>

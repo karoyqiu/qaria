@@ -23,6 +23,7 @@ set(SOURCES
     "progressitemdelegate.h" "progressitemdelegate.cpp"
     "remainingtimedelegate.h" "remainingtimedelegate.cpp"
     "filetreewidget.h" "filetreewidget.cpp"
+    "icons/icons.qrc"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"
 )
 
