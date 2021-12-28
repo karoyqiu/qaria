@@ -75,77 +75,77 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="mainwindow.ui" line="43"/>
+        <location filename="mainwindow.ui" line="40"/>
         <source>State</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="47"/>
+        <location filename="mainwindow.ui" line="44"/>
         <source>All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="56"/>
+        <location filename="mainwindow.ui" line="53"/>
         <source>Downloading</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="65"/>
+        <location filename="mainwindow.ui" line="62"/>
         <source>Waiting</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="74"/>
+        <location filename="mainwindow.ui" line="71"/>
         <source>Completed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="83"/>
+        <location filename="mainwindow.ui" line="80"/>
         <source>Paused</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="92"/>
+        <location filename="mainwindow.ui" line="89"/>
         <source>Error</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="101"/>
+        <location filename="mainwindow.ui" line="98"/>
         <source>Removed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="111"/>
+        <location filename="mainwindow.ui" line="108"/>
         <source>Category</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="115"/>
+        <location filename="mainwindow.ui" line="112"/>
         <source>Video</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="120"/>
+        <location filename="mainwindow.ui" line="117"/>
         <source>Audio</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="125"/>
+        <location filename="mainwindow.ui" line="122"/>
         <source>Compressed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="130"/>
+        <location filename="mainwindow.ui" line="127"/>
         <source>Document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="135"/>
+        <location filename="mainwindow.ui" line="132"/>
         <source>Application</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="140"/>
+        <location filename="mainwindow.ui" line="137"/>
         <source>Other</source>
         <translation type="unfinished"></translation>
     </message>
@@ -190,17 +190,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="180"/>
+        <location filename="mainwindow.cpp" line="190"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="298"/>
+        <location filename="mainwindow.cpp" line="309"/>
         <source>Download speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="299"/>
+        <location filename="mainwindow.cpp" line="310"/>
         <source>Upload speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>

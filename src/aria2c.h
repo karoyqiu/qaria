@@ -18,6 +18,7 @@ class QWebSocket;
 /// Download status.
 enum class DownloadStatus
 {
+    Any,
     /// Currently downloading/seeding downloads
     Active,
     /// Downloads in the queue, download is not started

@@ -39,6 +39,7 @@ public:
     enum Role
     {
         GidRole = Qt::UserRole,
+        ItemRole,
     };
 
     explicit DownloadTableModel(QObject *parent = nullptr);
@@ -63,6 +64,7 @@ public:
     void remove(const QString &gid);
 
     const DownloadItem &item(const QModelIndex &idx) const;
+    const DownloadItem &item(int row) const { return items_.at(row); }
 
 private:
     static int columnAlignment(int col);

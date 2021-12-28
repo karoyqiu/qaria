@@ -16,6 +16,7 @@
 #include "aria2c.h"
 #include "aria2optionsbuilder.h"
 #include "datasizedelegate.h"
+#include "downloadfilterproxymodel.h"
 #include "downloadtablemodel.h"
 #include "newdownloaddialog.h"
 #include "newbittorrentdialog.h"
@@ -30,6 +31,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     , ui(new Ui::MainWindow)
     , aria2c_(nullptr)
     , model_(nullptr)
+    , proxy_(nullptr)
     , downLabel_(nullptr)
     , upLabel_(nullptr)
 {
@@ -51,7 +53,9 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
 
     model_ = new DownloadTableModel(this);
-    ui->treeMain->setModel(model_);
+    proxy_ = new DownloadFilterProxyModel(this);
+    proxy_->setSourceModel(model_);
+    ui->treeMain->setModel(proxy_);
 
     auto *sizeDlgt = new DataSizeDelegate(this);
     ui->treeMain->setItemDelegateForColumn(DownloadTableModel::SizeColumn, sizeDlgt);
@@ -151,6 +155,12 @@ void MainWindow::showMe()
 {
     setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     show();
+}
+
+
+void MainWindow::updateFilter()
+{
+
 }
 
 
@@ -267,14 +277,14 @@ void MainWindow::edit(const QModelIndex &idx)
         return;
     }
 
-    const auto &item = model_->item(idx);
-    NewBitTorrentDialog dialog(item, this);
+    const auto *item = static_cast<DownloadItem *>(idx.data(DownloadTableModel::ItemRole).value<void *>());
+    NewBitTorrentDialog dialog(*item, this);
 
     if (dialog.exec() == QDialog::Accepted)
     {
         OptionsBuilder builder;
         builder.setSelectFile(dialog.selectedFiles());
-        aria2c_->changeOption(item.gid, builder.options());
+        aria2c_->changeOption(item->gid, builder.options());
     }
 }
 
@@ -283,7 +293,8 @@ void MainWindow::showFiles(const QModelIndex &idx)
 {
     if (idx.isValid())
     {
-        ui->treeFiles->setDownloadItem(model_->item(idx));
+        const auto *item = static_cast<DownloadItem *>(idx.data(DownloadTableModel::ItemRole).value<void *>());
+        ui->treeFiles->setDownloadItem(*item);
     }
     else
     {

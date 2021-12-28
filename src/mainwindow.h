@@ -19,6 +19,7 @@ class MainWindow;
 
 class Aria2c;
 class DownloadTableModel;
+class DownloadFilterProxyModel;
 struct GlobalStat;
 
 
@@ -39,6 +40,7 @@ private:
     void saveSettings() const;
 
     void showMe();
+    void updateFilter();
 
     void addUri();
     void remove();
@@ -58,6 +60,7 @@ private:
     Ui::MainWindow *ui;
     Aria2c *aria2c_;
     DownloadTableModel *model_;
+    DownloadFilterProxyModel *proxy_;
     QLabel *downLabel_;
     QLabel *upLabel_;
 };

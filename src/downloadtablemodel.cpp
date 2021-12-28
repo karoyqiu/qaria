@@ -164,6 +164,14 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
             var = item.gid;
         }
         break;
+
+    case ItemRole:
+        {
+            const auto &item = items_.at(idx.row());
+            void *p = const_cast<DownloadItem *>(&item);
+            var = QVariant::fromValue<void *>(p);
+        }
+        break;
     }
 
     return var;
