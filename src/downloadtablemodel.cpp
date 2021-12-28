@@ -146,6 +146,14 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
         }
         break;
 
+    case Qt::DecorationRole:
+        if (idx.column() == NameColumn)
+        {
+            const auto &item = items_.at(idx.row());
+            var = toIcon(item.status);
+        }
+        break;
+
     case Qt::TextAlignmentRole:
         var = columnAlignment(idx.column());
         break;

@@ -32,6 +32,9 @@ enum class DownloadStatus
     Removed,
 };
 
+QIcon toIcon(DownloadStatus status);
+
+
 /**
  * \brief   下载的文件
  */

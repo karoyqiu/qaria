@@ -107,6 +107,21 @@ static DownloadItem toItem(const QVariant &var)
 static inline void dontCare(const QVariant &) { }
 
 
+QIcon toIcon(DownloadStatus status)
+{
+    static const QMap<DownloadStatus, QIcon> icons{
+        { DownloadStatus::Active, QIcon{QS(":/icons/downloading.svg")} },
+        { DownloadStatus::Waiting, QIcon{QS(":/icons/filterstalled.svg")} },
+        { DownloadStatus::Paused, QIcon{QS(":/icons/media-playback-pause.svg")} },
+        { DownloadStatus::Error, QIcon{QS(":/icons/error.svg")} },
+        { DownloadStatus::Complete, QIcon{QS(":/icons/completed.svg")} },
+        { DownloadStatus::Removed, QIcon{QS(":/icons/list-remove.svg")} },
+    };
+
+    return icons.value(status);
+}
+
+
 Aria2c::Aria2c(QObject *parent /*= nullptr*/)
     : QObject(parent)
     , ws_(nullptr)
@@ -238,7 +253,7 @@ void Aria2c::runAria2()
 #else
         QS("--stop-with-process"), QSS(qApp->applicationPid()),
 #endif
-    };
+};
 
     if (QFileInfo::exists(sessionFile))
     {

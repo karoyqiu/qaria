@@ -57,7 +57,7 @@
       </property>
       <property name="icon">
        <iconset resource="icons/icons.qrc">
-        <normaloff>:/icons/filteractive.svg</normaloff>:/icons/filteractive.svg</iconset>
+        <normaloff>:/icons/downloading.svg</normaloff>:/icons/downloading.svg</iconset>
       </property>
      </item>
      <item>
