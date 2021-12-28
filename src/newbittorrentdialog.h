@@ -30,7 +30,7 @@ public:
     explicit NewBitTorrentDialog(const DownloadItem &download, QWidget *parent = nullptr);
     virtual ~NewBitTorrentDialog();
 
-    void buildOptions(OptionsBuilder &builder) const;
+    QString selectedFiles() const;
 
 protected:
     virtual void changeEvent(QEvent *e) override;
@@ -46,5 +46,4 @@ private:
 
 private:
     Ui::NewBitTorrentDialog *ui;
-    QVector<QTreeWidgetItem *> fileItems_;
 };

@@ -33,16 +33,17 @@ public:
     explicit FileTreeWidget(QWidget *parent = nullptr);
 
     void setDownloadItem(const DownloadItem &download);
+    void clear();
 
     qint64 totalSize() const { return totalSize_; }
     const QVector<QTreeWidgetItem *> &fileItems() const { return fileItems_; }
     const QMap<QString, QIcon> &extensions() { return exts_; }
+    QString selectedFiles() const;
 
 private:
     static QString headerLabel(Column col);
     static Qt::Alignment columnAlignment(Column col);
 
-    void clear();
     QTreeWidgetItem *addSegmentTo(QTreeWidgetItem *parent, const QString &seg);
     void calcSize();
     qint64 calcSize(QTreeWidgetItem *parent);

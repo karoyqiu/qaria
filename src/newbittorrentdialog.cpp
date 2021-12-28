@@ -39,6 +39,10 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
         item->setCheckState(Qt::Checked);
     }
 
+    for (int i = FileTreeWidget::ProgressColumn; i < FileTreeWidget::ColumnCount; i++)
+    {
+        ui->treeFiles->hideColumn(i);
+    }
 
     ui->editDir->setText(QDir::toNativeSeparators(download.dir));
 
@@ -54,20 +58,9 @@ NewBitTorrentDialog::~NewBitTorrentDialog()
 }
 
 
-void NewBitTorrentDialog::buildOptions(OptionsBuilder &builder) const
+QString NewBitTorrentDialog::selectedFiles() const
 {
-    QString selected;
-
-    for (const auto *item : fileItems_)
-    {
-        if (item->checkState(0) == Qt::Checked)
-        {
-            selected.append(item->data(0, Qt::UserRole).toString());
-            selected.append(QL(','));
-        }
-    }
-
-    builder.setSelectFile(selected);
+    return ui->treeFiles->selectedFiles();
 }
 
 
@@ -186,8 +179,9 @@ void NewBitTorrentDialog::handleExtChanged(QListWidgetItem *item)
 {
     auto ext = item->text();
     auto check = item->checkState();
+    const auto &items = ui->treeFiles->fileItems();
 
-    for (auto *f : fileItems_)
+    for (auto *f : items)
     {
         if (f->text(0).endsWith(ext))
         {

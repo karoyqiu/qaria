@@ -45,15 +45,19 @@ FileTreeWidget::FileTreeWidget(QWidget *parent /*= nullptr*/)
 
 void FileTreeWidget::setDownloadItem(const DownloadItem &download)
 {
+    clear();
+
     const auto dir = QDir::fromNativeSeparators(download.dir);
     QFileIconProvider iconProvider;
     auto dirIcon = iconProvider.icon(QFileIconProvider::Folder);
 
-    exts_.clear();
-    fileItems_.clear();
-
     for (const auto &file : download.files)
     {
+        if (file.path.startsWith(QL("[METADATA]")))
+        {
+            continue;
+        }
+
         auto path = QDir::fromNativeSeparators(file.path);
         Q_ASSERT(path.startsWith(dir));
         path.remove(0, dir.length() + 1);
@@ -147,10 +151,29 @@ Qt::Alignment FileTreeWidget::columnAlignment(Column col)
 
 void FileTreeWidget::clear()
 {
+    exts_.clear();
+    fileItems_.clear();
+
     while (topLevelItemCount() > 0)
     {
         delete takeTopLevelItem(0);
     }
+}
+
+
+QString FileTreeWidget::selectedFiles() const
+{
+    QStringList selected;
+
+    for (const auto *item : fileItems_)
+    {
+        if (item->checkState(0) == Qt::Checked)
+        {
+            selected.append(item->data(0, Qt::UserRole).toString());
+        }
+    }
+
+    return selected.join(QL(','));
 }
 
 

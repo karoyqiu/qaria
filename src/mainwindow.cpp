@@ -70,6 +70,8 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
     connect(model_, &QAbstractItemModel::rowsInserted, this, &MainWindow::handleAdded);
     connect(ui->treeMain, &QTreeView::doubleClicked, this, &MainWindow::edit);
+    connect(ui->treeMain->selectionModel(), &QItemSelectionModel::currentChanged,
+            this, &MainWindow::showFiles);
 
     aria2c_->start();
 }
@@ -225,7 +227,7 @@ void MainWindow::handleAdded(const QModelIndex &parent, int first, int last)
             if (dialog.exec() == QDialog::Accepted)
             {
                 OptionsBuilder builder;
-                dialog.buildOptions(builder);
+                builder.setSelectFile(dialog.selectedFiles());
                 aria2c_->changeOption(item.gid, builder.options());
                 aria2c_->resume(item.gid);
             }
@@ -251,7 +253,20 @@ void MainWindow::edit(const QModelIndex &idx)
     if (dialog.exec() == QDialog::Accepted)
     {
         OptionsBuilder builder;
-        dialog.buildOptions(builder);
+        builder.setSelectFile(dialog.selectedFiles());
         aria2c_->changeOption(item.gid, builder.options());
+    }
+}
+
+
+void MainWindow::showFiles(const QModelIndex &idx)
+{
+    if (idx.isValid())
+    {
+        ui->treeFiles->setDownloadItem(model_->item(idx));
+    }
+    else
+    {
+        ui->treeFiles->clear();
     }
 }
