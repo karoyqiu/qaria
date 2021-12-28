@@ -109,10 +109,10 @@
   </layout>
  </widget>
  <tabstops>
+  <tabstop>editUrls</tabstop>
   <tabstop>editDir</tabstop>
   <tabstop>buttonBrowseDir</tabstop>
   <tabstop>comboCategory</tabstop>
-  <tabstop>editUrls</tabstop>
  </tabstops>
  <resources/>
  <connections>

@@ -23,6 +23,29 @@ NewDownloadDialog::NewDownloadDialog(QWidget *parent /*= nullptr*/)
 
     QSettings settings;
     ui->editDir->setText(settings.value(QS("dir")).toString());
+
+    auto s = qApp->clipboard()->text();
+    QUrl url(s);
+
+    if (url.isValid() && !url.isRelative())
+    {
+        auto sch = url.scheme();
+
+        if (sch == QL("http") || sch == QL("https") || sch == QL("ftp") || sch == QL("magnet"))
+        {
+            ui->editUrls->setPlainText(url.toString());
+        }
+    }
+    else
+    {
+        static const QRegularExpression btih(QS("[a-z0-9]{40}"), QRegularExpression::CaseInsensitiveOption);
+        auto match = btih.match(s);
+
+        if (match.hasMatch())
+        {
+            ui->editUrls->setPlainText(QS("magnet:?xt=urn:btih:%1").arg(s));
+        }
+    }
 }
 
 
