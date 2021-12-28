@@ -109,7 +109,7 @@
       </layout>
      </item>
      <item>
-      <widget class="QTreeWidget" name="treeFiles">
+      <widget class="FileTreeWidget" name="treeFiles">
        <property name="alternatingRowColors">
         <bool>true</bool>
        </property>
@@ -125,19 +125,6 @@
        <attribute name="headerStretchLastSection">
         <bool>false</bool>
        </attribute>
-       <column>
-        <property name="text">
-         <string>File</string>
-        </property>
-       </column>
-       <column>
-        <property name="text">
-         <string>Size</string>
-        </property>
-        <property name="textAlignment">
-         <set>AlignTrailing|AlignVCenter</set>
-        </property>
-       </column>
       </widget>
      </item>
     </layout>
@@ -154,6 +141,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>FileTreeWidget</class>
+   <extends>QTreeWidget</extends>
+   <header>filetreewidget.h</header>
+  </customwidget>
+ </customwidgets>
  <tabstops>
   <tabstop>treeFiles</tabstop>
   <tabstop>editDir</tabstop>

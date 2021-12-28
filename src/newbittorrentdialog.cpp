@@ -28,72 +28,9 @@ NewBitTorrentDialog::NewBitTorrentDialog(const DownloadItem &download, QWidget *
     , ui(new Ui::NewBitTorrentDialog)
 {
     ui->setupUi(this);
-    ui->treeFiles->header()->setSectionResizeMode(0, QHeaderView::Stretch);
-    ui->treeFiles->sortItems(1, Qt::DescendingOrder);
+    ui->treeFiles->setDownloadItem(download);
 
-    const auto dir = QDir::fromNativeSeparators(download.dir);
-    QFileIconProvider iconProvider;
-    auto dirIcon = iconProvider.icon(QFileIconProvider::Folder);
-
-    QMap<QString, QIcon> exts;
-
-    for (const auto &file : download.files)
-    {
-        auto path = QDir::fromNativeSeparators(file.path);
-        Q_ASSERT(path.startsWith(dir));
-        path.remove(0, dir.length() + 1);
-
-        auto segments = path.split(QL('/'), Qt::SkipEmptyParts);
-        auto filename = segments.takeLast();
-
-        if (filename.startsWith(QL("_____padding_file_")))
-        {
-            continue;
-        }
-
-        QFileInfo info(file.path);
-        auto icon = iconProvider.icon(info);
-
-        if (!exts.contains(info.suffix()))
-        {
-            exts.insert(info.suffix(), icon);
-        }
-
-        QTreeWidgetItem *p = nullptr;
-
-        for (const auto &seg : qAsConst(segments))
-        {
-            p = addSegmentTo(p, seg);
-            p->setIcon(0, dirIcon);
-        }
-
-        auto *item = new QTreeWidgetItem();
-        item->setText(0, filename);
-        item->setIcon(0, icon);
-        item->setData(0, Qt::UserRole, file.index);
-        item->setCheckState(0, checkState(file.selected));
-        item->setData(1, Qt::DisplayRole, file.length);
-        item->setTextAlignment(1, Qt::AlignRight | Qt::AlignVCenter);
-        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
-        fileItems_.append(item);
-
-        if (p == nullptr)
-        {
-            ui->treeFiles->addTopLevelItem(item);
-        }
-        else
-        {
-            p->addChild(item);
-        }
-    }
-
-    calcSize();
-
-    auto *dlgt = new DataSizeDelegate(this);
-    ui->treeFiles->setItemDelegateForColumn(1, dlgt);
-
-    ui->treeFiles->expandAll();
-
+    const auto &exts = ui->treeFiles->extensions();
 
     for (const auto &ext : exts.keys())
     {
