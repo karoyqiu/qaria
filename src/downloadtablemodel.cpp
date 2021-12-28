@@ -21,7 +21,14 @@ static QString itemName(const DownloadItem &item)
     }
 
     Q_ASSERT(!item.files.isEmpty());
-    return item.files.first().path;
+    auto p = item.files.first().path;
+
+    if (!p.startsWith(QL("[METADATA]")))
+    {
+        p.remove(0, item.dir.length() + 1);
+    }
+
+    return p;
 }
 
 

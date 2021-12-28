@@ -4,47 +4,47 @@
 <context>
     <name>DownloadTableModel</name>
     <message>
-        <location filename="downloadtablemodel.cpp" line="52"/>
+        <location filename="downloadtablemodel.cpp" line="59"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="55"/>
+        <location filename="downloadtablemodel.cpp" line="62"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="58"/>
+        <location filename="downloadtablemodel.cpp" line="65"/>
         <source>Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="61"/>
+        <location filename="downloadtablemodel.cpp" line="68"/>
         <source>Status</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="64"/>
+        <location filename="downloadtablemodel.cpp" line="71"/>
         <source>Download Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="67"/>
+        <location filename="downloadtablemodel.cpp" line="74"/>
         <source>Upload Speed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="70"/>
+        <location filename="downloadtablemodel.cpp" line="77"/>
         <source>Remaining Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="73"/>
+        <location filename="downloadtablemodel.cpp" line="80"/>
         <source>Creation Time</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="downloadtablemodel.cpp" line="76"/>
+        <location filename="downloadtablemodel.cpp" line="83"/>
         <source>Finish Time</source>
         <translation type="unfinished"></translation>
     </message>
