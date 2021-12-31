@@ -60,7 +60,7 @@ void FileTreeWidget::setDownloadItem(const DownloadItem &download)
 
     for (const auto &file : download.files)
     {
-        if (file.path.startsWith(QL("[METADATA]")))
+        if (file.path.isEmpty() || file.path.startsWith(QL("[METADATA]")))
         {
             continue;
         }

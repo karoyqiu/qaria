@@ -195,12 +195,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="340"/>
+        <location filename="mainwindow.cpp" line="343"/>
         <source>Download speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="341"/>
+        <location filename="mainwindow.cpp" line="344"/>
         <source>Upload speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -440,7 +440,7 @@
 <context>
     <name>main</name>
     <message>
-        <location filename="main.cpp" line="76"/>
+        <location filename="main.cpp" line="38"/>
         <source>qaria2</source>
         <translation type="unfinished"></translation>
     </message>

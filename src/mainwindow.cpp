@@ -257,13 +257,16 @@ void MainWindow::handleRemoved(const QString &gid)
 
             auto name = file.section(QL('/'), 0, 0);
 
-            QDir dir(item->dir);
-            QFile::remove(dir.absoluteFilePath(name % QL(".aria2")));
-            QFile::remove(dir.absoluteFilePath(item->infoHash % QL(".torrent")));
-
-            if (dir.cd(name))
+            if (!name.isEmpty())
             {
-                dir.removeRecursively();
+                QDir dir(item->dir);
+                QFile::remove(dir.absoluteFilePath(name % QL(".aria2")));
+                QFile::remove(dir.absoluteFilePath(item->infoHash % QL(".torrent")));
+
+                if (dir.cd(name))
+                {
+                    dir.removeRecursively();
+                }
             }
 
             break;
