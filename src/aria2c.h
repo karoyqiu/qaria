@@ -187,7 +187,6 @@ private:
 
     void tellAll();
 
-    void handleAdd(const QVariant &result);
     void handleTellDownload(const QVariant &result);
 
 private:

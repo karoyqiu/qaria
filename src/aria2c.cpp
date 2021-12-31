@@ -145,8 +145,7 @@ void Aria2c::start()
 
 void Aria2c::addUri(const QUrl &uris, const QVariantHash &options /*= {}*/)
 {
-    callAsync(std::bind(&Aria2c::handleAdd, this, _1),
-              QS("aria2.addUri"), QStringList{ uris.toString() }, options);
+    callAsync(dontCare, QS("aria2.addUri"), QStringList{ uris.toString() }, options);
 }
 
 
@@ -453,17 +452,6 @@ QStringList Aria2c::batchCall(MessageHandler handler, const BatchMethods &method
 
     send(QJsonDocument(arr));
     return ids;
-}
-
-
-void Aria2c::handleAdd(const QVariant &result)
-{
-    auto gid = result.toString();
-    callAsync([this](const QVariant &var)
-    {
-        auto item = toItem(var);
-        emit changed({ item });
-    }, QS("aria2.tellStatus"), gid);
 }
 
 
