@@ -79,8 +79,8 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     aria2c_ = new Aria2c(this);
     connect(aria2c_, &Aria2c::aria2Started, this, &MainWindow::downloadTrackers);
     connect(aria2c_, &Aria2c::globalStat, this, &MainWindow::updateStat);
+    connect(aria2c_, &Aria2c::removed, this, &MainWindow::handleRemoved);
     connect(aria2c_, &Aria2c::changed, model_, &DownloadTableModel::reset);
-    connect(aria2c_, &Aria2c::removed, model_, &DownloadTableModel::remove);
     connect(model_, &QAbstractItemModel::rowsInserted, this, &MainWindow::handleAdded);
     connect(ui->treeMain, &QTreeView::doubleClicked, this, &MainWindow::edit);
     connect(ui->treeMain->selectionModel(), &QItemSelectionModel::currentChanged,
@@ -238,6 +238,37 @@ void MainWindow::handleTrackers()
     auto s = QSS(body);
     auto list = s.split(QL('\n'), Qt::SkipEmptyParts);
     aria2c_->setBtTrackers(list);
+}
+
+
+void MainWindow::handleRemoved(const QString &gid)
+{
+    auto n = model_->rowCount();
+
+    for (int i = 0; i < n; i++)
+    {
+        auto idx = model_->index(i, 0);
+        const auto *item = static_cast<DownloadItem *>(idx.data(DownloadTableModel::ItemRole).value<void *>());
+
+        if (item->gid == gid)
+        {
+            auto file = item->files.first().path;
+            file.remove(0, item->dir.length() + 1);
+
+            auto name = file.section(QL('/'), 0, 0);
+
+            QDir dir(item->dir);
+            QFile::remove(dir.absoluteFilePath(name % QL(".aria2")));
+            QFile::remove(dir.absoluteFilePath(item->infoHash % QL(".torrent")));
+
+            if (dir.cd(name))
+            {
+                dir.removeRecursively();
+            }
+
+            break;
+        }
+    }
 }
 
 

@@ -50,6 +50,8 @@ private:
     void downloadTrackers();
     void handleTrackers();
 
+    void handleRemoved(const QString &gid);
+
     void handleAdded(const QModelIndex &parent, int first, int last);
     void edit(const QModelIndex &idx);
     void showFiles(const QModelIndex &idx);

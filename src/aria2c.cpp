@@ -151,7 +151,10 @@ void Aria2c::addUri(const QUrl &uris, const QVariantHash &options /*= {}*/)
 
 void Aria2c::remove(const QString &gid)
 {
-    callAsync(dontCare, QS("aria2.forceRemove"), gid);
+    callAsync([this, gid](const QVariant &)
+    {
+        emit removed(gid);
+    }, QS("aria2.forceRemove"), gid);
 }
 
 
