@@ -213,7 +213,7 @@ QString FileTreeWidget::selectedFiles() const
 
     for (const auto *item : fileItems_)
     {
-        if (item->checkState(0) == Qt::Checked)
+        if (item != nullptr && item->checkState(0) == Qt::Checked)
         {
             selected.append(item->data(0, IndexRole).toString());
         }

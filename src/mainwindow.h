@@ -44,6 +44,7 @@ private:
 
     void addUri();
     void remove();
+    void pause();
     void resume();
     void showOptions();
 

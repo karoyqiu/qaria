@@ -49,6 +49,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
     connect(ui->actionAdd, &QAction::triggered, this, &MainWindow::addUri);
     connect(ui->actionRemove, &QAction::triggered, this, &MainWindow::remove);
+    connect(ui->actionPause, &QAction::triggered, this, &MainWindow::pause);
     connect(ui->actionResume, &QAction::triggered, this, &MainWindow::resume);
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
 
@@ -196,6 +197,20 @@ void MainWindow::remove()
             aria2c_->remove(gid);
         }
     }
+}
+
+
+void MainWindow::pause()
+{
+    QStringList gids;
+    const auto rows = ui->treeMain->selectionModel()->selectedRows();
+
+    for (const auto &idx : rows)
+    {
+        gids.append(idx.data(DownloadTableModel::GidRole).toString());
+    }
+
+    aria2c_->pause(gids);
 }
 
 

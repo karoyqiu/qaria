@@ -220,6 +220,7 @@
    <addaction name="actionRemove"/>
    <addaction name="separator"/>
    <addaction name="actionResume"/>
+   <addaction name="actionPause"/>
   </widget>
   <action name="actionAdd">
    <property name="icon">
@@ -267,6 +268,15 @@
    </property>
    <property name="text">
     <string>&amp;Resume</string>
+   </property>
+  </action>
+  <action name="actionPause">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/media-playback-pause.svg</normaloff>:/icons/media-playback-pause.svg</iconset>
+   </property>
+   <property name="text">
+    <string>&amp;Pause</string>
    </property>
   </action>
  </widget>
