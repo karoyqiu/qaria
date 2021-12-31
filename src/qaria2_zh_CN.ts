@@ -52,22 +52,22 @@
 <context>
     <name>FileTreeWidget</name>
     <message>
-        <location filename="filetreewidget.cpp" line="141"/>
+        <location filename="filetreewidget.cpp" line="169"/>
         <source>Name</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="filetreewidget.cpp" line="143"/>
+        <location filename="filetreewidget.cpp" line="171"/>
         <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="filetreewidget.cpp" line="145"/>
+        <location filename="filetreewidget.cpp" line="173"/>
         <source>Progress</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="filetreewidget.cpp" line="147"/>
+        <location filename="filetreewidget.cpp" line="175"/>
         <source>Remaining Size</source>
         <translation type="unfinished"></translation>
     </message>
@@ -190,17 +190,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="190"/>
+        <location filename="mainwindow.cpp" line="191"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="343"/>
+        <location filename="mainwindow.cpp" line="357"/>
         <source>Download speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="344"/>
+        <location filename="mainwindow.cpp" line="358"/>
         <source>Upload speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -313,6 +313,11 @@
     <message>
         <location filename="newdownloaddialog.ui" line="93"/>
         <source>Input one URL per line.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="newdownloaddialog.ui" line="104"/>
+        <source>&amp;Magnet to torrent</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

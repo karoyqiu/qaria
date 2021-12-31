@@ -82,6 +82,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(aria2c_, &Aria2c::removed, this, &MainWindow::handleRemoved);
     connect(aria2c_, &Aria2c::changed, model_, &DownloadTableModel::reset);
     connect(model_, &QAbstractItemModel::rowsInserted, this, &MainWindow::handleAdded);
+    connect(model_, &QAbstractItemModel::dataChanged, this, &MainWindow::updateFiles);
     connect(ui->treeMain, &QTreeView::doubleClicked, this, &MainWindow::edit);
     connect(ui->treeMain->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &MainWindow::showFiles);
@@ -260,6 +261,7 @@ void MainWindow::handleRemoved(const QString &gid)
             if (!name.isEmpty())
             {
                 QDir dir(item->dir);
+                QFile::remove(dir.absoluteFilePath(name));
                 QFile::remove(dir.absoluteFilePath(name % QL(".aria2")));
                 QFile::remove(dir.absoluteFilePath(item->infoHash % QL(".torrent")));
 
@@ -333,6 +335,18 @@ void MainWindow::showFiles(const QModelIndex &idx)
     else
     {
         ui->treeFiles->clear();
+    }
+}
+
+
+void MainWindow::updateFiles()
+{
+    auto idx = ui->treeMain->currentIndex();
+
+    if (idx.isValid())
+    {
+        const auto *item = static_cast<DownloadItem *>(idx.data(DownloadTableModel::ItemRole).value<void *>());
+        ui->treeFiles->updateDownloadItem(*item);
     }
 }
 

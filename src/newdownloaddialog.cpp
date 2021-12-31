@@ -20,6 +20,7 @@ NewDownloadDialog::NewDownloadDialog(QWidget *parent /*= nullptr*/)
     , ui(new Ui::NewDownloadDialog)
 {
     ui->setupUi(this);
+    connect(ui->buttonMagnetToTorrent, &QPushButton::clicked, this, &NewDownloadDialog::magnetToTorrent);
 
     QSettings settings;
     ui->editDir->setText(settings.value(QS("dir")).toString());
@@ -87,4 +88,26 @@ void NewDownloadDialog::changeEvent(QEvent *e)
     default:
         break;
     }
+}
+
+
+void NewDownloadDialog::magnetToTorrent()
+{
+    auto urls = uris();
+
+    for (auto &u : urls)
+    {
+        if (u.scheme() == QL("magnet"))
+        {
+            QUrlQuery query(u.query());
+            auto xt = query.queryItemValue(QS("xt"));
+            Q_ASSERT(xt.startsWith(QL("urn:btih:")));
+            xt.remove(0, 9);
+
+            u = QS("https://itorrents.org/torrent/%1.torrent").arg(xt);
+        }
+    }
+
+    auto ss = QUrl::toStringList(urls);
+    ui->editUrls->setPlainText(ss.join(QL('\n')));
 }

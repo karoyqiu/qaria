@@ -47,12 +47,16 @@ FileTreeWidget::FileTreeWidget(QWidget *parent /*= nullptr*/)
 
     header()->setSectionResizeMode(NameColumn, QHeaderView::Stretch);
     sortItems(1, Qt::DescendingOrder);
+
+
+    connect(this, &QTreeWidget::itemDoubleClicked, this, &FileTreeWidget::openFile);
 }
 
 
 void FileTreeWidget::setDownloadItem(const DownloadItem &download)
 {
     clear();
+    fileItems_.fill(nullptr, download.files.count());
 
     const auto dir = QDir::fromNativeSeparators(download.dir);
     QFileIconProvider iconProvider;
@@ -96,7 +100,8 @@ void FileTreeWidget::setDownloadItem(const DownloadItem &download)
         auto *item = new QTreeWidgetItem();
         item->setText(NameColumn, filename);
         item->setIcon(NameColumn, icon);
-        item->setData(NameColumn, Qt::UserRole, file.index);
+        item->setData(NameColumn, IndexRole, file.index);
+        item->setData(NameColumn, PathRole, file.path);
         item->setCheckState(NameColumn, checkState(file.selected));
         item->setData(SizeColumn, Qt::DisplayRole, file.length);
 
@@ -115,7 +120,7 @@ void FileTreeWidget::setDownloadItem(const DownloadItem &download)
         item->setTextAlignment(ProgressColumn, Qt::AlignCenter);
         item->setTextAlignment(RemainingSizeColumn, Qt::AlignRight | Qt::AlignVCenter);
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsUserCheckable);
-        fileItems_.append(item);
+        fileItems_[file.index - 1] = item;
 
         if (p == nullptr)
         {
@@ -130,6 +135,29 @@ void FileTreeWidget::setDownloadItem(const DownloadItem &download)
     calcSize();
 
     expandAll();
+}
+
+
+void FileTreeWidget::updateDownloadItem(const DownloadItem &download)
+{
+    if (!fileItems_.isEmpty())
+    {
+        for (const auto &file : download.files)
+        {
+            if (file.length > 0)
+            {
+                auto *item = fileItems_.at(file.index - 1);
+
+                if (item != nullptr)
+                {
+                    item->setData(ProgressColumn, Qt::DisplayRole, file.completedLength * 100 / file.length);
+                    item->setData(RemainingSizeColumn, Qt::DisplayRole, file.length - file.completedLength);
+                }
+            }
+        }
+
+        calcSize();
+    }
 }
 
 
@@ -187,7 +215,7 @@ QString FileTreeWidget::selectedFiles() const
     {
         if (item->checkState(0) == Qt::Checked)
         {
-            selected.append(item->data(0, Qt::UserRole).toString());
+            selected.append(item->data(0, IndexRole).toString());
         }
     }
 
@@ -300,4 +328,15 @@ QPair<qint64, qint64> FileTreeWidget::calcSize(QTreeWidgetItem *parent)
     }
 
     return qMakePair(total, remaining);
+}
+
+
+void FileTreeWidget::openFile(QTreeWidgetItem *item)
+{
+    auto path = item->data(NameColumn, PathRole).toString();
+
+    if (!path.isEmpty())
+    {
+        QDesktopServices::openUrl(QUrl::fromLocalFile(path));
+    }
 }

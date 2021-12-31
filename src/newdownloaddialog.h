@@ -33,5 +33,8 @@ protected:
     virtual void changeEvent(QEvent *e) override;
 
 private:
+    void magnetToTorrent();
+
+private:
     Ui::NewDownloadDialog *ui;
 };

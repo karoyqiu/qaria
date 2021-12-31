@@ -266,6 +266,8 @@ void Aria2c::runAria2()
         QS("--save-session"), sessionFile,
         QS("--daemon"),
         QS("--quiet"),
+        QS("-j"), QS("10"),
+        QS("--bt-detach-seed-only"),
 #ifdef QT_DEBUG
         QS("--log-level"), QS("notice"),
         QS("--log"), logfile,
@@ -300,11 +302,13 @@ void Aria2c::onConnected()
     opts.setBtRemoveUnselectedFile();
     opts.setMaxConnectionPerServer(8);
     opts.setMinSplitSize(1_M);
-    opts.setFileAllocation(QS("falloc"));
+    opts.setFileAllocation(QS("trunc"));
     opts.setOptimizeConcurrentDownloads();
     opts.setMaxOverallUploadLimit(QS("128K"));
     opts.setSeedRatio("1.0");
     opts.setSeedTime(QS("30"));
+    opts.setMaxConcurrentDownloads(10);
+    opts.setBtDetachSeedOnly();
     callAsync(dontCare, QS("aria2.changeGlobalOption"), opts.options());
 
     emit aria2Started();

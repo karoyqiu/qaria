@@ -55,6 +55,7 @@ private:
     void handleAdded(const QModelIndex &parent, int first, int last);
     void edit(const QModelIndex &idx);
     void showFiles(const QModelIndex &idx);
+    void updateFiles();
 
     void updateStat(const GlobalStat &stat);
 
