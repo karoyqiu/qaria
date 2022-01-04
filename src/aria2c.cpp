@@ -264,6 +264,7 @@ void Aria2c::runAria2()
         QS("--enable-rpc"),
         QS("--rpc-secret"), secret_,
         QS("--save-session"), sessionFile,
+        QS("--save-session-interval"), QS("60"),
         QS("--daemon"),
         QS("--quiet"),
         QS("-j"), QS("10"),
@@ -294,8 +295,8 @@ void Aria2c::onConnected()
     OptionsBuilder opts;
     opts.setDir(settings.value(QS("dir")).toString());
     opts.setPauseMetadata();
+    opts.setAllowOverwrite();
     opts.setAutoSaveInterval(60);
-    opts.setSaveSessionInterval(60);
     opts.setBtSaveMetadata();
     opts.setBtEnableLpd();
     opts.setBtLoadSavedMetadata();
