@@ -183,7 +183,7 @@ void NewBitTorrentDialog::handleExtChanged(QListWidgetItem *item)
 
     for (auto *f : items)
     {
-        if (f->text(0).endsWith(ext))
+        if (f != nullptr && f->text(0).endsWith(ext))
         {
             f->setCheckState(0, check);
         }
