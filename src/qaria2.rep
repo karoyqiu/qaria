@@ -1,0 +1,4 @@
+﻿class QAria2
+{
+    SLOT(addUris(const QStringList &uris));
+};

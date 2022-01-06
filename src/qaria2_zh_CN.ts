@@ -195,17 +195,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="192"/>
+        <location filename="mainwindow.cpp" line="204"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="372"/>
+        <location filename="mainwindow.cpp" line="384"/>
         <source>Download speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="373"/>
+        <location filename="mainwindow.cpp" line="385"/>
         <source>Upload speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -355,7 +355,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.ui" line="97"/>
+        <location filename="optionsdialog.ui" line="90"/>
+        <source>Leave blank to randomize every time.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="optionsdialog.ui" line="100"/>
         <source>&amp;Randomize</source>
         <translation type="unfinished"></translation>
     </message>

@@ -43,6 +43,7 @@ private:
     void updateFilter();
 
     void addUri();
+    void addUris(const QStringList &uris);
     void remove();
     void pause();
     void resume();
@@ -61,6 +62,9 @@ private:
     void updateStat(const GlobalStat &stat);
 
 private:
+    template <class ObjectType>
+    friend struct QAria2SourceAPI;
+
     Ui::MainWindow *ui;
     Aria2c *aria2c_;
     DownloadTableModel *model_;

@@ -13,6 +13,8 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <rep_qaria2_source.h>
+
 #include "aria2c.h"
 #include "aria2optionsbuilder.h"
 #include "datasizedelegate.h"
@@ -96,6 +98,9 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     tray->show();
     connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::showMe);
 
+
+    auto *host = new QRemoteObjectHost(QS("local:qaria2"), this);
+    host->enableRemoting<QAria2SourceAPI>(this);
 }
 
 
@@ -168,14 +173,21 @@ void MainWindow::updateFilter()
 
 void MainWindow::addUri()
 {
+    addUris({});
+}
+
+
+void MainWindow::addUris(const QStringList &uris)
+{
     NewDownloadDialog dialog(this);
+    dialog.setUris(uris);
 
     if (dialog.exec() == QDialog::Accepted)
     {
-        const auto uris = dialog.uris();
+        const auto us = dialog.uris();
         auto opts = dialog.options();
 
-        for (const auto &uri : uris)
+        for (const auto &uri : us)
         {
             aria2c_->addUri(uri, opts);
         }

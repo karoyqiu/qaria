@@ -1,6 +1,6 @@
 ﻿# 依赖的 Qt 组件
 set(QT_LIBS
-    WebSockets Widgets
+    WebSockets Widgets RemoteObjects
 )
 
 set(TS_FILES "qaria2_zh_CN.ts")
@@ -27,6 +27,8 @@ set(SOURCES
     "icons/icons.qrc"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"
 )
+qt5_generate_repc(SOURCES "qaria2.rep" SOURCE)
+qt5_generate_repc(SOURCES "qaria2.rep" REPLICA)
 
 add_qt_executable(TARGET qaria2
     QT_LIBS ${QT_LIBS}
@@ -34,6 +36,7 @@ add_qt_executable(TARGET qaria2
     TS_FILES ${TS_FILES}
 )
 
+#target_sources(qaria2 PRIVATE ${REP_SOURCES})
 target_compile_features(qaria2 PRIVATE cxx_user_literals)
 target_compile_options(qaria2 PRIVATE ${PROJECT_WARNING_FLAGS})
 target_precompile_headers(qaria2 PRIVATE "common.h")

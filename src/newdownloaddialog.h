@@ -26,6 +26,7 @@ public:
     explicit NewDownloadDialog(QWidget *parent = nullptr);
     virtual ~NewDownloadDialog();
 
+    void setUris(const QStringList &value);
     QList<QUrl> uris() const;
     QVariantHash options() const;
 

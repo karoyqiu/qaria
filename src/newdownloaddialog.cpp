@@ -26,26 +26,10 @@ NewDownloadDialog::NewDownloadDialog(QWidget *parent /*= nullptr*/)
     ui->editDir->setText(settings.value(QS("dir")).toString());
 
     auto s = qApp->clipboard()->text();
-    QUrl url(s);
 
-    if (url.isValid() && !url.isRelative())
+    if (!s.isEmpty())
     {
-        auto sch = url.scheme();
-
-        if (sch == QL("http") || sch == QL("https") || sch == QL("ftp") || sch == QL("magnet"))
-        {
-            ui->editUrls->setPlainText(url.toString());
-        }
-    }
-    else
-    {
-        static const QRegularExpression btih(QS("[a-z0-9]{40}"), QRegularExpression::CaseInsensitiveOption);
-        auto match = btih.match(s);
-
-        if (match.hasMatch())
-        {
-            ui->editUrls->setPlainText(QS("magnet:?xt=urn:btih:%1").arg(s));
-        }
+        setUris({ s });
     }
 }
 
@@ -53,6 +37,44 @@ NewDownloadDialog::NewDownloadDialog(QWidget *parent /*= nullptr*/)
 NewDownloadDialog::~NewDownloadDialog()
 {
     delete ui;
+}
+
+
+void NewDownloadDialog::setUris(const QStringList &value)
+{
+    if (value.isEmpty())
+    {
+        return;
+    }
+
+    QStringList texts;
+
+    for (const auto &s : value)
+    {
+        QUrl url(s);
+
+        if (url.isValid() && !url.isRelative())
+        {
+            auto sch = url.scheme();
+
+            if (sch == QL("http") || sch == QL("https") || sch == QL("ftp") || sch == QL("magnet"))
+            {
+                texts.append(url.toString());
+            }
+        }
+        else
+        {
+            static const QRegularExpression btih(QS("[a-z0-9]{40}"), QRegularExpression::CaseInsensitiveOption);
+            auto match = btih.match(s);
+
+            if (match.hasMatch())
+            {
+                texts.append(QS("magnet:?xt=urn:btih:%1").arg(s));
+            }
+        }
+    }
+
+    ui->editUrls->setPlainText(texts.join(QL('\n')));
 }
 
 
