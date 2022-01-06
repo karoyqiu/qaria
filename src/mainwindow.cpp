@@ -100,7 +100,11 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
 
 
     auto *host = new QRemoteObjectHost(QS("local:qaria2"), this);
-    host->enableRemoting<QAria2SourceAPI>(this);
+
+    if (!host->enableRemoting<QAria2SourceAPI>(this))
+    {
+        qWarning() << "Failed to enable remoting.";
+    }
 }
 
 

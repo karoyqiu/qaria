@@ -13,6 +13,7 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include <rep_qaria2_replica.h>
 
 #include "mainwindow.h"
 
@@ -37,8 +38,37 @@ int main(int argc, char *argv[])
 
     QApplication::setApplicationDisplayName(QApplication::translate("main", "qaria2"));
 
+
+    auto uris = a.arguments();
+    Q_ASSERT(!uris.isEmpty());
+    uris.removeFirst();
+
+
+    QRemoteObjectNode node;
+    node.connectToNode(QS("local:qaria2"));
+
+    QScopedPointer<QAria2Replica> replica(node.acquire<QAria2Replica>());
+    auto connected = replica->waitForSource(500);
+
+    if (connected)
+    {
+        if (uris.isEmpty())
+        {
+            qWarning() << "Not first instance.";
+            return 1;
+        }
+
+        replica->addUris(uris);
+        return 0;
+    }
+
     MainWindow w;
     w.show();
+
+    if (!uris.isEmpty())
+    {
+        w.addUris(uris);
+    }
 
     return QApplication::exec();
 }
