@@ -31,9 +31,9 @@ public:
         DownloadSpeedColumn,
         UploadSpeedColumn,
         RemainingTimeColumn,
+        ColumnCount,
         CreationTimeColumn,
         FinishTimeColumn,
-        ColumnCount,
     };
 
     enum Role
