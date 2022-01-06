@@ -24,6 +24,7 @@
 #include "newbittorrentdialog.h"
 #include "optionsdialog.h"
 #include "progressitemdelegate.h"
+#include "qaria2host.h"
 #include "remainingtimedelegate.h"
 #include "statusdelegate.h"
 
@@ -99,9 +100,13 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(tray, &QSystemTrayIcon::activated, this, &MainWindow::showMe);
 
 
+    auto *qh = new QAria2Host(this);
+    connect(qh, &QAria2Host::urisAddRequested, this, &MainWindow::showMe, Qt::QueuedConnection);
+    connect(qh, &QAria2Host::urisAddRequested, this, &MainWindow::addUris, Qt::QueuedConnection);
+
     auto *host = new QRemoteObjectHost(QS("local:qaria2"), this);
 
-    if (!host->enableRemoting<QAria2SourceAPI>(this))
+    if (!host->enableRemoting<QAria2SourceAPI>(qh))
     {
         qWarning() << "Failed to enable remoting.";
     }
@@ -166,6 +171,8 @@ void MainWindow::showMe()
 {
     setWindowState((windowState() & ~Qt::WindowMinimized) | Qt::WindowActive);
     show();
+    raise();
+    activateWindow();
 }
 
 

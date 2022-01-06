@@ -195,17 +195,17 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="208"/>
+        <location filename="mainwindow.cpp" line="215"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="388"/>
+        <location filename="mainwindow.cpp" line="395"/>
         <source>Download speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="389"/>
+        <location filename="mainwindow.cpp" line="396"/>
         <source>Upload speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -345,6 +345,11 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="optionsdialog.ui" line="54"/>
+        <source>Download &amp;Directory:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="optionsdialog.ui" line="67"/>
         <source>aria2&amp;c:</source>
         <translation type="unfinished"></translation>
@@ -364,18 +369,12 @@
         <source>&amp;Randomize</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="optionsdialog.ui" line="54"/>
-        <source>Download &amp;Directory:</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>RemainingTimeDelegate</name>
     <message numerus="yes">
         <location filename="remainingtimedelegate.cpp" line="41"/>
         <source>%Ln day(s)</source>
-        <oldsource>%n day(s)</oldsource>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
@@ -407,7 +406,6 @@
     <message numerus="yes">
         <location filename="remainingtimedelegate.cpp" line="48"/>
         <source>%Ln hour(s)</source>
-        <oldsource>%n hour(s)</oldsource>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
@@ -415,7 +413,6 @@
     <message numerus="yes">
         <location filename="remainingtimedelegate.cpp" line="54"/>
         <source>%Ln minute(s)</source>
-        <oldsource>%n minute(s)</oldsource>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
@@ -423,7 +420,6 @@
     <message numerus="yes">
         <location filename="remainingtimedelegate.cpp" line="59"/>
         <source>%Ln second(s)</source>
-        <oldsource>%n second(s)</oldsource>
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>

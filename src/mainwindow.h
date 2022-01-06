@@ -31,7 +31,6 @@ public:
     explicit MainWindow(QWidget *parent = nullptr);
     virtual ~MainWindow();
 
-public slots:
     void addUris(const QStringList &uris);
 
 protected:
