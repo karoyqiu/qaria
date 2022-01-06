@@ -126,8 +126,14 @@ Aria2c::Aria2c(QObject *parent /*= nullptr*/)
     : QObject(parent)
     , ws_(nullptr)
     , tellingTimer_(nullptr)
-    , secret_(QS("03f682c8b4f94201995da1471ec47f23"))
 {
+    QSettings settings;
+    secret_ = settings.value(QS("secret")).toString();
+
+    if (secret_.isEmpty())
+    {
+        secret_ = generateToken();
+    }
 }
 
 
@@ -256,8 +262,6 @@ void Aria2c::runAria2()
 #ifdef QT_DEBUG
     auto logfile = QDir::temp().absoluteFilePath(QS("aria2c.log"));
     QFile::remove(logfile);
-#else
-    secret_ = generateToken();
 #endif
 
     QStringList args{

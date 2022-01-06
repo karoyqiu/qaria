@@ -176,6 +176,11 @@
      <attribute name="headerStretchLastSection">
       <bool>false</bool>
      </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
     </widget>
    </widget>
   </widget>
@@ -221,6 +226,8 @@
    <addaction name="separator"/>
    <addaction name="actionResume"/>
    <addaction name="actionPause"/>
+   <addaction name="separator"/>
+   <addaction name="actionOptions"/>
   </widget>
   <action name="actionAdd">
    <property name="icon">

@@ -21,7 +21,7 @@
        <string>Aria2</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="2" column="0">
+       <item row="3" column="0">
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Vertical</enum>
@@ -34,12 +34,32 @@
          </property>
         </spacer>
        </item>
+       <item row="2" column="2">
+        <widget class="QPushButton" name="buttonDir">
+         <property name="text">
+          <string>Browse...</string>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="2">
         <widget class="QPushButton" name="buttonAria2c">
          <property name="text">
           <string>Browse...</string>
          </property>
         </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label_2">
+         <property name="text">
+          <string>Download &amp;Directory:</string>
+         </property>
+         <property name="buddy">
+          <cstring>editDir</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QLineEdit" name="editDir"/>
        </item>
        <item row="0" column="0">
         <widget class="QLabel" name="label">
@@ -55,22 +75,29 @@
         <widget class="QLineEdit" name="editAria2c"/>
        </item>
        <item row="1" column="0">
-        <widget class="QLabel" name="label_2">
+        <widget class="QLabel" name="label_3">
          <property name="text">
-          <string>Download &amp;Directory:</string>
+          <string>&amp;Secret:</string>
          </property>
          <property name="buddy">
-          <cstring>editDir</cstring>
+          <cstring>editSecret</cstring>
          </property>
         </widget>
        </item>
        <item row="1" column="1">
-        <widget class="QLineEdit" name="editDir"/>
+        <widget class="QLineEdit" name="editSecret">
+         <property name="placeholderText">
+          <string>Leave blank to randomize every time.</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QPushButton" name="buttonDir">
+        <widget class="QPushButton" name="buttonRandom">
          <property name="text">
-          <string>Browse...</string>
+          <string>&amp;Randomize</string>
          </property>
         </widget>
        </item>
@@ -90,6 +117,15 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>editAria2c</tabstop>
+  <tabstop>buttonAria2c</tabstop>
+  <tabstop>editSecret</tabstop>
+  <tabstop>buttonRandom</tabstop>
+  <tabstop>editDir</tabstop>
+  <tabstop>buttonDir</tabstop>
+  <tabstop>tabWidget</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -99,8 +135,8 @@
    <slot>accept()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>328</x>
-     <y>334</y>
+     <x>337</x>
+     <y>373</y>
     </hint>
     <hint type="destinationlabel">
      <x>157</x>
@@ -115,8 +151,8 @@
    <slot>reject()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>396</x>
-     <y>340</y>
+     <x>405</x>
+     <y>373</y>
     </hint>
     <hint type="destinationlabel">
      <x>286</x>

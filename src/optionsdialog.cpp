@@ -12,6 +12,7 @@
  **************************************************************************************************/
 #include "optionsdialog.h"
 #include "ui_optionsdialog.h"
+#include "aria2c.h"
 
 
 OptionsDialog::OptionsDialog(QWidget *parent /*= nullptr*/)
@@ -22,10 +23,12 @@ OptionsDialog::OptionsDialog(QWidget *parent /*= nullptr*/)
 
     QSettings settings;
     ui->editAria2c->setText(settings.value(QS("aria2c")).toString());
+    ui->editSecret->setText(settings.value(QS("secret")).toString());
     ui->editDir->setText(settings.value(QS("dir")).toString());
 
     connect(ui->buttonAria2c, &QPushButton::clicked, this, &OptionsDialog::browseAria2c);
     connect(ui->buttonDir, &QPushButton::clicked, this, &OptionsDialog::browseDir);
+    connect(ui->buttonRandom, &QPushButton::clicked, this, &OptionsDialog::randomizeSecret);
 }
 
 
@@ -39,6 +42,7 @@ void OptionsDialog::accept()
 {
     QSettings settings;
     settings.setValue(QS("aria2c"), ui->editAria2c->text());
+    settings.setValue(QS("secret"), ui->editSecret->text());
     settings.setValue(QS("dir"), ui->editDir->text());
 
     QDialog::accept();
@@ -85,4 +89,10 @@ void OptionsDialog::browseDir()
     {
         ui->editDir->setText(QDir::toNativeSeparators(dir));
     }
+}
+
+
+void OptionsDialog::randomizeSecret()
+{
+    ui->editSecret->setText(Aria2c::generateToken());
 }

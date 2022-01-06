@@ -144,6 +144,8 @@ public:
 
     void getGlobalStat();
 
+    static QString generateToken();
+
 signals:
     void aria2Started();
 
@@ -162,8 +164,6 @@ signals:
 private:
     using MessageHandler = std::function<void(const QVariant &result)>;
     using BatchMethods = QList<QPair<QString, QVariantList>>;
-
-    static QString generateToken();
 
     void runAria2();
     void onConnected();
