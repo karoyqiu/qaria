@@ -374,6 +374,16 @@
         <source>&amp;Randomize</source>
         <translation type="unfinished"></translation>
     </message>
+    <message>
+        <location filename="optionsdialog.ui" line="113"/>
+        <source>&amp;Associate</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="optionsdialog.cpp" line="128"/>
+        <source>Overall downloader</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 <context>
     <name>RemainingTimeDelegate</name>

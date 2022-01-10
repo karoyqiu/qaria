@@ -35,6 +35,7 @@ private:
     void browseAria2c();
     void browseDir();
     void randomizeSecret();
+    void associate();
 
 private:
     Ui::OptionsDialog *ui;

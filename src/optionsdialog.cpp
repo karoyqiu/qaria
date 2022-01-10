@@ -29,6 +29,7 @@ OptionsDialog::OptionsDialog(QWidget *parent /*= nullptr*/)
     connect(ui->buttonAria2c, &QPushButton::clicked, this, &OptionsDialog::browseAria2c);
     connect(ui->buttonDir, &QPushButton::clicked, this, &OptionsDialog::browseDir);
     connect(ui->buttonRandom, &QPushButton::clicked, this, &OptionsDialog::randomizeSecret);
+    connect(ui->buttonAssociate, &QPushButton::clicked, this, &OptionsDialog::associate);
 }
 
 
@@ -95,4 +96,39 @@ void OptionsDialog::browseDir()
 void OptionsDialog::randomizeSecret()
 {
     ui->editSecret->setText(Aria2c::generateToken());
+}
+
+
+void OptionsDialog::associate()
+{
+#ifdef Q_OS_WIN
+    QSettings classes(QS(R"(HKEY_CURRENT_USER\SOFTWARE\Classes\qaria2.magnet)"), QSettings::NativeFormat);
+    classes.setValue(QS("."), QS("URL:magnet"));
+    classes.setValue(QS("Content Type"), QS("application/x-magnet"));
+    classes.setValue(QS("URL Protocol"), QString());
+
+    auto appPath = QDir::toNativeSeparators(qApp->applicationFilePath());
+
+    classes.beginGroup(QS("DefaultIcon"));
+    classes.setValue(QS("."), QString(QL('"') % appPath % QL("\",1")));
+    classes.endGroup();
+
+    classes.beginGroup(QS("shell"));
+    classes.setValue(QS("."), QS("open"));
+    classes.beginGroup(QS("open/command"));
+    classes.setValue(QS("."), QString(QL('"') % appPath % QL(R"(" "%1")")));
+
+    QSettings regApps(QS(R"(HKEY_CURRENT_USER\SOFTWARE\RegisteredApplications)"), QSettings::NativeFormat);
+    regApps.setValue(QS("qaria2"), QS(R"(Software\%1\%2\Capabilities)").arg(qApp->organizationName(), qApp->applicationName()));
+
+    QSettings settings;
+    settings.beginGroup(QS("Capabilities"));
+    settings.setValue(QS("ApplicationIcon"), QString(QL('"') % appPath % QL("\",0")));
+    settings.setValue(QS("ApplicationName"), qApp->applicationDisplayName());
+    settings.setValue(QS("ApplicationDescription"), tr("Overall downloader"));
+    settings.beginGroup(QS("URLAssociations"));
+    settings.setValue(QS("magnet"), QS("qaria2.magnet"));
+#else
+#error Unsupported platform
+#endif
 }
