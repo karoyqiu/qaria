@@ -33,6 +33,7 @@ ShowLanguageDialog=auto
 WizardStyle=modern
 MinVersion=0,10
 PrivilegesRequiredOverridesAllowed=commandline dialog
+PrivilegesRequired=none
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"
@@ -40,6 +41,7 @@ Name: "chinesesimplified"; MessagesFile: "compiler:Languages\ChineseSimplified.i
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "associatemagnet"; Description: "{cm:AssociateMagnet}"; GroupDescription: "{cm:Associate}"; Components: qaria2
 
 [Files]
 Source: "{#MyAppExeName}"; DestDir: "{app}"; Flags: restartreplace uninsrestartdelete replacesameversion; Components: qaria2
@@ -70,7 +72,18 @@ Source: "plugins\styles\qwindowsvistastyle.dll"; DestDir: "{app}\plugins\styles"
 Source: "aria2c.exe"; DestDir: "{app}"; Flags: restartreplace uninsrestartdelete; Components: aria2c
 
 [Registry]
-Root: "HKA"; Subkey: "SOFTWARE\karoyqiu\qaria2"; ValueType: string; ValueName: "aria2c"; ValueData: "{app}\aria2c.exe"; Components: aria2c
+Root: "HKA"; Subkey: "SOFTWARE\karoyqiu\qaria2"; ValueType: string; ValueName: "aria2c"; ValueData: "{app}\{#MyAppExeName}"; Flags: uninsdeletekeyifempty; Components: aria2c
+Root: "HKA"; Subkey: "SOFTWARE\Classes\qaria2.magnet"; ValueType: string; ValueData: "URL:magnet"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\Classes\qaria2.magnet"; ValueType: string; ValueName: "Content Type"; ValueData: "application/x-magnet"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\Classes\qaria2.magnet"; ValueType: string; ValueName: "URL Protocol"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\Classes\qaria2.magnet\DefaultIcon"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"",1"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\Classes\qaria2.magnet\shell"; ValueType: string; ValueData: "open"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\Classes\qaria2.magnet\shell\open\command"; ValueType: string; ValueData: """{app}\{#MyAppExeName}"" ""%1"""; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\karoyqiu\qaria2\Capabilities"; ValueType: string; ValueName: "ApplicationIcon"; ValueData: """{app}\{#MyAppExeName}"",0"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\karoyqiu\qaria2\Capabilities"; ValueType: string; ValueName: "ApplicationName"; ValueData: "qaria2"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\karoyqiu\qaria2\Capabilities"; ValueType: string; ValueName: "ApplicationDescription"; ValueData: "Overall downloader"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\karoyqiu\qaria2\Capabilities\URLAssociations"; ValueType: string; ValueName: "magnet"; ValueData: "qaria2.magnet"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
+Root: "HKA"; Subkey: "SOFTWARE\RegisteredApplications"; ValueType: string; ValueName: "qaria2"; ValueData: "Software\karoyqiu\qaria2\Capabilities"; Flags: uninsdeletekeyifempty; Components: qaria2; Tasks: associatemagnet
 
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
@@ -85,3 +98,9 @@ Name: "aria2c"; Description: "aria2c 1.36.0"; Types: full
 
 [ThirdParty]
 UseRelativePaths=True
+
+[CustomMessages]
+english.Associate=Association:
+english.AssociateMagnet=Associate with manget protocol
+chinesesimplified.Associate=协议关联：
+chinesesimplified.AssociateMagnet=关联 manget 协议
