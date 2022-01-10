@@ -87,6 +87,8 @@ struct DownloadItem
     qint64 downloadSpeed = 0;
     /// Upload speed of this download measured in bytes/sec.
     qint64 uploadSpeed = 0;
+    /// The number of verified number of bytes while the files are being hash checked. This key exists only when this download is being hash checked.
+    qint64 verifiedLength = 0;
     /// The code of the last error for this item, if any.
     int errorCode = 0;
     /// The (hopefully) human readable error message associated to `errorCode`.
@@ -103,6 +105,10 @@ struct DownloadItem
     BitTorrentInfo bittorrent;
     /// InfoHash. BitTorrent only.
     QString infoHash;
+    /// `true` if the local endpoint is a seeder. Otherwise `false`. BitTorrent only.
+    bool seeder = false;
+    /// `true` if this download is waiting for the hash check in a queue. This key exists only when this download is in the queue.
+    bool verifyIntegrityPending = false;
 };
 
 using DownloadItems = QList<DownloadItem>;

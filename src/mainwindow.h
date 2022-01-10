@@ -49,6 +49,7 @@ private:
     void pause();
     void resume();
     void showOptions();
+    void magnetToTorrent();
 
     void downloadTrackers();
     void handleTrackers();

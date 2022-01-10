@@ -147,6 +147,9 @@
      <bool>false</bool>
     </property>
     <widget class="QTreeView" name="treeMain">
+     <property name="contextMenuPolicy">
+      <enum>Qt::ActionsContextMenu</enum>
+     </property>
      <property name="alternatingRowColors">
       <bool>true</bool>
      </property>
@@ -279,6 +282,11 @@
    </property>
    <property name="text">
     <string>&amp;Pause</string>
+   </property>
+  </action>
+  <action name="actionMagnetToTorrent">
+   <property name="text">
+    <string>Magnet To Torrent</string>
    </property>
   </action>
  </widget>

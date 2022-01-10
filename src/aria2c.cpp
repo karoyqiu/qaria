@@ -75,6 +75,9 @@ static DownloadItem toItem(const QVariant &var)
     GET(item, obj, following);
     GET(item, obj, followedBy);
     GET(item, obj, infoHash);
+    GET(item, obj, seeder);
+    GET(item, obj, verifiedLength);
+    GET(item, obj, verifyIntegrityPending);
 
     auto status = obj.value(QS("status")).toString();
     item.status = toStatus(status);

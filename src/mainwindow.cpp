@@ -55,6 +55,9 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(ui->actionPause, &QAction::triggered, this, &MainWindow::pause);
     connect(ui->actionResume, &QAction::triggered, this, &MainWindow::resume);
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
+    connect(ui->actionMagnetToTorrent, &QAction::triggered, this, &MainWindow::magnetToTorrent);
+
+    ui->treeMain->addActions({ ui->actionResume, ui->actionPause, ui->actionRemove, ui->actionMagnetToTorrent });
 
     model_ = new DownloadTableModel(this);
     proxy_ = new DownloadFilterProxyModel(this);
@@ -255,6 +258,39 @@ void MainWindow::showOptions()
 {
     OptionsDialog dialog(this);
     dialog.exec();
+}
+
+
+void MainWindow::magnetToTorrent()
+{
+    auto idx = ui->treeMain->currentIndex();
+
+    if (idx.isValid())
+    {
+        idx = idx.siblingAtColumn(DownloadTableModel::NameColumn);
+
+        if (idx.data().toString().startsWith(QL("[METADATA]")))
+        {
+            const auto *item = static_cast<DownloadItem *>(idx.data(DownloadTableModel::ItemRole).value<void *>());
+            auto hash = item->infoHash;
+
+            if (!hash.isEmpty())
+            {
+                auto gid = item->gid;
+                auto dir = item->dir;
+
+                aria2c_->remove(gid);
+
+                QUrl url(QS("https://itorrents.org/torrent/%1.torrent").arg(hash));
+                OptionsBuilder builder;
+                builder.setDir(dir);
+                builder.setAllowOverwrite(true);
+                builder.setCheckIntegrity(true);
+
+                aria2c_->addUri(url, builder.options());
+            }
+        }
+    }
 }
 
 
