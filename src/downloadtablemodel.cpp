@@ -157,7 +157,7 @@ QVariant DownloadTableModel::data(const QModelIndex &idx, int role) const
         if (idx.column() == NameColumn)
         {
             const auto &item = items_.at(idx.row());
-            var = toIcon(item.status);
+            var = toIcon(item.status, item.seeder);
         }
         break;
 

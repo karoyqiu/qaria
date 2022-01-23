@@ -33,7 +33,7 @@ enum class DownloadStatus
     Removed,
 };
 
-QIcon toIcon(DownloadStatus status);
+QIcon toIcon(DownloadStatus status, bool seeding = false);
 
 
 /**

@@ -110,7 +110,7 @@ static DownloadItem toItem(const QVariant &var)
 static inline void dontCare(const QVariant &) { }
 
 
-QIcon toIcon(DownloadStatus status)
+QIcon toIcon(DownloadStatus status, bool seeding)
 {
     static const QMap<DownloadStatus, QIcon> icons{
         { DownloadStatus::Active, QIcon{QS(":/icons/downloading.svg")} },
@@ -120,6 +120,12 @@ QIcon toIcon(DownloadStatus status)
         { DownloadStatus::Complete, QIcon{QS(":/icons/completed.svg")} },
         { DownloadStatus::Removed, QIcon{QS(":/icons/list-remove.svg")} },
     };
+
+    if (status == DownloadStatus::Complete && seeding)
+    {
+        static const QIcon uploading(QS(":/icons/seeding.svg"));
+        return uploading;
+    }
 
     return icons.value(status);
 }
