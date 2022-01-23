@@ -57,7 +57,8 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
     connect(ui->actionMagnetToTorrent, &QAction::triggered, this, &MainWindow::magnetToTorrent);
 
-    ui->treeMain->addActions({ ui->actionResume, ui->actionPause, ui->actionRemove, ui->actionMagnetToTorrent });
+    ui->treeMain->addActions({ ui->actionResume, ui->actionPause, ui->actionRemove,
+                             ui->actionPurge, ui->actionMagnetToTorrent });
 
     model_ = new DownloadTableModel(this);
     proxy_ = new DownloadFilterProxyModel(this);
@@ -93,6 +94,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(ui->treeMain, &QTreeView::doubleClicked, this, &MainWindow::edit);
     connect(ui->treeMain->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &MainWindow::showFiles);
+    connect(ui->actionResume, &QAction::triggered, aria2c_, &Aria2c::purge);
 
     aria2c_->start();
 
@@ -157,6 +159,7 @@ void MainWindow::loadSettings()
     restoreState(settings.value(QS("sta")).toByteArray());
     ui->treeMain->header()->restoreState(settings.value(QS("hdr")).toByteArray());
     ui->centralWidget->restoreState(settings.value(QS("spl")).toByteArray());
+    ui->splitter->restoreState(settings.value(QS("vspl")).toByteArray());
 }
 
 
@@ -167,6 +170,7 @@ void MainWindow::saveSettings() const
     settings.setValue(QS("sta"), saveState());
     settings.setValue(QS("hdr"), ui->treeMain->header()->saveState());
     settings.setValue(QS("spl"), ui->centralWidget->saveState());
+    settings.setValue(QS("vspl"), ui->splitter->saveState());
 }
 
 

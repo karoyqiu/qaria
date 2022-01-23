@@ -14,9 +14,6 @@
    <property name="orientation">
     <enum>Qt::Horizontal</enum>
    </property>
-   <property name="childrenCollapsible">
-    <bool>false</bool>
-   </property>
    <widget class="QTreeWidget" name="treeFilter">
     <property name="alternatingRowColors">
      <bool>true</bool>
@@ -143,9 +140,6 @@
     <property name="orientation">
      <enum>Qt::Vertical</enum>
     </property>
-    <property name="childrenCollapsible">
-     <bool>false</bool>
-    </property>
     <widget class="QTreeView" name="treeMain">
      <property name="contextMenuPolicy">
       <enum>Qt::ActionsContextMenu</enum>
@@ -221,6 +215,7 @@
    </attribute>
    <addaction name="actionAdd"/>
    <addaction name="actionRemove"/>
+   <addaction name="actionPurge"/>
    <addaction name="separator"/>
    <addaction name="actionResume"/>
    <addaction name="actionPause"/>
@@ -272,7 +267,7 @@
      <normaloff>:/icons/media-playback-start.svg</normaloff>:/icons/media-playback-start.svg</iconset>
    </property>
    <property name="text">
-    <string>&amp;Resume</string>
+    <string>Re&amp;sume</string>
    </property>
   </action>
   <action name="actionPause">
@@ -285,8 +280,21 @@
    </property>
   </action>
   <action name="actionMagnetToTorrent">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/kt-magnet.svg</normaloff>:/icons/kt-magnet.svg</iconset>
+   </property>
    <property name="text">
     <string>Magnet To Torrent</string>
+   </property>
+  </action>
+  <action name="actionPurge">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/edit-clear.svg</normaloff>:/icons/edit-clear.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Pur&amp;ge</string>
    </property>
   </action>
  </widget>

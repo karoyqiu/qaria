@@ -211,6 +211,12 @@ void Aria2c::changeOption(const QString &gid, const QVariantHash &options)
 }
 
 
+void Aria2c::purge()
+{
+    callAsync(dontCare, QS("aria2.purgeDownloadResult"));
+}
+
+
 void Aria2c::setBtTrackers(const QStringList &trackers)
 {
     OptionsBuilder builder;

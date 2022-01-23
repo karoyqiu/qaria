@@ -146,6 +146,7 @@ public:
     void resume(const QString &gid) { resume(QStringList{ gid }); }
     void changeOption(const QString &gid, const QVariantHash &options);
 
+    void purge();
     void setBtTrackers(const QStringList &trackers);
 
     void getGlobalStat();
