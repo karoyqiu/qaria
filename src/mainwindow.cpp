@@ -94,7 +94,7 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(ui->treeMain, &QTreeView::doubleClicked, this, &MainWindow::edit);
     connect(ui->treeMain->selectionModel(), &QItemSelectionModel::currentChanged,
             this, &MainWindow::showFiles);
-    connect(ui->actionResume, &QAction::triggered, aria2c_, &Aria2c::purge);
+    connect(ui->actionPurge, &QAction::triggered, aria2c_, &Aria2c::purge);
 
     aria2c_->start();
 
