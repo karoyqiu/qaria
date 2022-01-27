@@ -165,57 +165,62 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="231"/>
+        <location filename="mainwindow.ui" line="232"/>
         <source>&amp;Add...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="240"/>
+        <location filename="mainwindow.ui" line="241"/>
         <source>E&amp;xit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="252"/>
+        <location filename="mainwindow.ui" line="253"/>
         <source>&amp;Options...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="261"/>
+        <location filename="mainwindow.ui" line="262"/>
         <source>&amp;Remove</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="270"/>
+        <location filename="mainwindow.ui" line="271"/>
         <source>Re&amp;sume</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="279"/>
+        <location filename="mainwindow.ui" line="280"/>
         <source>&amp;Pause</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="288"/>
+        <location filename="mainwindow.ui" line="289"/>
         <source>Magnet To Torrent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.ui" line="297"/>
+        <location filename="mainwindow.ui" line="298"/>
         <source>Pur&amp;ge</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="222"/>
+        <location filename="mainwindow.ui" line="307"/>
+        <source>Scrape...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="mainwindow.cpp" line="224"/>
         <source>Do you really want to remove current download?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="435"/>
+        <location filename="mainwindow.cpp" line="437"/>
         <source>Download speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="mainwindow.cpp" line="436"/>
+        <location filename="mainwindow.cpp" line="438"/>
         <source>Upload speed: %1/s</source>
         <translation type="unfinished"></translation>
     </message>
@@ -349,43 +354,49 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.ui" line="40"/>
-        <location filename="optionsdialog.ui" line="47"/>
+        <location filename="optionsdialog.ui" line="27"/>
+        <location filename="optionsdialog.ui" line="34"/>
+        <location filename="optionsdialog.ui" line="120"/>
         <source>Browse...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.ui" line="54"/>
+        <location filename="optionsdialog.ui" line="51"/>
         <source>Download &amp;Directory:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.ui" line="67"/>
+        <location filename="optionsdialog.ui" line="97"/>
         <source>aria2&amp;c:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.ui" line="80"/>
+        <location filename="optionsdialog.ui" line="71"/>
         <source>&amp;Secret:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.ui" line="90"/>
+        <location filename="optionsdialog.ui" line="41"/>
         <source>Leave blank to randomize every time.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.ui" line="100"/>
+        <location filename="optionsdialog.ui" line="64"/>
         <source>&amp;Randomize</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.ui" line="113"/>
+        <location filename="optionsdialog.ui" line="107"/>
+        <source>&amp;Movie data capture:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="optionsdialog.ui" line="133"/>
         <source>&amp;Associate</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="optionsdialog.cpp" line="128"/>
+        <location filename="optionsdialog.cpp" line="148"/>
         <source>Overall downloader</source>
         <translation type="unfinished"></translation>
     </message>
@@ -443,6 +454,26 @@
         <translation type="unfinished">
             <numerusform></numerusform>
         </translation>
+    </message>
+</context>
+<context>
+    <name>ScraperDialog</name>
+    <message>
+        <location filename="scraperdialog.cpp" line="28"/>
+        <source>No Movie Data Capture.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="scraperdialog.cpp" line="36"/>
+        <source>Scraping %1...
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="scraperdialog.cpp" line="80"/>
+        <source>
+Scraping finished with code %1 (%2)</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>

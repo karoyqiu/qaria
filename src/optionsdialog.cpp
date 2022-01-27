@@ -25,9 +25,11 @@ OptionsDialog::OptionsDialog(QWidget *parent /*= nullptr*/)
     ui->editAria2c->setText(settings.value(QS("aria2c")).toString());
     ui->editSecret->setText(settings.value(QS("secret")).toString());
     ui->editDir->setText(settings.value(QS("dir")).toString());
+    ui->editMdc->setText(settings.value(QS("mdc")).toString());
 
     connect(ui->buttonAria2c, &QPushButton::clicked, this, &OptionsDialog::browseAria2c);
     connect(ui->buttonDir, &QPushButton::clicked, this, &OptionsDialog::browseDir);
+    connect(ui->buttonMdc, &QPushButton::clicked, this, &OptionsDialog::browseMdc);
     connect(ui->buttonRandom, &QPushButton::clicked, this, &OptionsDialog::randomizeSecret);
     connect(ui->buttonAssociate, &QPushButton::clicked, this, &OptionsDialog::associate);
 }
@@ -45,6 +47,7 @@ void OptionsDialog::accept()
     settings.setValue(QS("aria2c"), ui->editAria2c->text());
     settings.setValue(QS("secret"), ui->editSecret->text());
     settings.setValue(QS("dir"), ui->editDir->text());
+    settings.setValue(QS("mdc"), ui->editMdc->text());
 
     QDialog::accept();
 }
@@ -89,6 +92,23 @@ void OptionsDialog::browseDir()
     if (!dir.isEmpty())
     {
         ui->editDir->setText(QDir::toNativeSeparators(dir));
+    }
+}
+
+
+void OptionsDialog::browseMdc()
+{
+    auto mdc = QFileDialog::getOpenFileName(this, {}, ui->editMdc->text(),
+#ifdef Q_OS_WIN
+                                               QS("Movie data capture (Movie_Data_Capture.exe)")
+#else
+                                               QS("Movie data capture (Movie_Data_Capture)")
+#endif
+    );
+
+    if (!mdc.isEmpty())
+    {
+        ui->editMdc->setText(QDir::toNativeSeparators(mdc));
     }
 }
 

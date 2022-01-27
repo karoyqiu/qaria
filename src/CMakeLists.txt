@@ -24,6 +24,7 @@ set(SOURCES
     "remainingtimedelegate.h" "remainingtimedelegate.cpp"
     "filetreewidget.h" "filetreewidget.cpp"
     "downloadfilterproxymodel.h" "downloadfilterproxymodel.cpp"
+    "scraperdialog.h" "scraperdialog.cpp" "scraperdialog.ui"
     "qaria2host.h"
     "icons/icons.qrc"
     "${CMAKE_CURRENT_BINARY_DIR}/resource.rc"

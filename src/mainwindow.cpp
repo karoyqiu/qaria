@@ -26,6 +26,7 @@
 #include "progressitemdelegate.h"
 #include "qaria2host.h"
 #include "remainingtimedelegate.h"
+#include "scraperdialog.h"
 #include "statusdelegate.h"
 
 
@@ -56,8 +57,9 @@ MainWindow::MainWindow(QWidget *parent /*= nullptr*/)
     connect(ui->actionResume, &QAction::triggered, this, &MainWindow::resume);
     connect(ui->actionOptions, &QAction::triggered, this, &MainWindow::showOptions);
     connect(ui->actionMagnetToTorrent, &QAction::triggered, this, &MainWindow::magnetToTorrent);
+    connect(ui->actionScrape, &QAction::triggered, this, &MainWindow::scrape);
 
-    ui->treeMain->addActions({ ui->actionResume, ui->actionPause, ui->actionRemove,
+    ui->treeMain->addActions({ ui->actionResume, ui->actionPause, ui->actionRemove, ui->actionScrape,
                              ui->actionPurge, ui->actionMagnetToTorrent });
 
     model_ = new DownloadTableModel(this);
@@ -434,4 +436,19 @@ void MainWindow::updateStat(const GlobalStat &stat)
     QLocale loc;
     downLabel_->setText(tr("Download speed: %1/s").arg(loc.formattedDataSize(stat.downloadSpeed)));
     upLabel_->setText(tr("Upload speed: %1/s").arg(loc.formattedDataSize(stat.uploadSpeed)));
+}
+
+
+void MainWindow::scrape()
+{
+    auto idx = ui->treeMain->currentIndex();
+
+    if (idx.isValid())
+    {
+        idx = idx.siblingAtColumn(DownloadTableModel::NameColumn);
+        const auto *item = static_cast<DownloadItem *>(idx.data(DownloadTableModel::ItemRole).value<void *>());
+
+        ScraperDialog dialog(QDir::toNativeSeparators(item->dir), idx.data().toString(), this);
+        dialog.exec();
+    }
 }
