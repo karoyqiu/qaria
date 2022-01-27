@@ -21,19 +21,6 @@
        <string>Aria2</string>
       </attribute>
       <layout class="QGridLayout" name="gridLayout">
-       <item row="3" column="0">
-        <spacer name="verticalSpacer">
-         <property name="orientation">
-          <enum>Qt::Vertical</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>20</width>
-           <height>40</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="2" column="2">
         <widget class="QPushButton" name="buttonDir">
          <property name="text">
@@ -45,6 +32,16 @@
         <widget class="QPushButton" name="buttonAria2c">
          <property name="text">
           <string>Browse...</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <widget class="QLineEdit" name="editSecret">
+         <property name="placeholderText">
+          <string>Leave blank to randomize every time.</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
          </property>
         </widget>
        </item>
@@ -61,18 +58,12 @@
        <item row="2" column="1">
         <widget class="QLineEdit" name="editDir"/>
        </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label">
+       <item row="1" column="2">
+        <widget class="QPushButton" name="buttonRandom">
          <property name="text">
-          <string>aria2&amp;c:</string>
-         </property>
-         <property name="buddy">
-          <cstring>editAria2c</cstring>
+          <string>&amp;Randomize</string>
          </property>
         </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="editAria2c"/>
        </item>
        <item row="1" column="0">
         <widget class="QLabel" name="label_3">
@@ -84,20 +75,49 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="1">
-        <widget class="QLineEdit" name="editSecret">
-         <property name="placeholderText">
-          <string>Leave blank to randomize every time.</string>
+       <item row="0" column="1">
+        <widget class="QLineEdit" name="editAria2c"/>
+       </item>
+       <item row="4" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
          </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>aria2&amp;c:</string>
+         </property>
+         <property name="buddy">
+          <cstring>editAria2c</cstring>
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="buttonRandom">
+       <item row="3" column="0">
+        <widget class="QLabel" name="label_4">
          <property name="text">
-          <string>&amp;Randomize</string>
+          <string>&amp;Movie data capture:</string>
+         </property>
+         <property name="buddy">
+          <cstring>editMdc</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="editMdc"/>
+       </item>
+       <item row="3" column="2">
+        <widget class="QPushButton" name="buttonMdc">
+         <property name="text">
+          <string>Browse...</string>
          </property>
         </widget>
        </item>
@@ -135,6 +155,8 @@
   <tabstop>buttonRandom</tabstop>
   <tabstop>editDir</tabstop>
   <tabstop>buttonDir</tabstop>
+  <tabstop>editMdc</tabstop>
+  <tabstop>buttonMdc</tabstop>
   <tabstop>tabWidget</tabstop>
   <tabstop>buttonAssociate</tabstop>
  </tabstops>
