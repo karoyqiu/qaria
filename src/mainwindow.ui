@@ -219,6 +219,7 @@
    <addaction name="separator"/>
    <addaction name="actionResume"/>
    <addaction name="actionPause"/>
+   <addaction name="actionScrape"/>
    <addaction name="separator"/>
    <addaction name="actionOptions"/>
   </widget>
@@ -295,6 +296,15 @@
    </property>
    <property name="text">
     <string>Pur&amp;ge</string>
+   </property>
+  </action>
+  <action name="actionScrape">
+   <property name="icon">
+    <iconset resource="icons/icons.qrc">
+     <normaloff>:/icons/help-about.svg</normaloff>:/icons/help-about.svg</iconset>
+   </property>
+   <property name="text">
+    <string>Scrape...</string>
    </property>
   </action>
  </widget>

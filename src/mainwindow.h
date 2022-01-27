@@ -63,6 +63,8 @@ private:
 
     void updateStat(const GlobalStat &stat);
 
+    void scrape();
+
 private:
     Ui::MainWindow *ui;
     Aria2c *aria2c_;
